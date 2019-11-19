@@ -19,7 +19,6 @@ import xyz.utilidades.GeradorDeIdentificadores;
 import xyz.utilidades.JTableRenderer;
 import xyz.utilidades.TeclasPermitidasLetras;
 
-
 /**
  *
  * @author eugeniojulio
@@ -252,8 +251,8 @@ public class TelaDaMarca extends javax.swing.JFrame {
         try {
 
             int indice = jTableMarcas.getSelectedRow();
-            int opcao = JOptionPane.showConfirmDialog(null, "Você realmente deseja excluir ?", "Alerta", JOptionPane.WARNING_MESSAGE);
             if (indice != -1) {
+                int opcao = JOptionPane.showConfirmDialog(null, "Você realmente deseja excluir ?", "Alerta", JOptionPane.WARNING_MESSAGE);
                 if (opcao == 0) {
                     String idEmString = String.valueOf(jTableMarcas.getValueAt(indice, 0));
                     int id = Integer.parseInt(idEmString);
