@@ -31,7 +31,7 @@ public class Marca {
             this.descricao = descricao;
             this.imagem = imagem;
         }else{
-            throw new Exception("Campo não pode ser vazio!");
+            throw new Exception("O campo da descrição não pode estar vazio!");
         }
        
     }
@@ -81,7 +81,7 @@ public class Marca {
         if(!descricao.isEmpty() || !descricao.equals("")){
             this.descricao = descricao;
         }else{
-            throw new Exception("Campo não pode ser vazio!");
+            throw new Exception("O campo da descrição não pode estar vazio!");
         }
 
         

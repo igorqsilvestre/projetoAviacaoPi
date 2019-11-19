@@ -96,7 +96,7 @@ public class MarcaPersistencia implements IcrudMarca {
                          controle = true;
                          excluir(id);
                     }else{
-                        throw new Exception("campo não pode ser vazio!");
+                        throw new Exception("O campo da descrição não pode estar vazio!");
                     }
                    
                   
