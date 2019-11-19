@@ -21,7 +21,7 @@ import xyz.utilidades.TeclasPermitidasLetras;
 
 /**
  *
- * @author eugeniojulio
+ * @author igor
  */
 public class TelaDaMarca extends javax.swing.JFrame {
 
