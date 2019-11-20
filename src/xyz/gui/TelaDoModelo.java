@@ -18,7 +18,7 @@ import xyz.utilidades.TeclasPermitidasLetras;
  * @author eugeniojulio
  */
 public class TelaDoModelo extends javax.swing.JFrame {
-
+    
     private ModeloPersistencia persistencia = new ModeloPersistencia();
     private String caminhoImagem;
 
@@ -34,10 +34,10 @@ public class TelaDoModelo extends javax.swing.JFrame {
         jTextFieldDescricaoModelo.setDocument(new TeclasPermitidasLetras());
         jButtonAlterar.setEnabled(false);
     }
-
+    
     private void mostrarDadosModelo(ArrayList<Modelo> listaDeModelos) {
         DefaultTableModel modelo = (DefaultTableModel) jTableModelos.getModel();
-
+        
         modelo.setNumRows(0);
         for (int i = 0; i < listaDeModelos.size(); i++) {
             String[] saida = new String[3];
@@ -45,18 +45,18 @@ public class TelaDoModelo extends javax.swing.JFrame {
             saida[0] = "" + aux.getId();
             saida[1] = aux.getDescricao();
             saida[2] = aux.getMarca().getDescricao();
-
+            
             modelo.addRow(saida);
         }
-
+        
         jTableModelos.setModel(modelo);
-
+        
     }
-
+    
     private void iniciar() {
         try {
             mostrarDadosModelo(persistencia.recuperar());
-
+            
         } catch (Exception e) {
             DefaultTableModel model = (DefaultTableModel) jTableModelos.getModel();
             //Limpa a tabela 
@@ -70,27 +70,27 @@ public class TelaDoModelo extends javax.swing.JFrame {
             model.addRow(saida);
         }
     }
-
+    
     private void populaJComboBox() throws Exception {
         try {
             MarcaPersistencia marcaPersistencia = new MarcaPersistencia();
             ArrayList<Marca> listaDeMarcas = marcaPersistencia.recuperar();
             String saida[] = new String[listaDeMarcas.size()];
-
+            
             for (int i = 0; i < listaDeMarcas.size(); i++) {
                 String dados = String.valueOf(listaDeMarcas.get(i));
                 Marca marca = new Marca(dados);
                 saida[i] = "" + marca.getId() + ";" + marca.getDescricao();
-
+                
             }
-
+            
             DefaultComboBoxModel modeloMarcas = new DefaultComboBoxModel(saida);
             jComboBoxMarcas.setModel(modeloMarcas);
-
+            
         } catch (Exception erro) {
             erro.getMessage();
         }
-
+        
     }
 
     /**
@@ -119,7 +119,7 @@ public class TelaDoModelo extends javax.swing.JFrame {
         jButtonAlterar = new javax.swing.JButton();
         jComboBoxMarcas = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jButtonBuscar = new javax.swing.JButton();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -177,7 +177,12 @@ public class TelaDoModelo extends javax.swing.JFrame {
 
         jLabel4.setText("MARCA");
 
-        jButton1.setText("BUSCAR");
+        jButtonBuscar.setText("BUSCAR");
+        jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -214,7 +219,7 @@ public class TelaDoModelo extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jTextFieldIdModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButton1)))
+                                        .addComponent(jButtonBuscar)))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
@@ -227,7 +232,7 @@ public class TelaDoModelo extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextFieldIdModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(jButtonBuscar))
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -249,24 +254,24 @@ public class TelaDoModelo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIncluirActionPerformed
-
+        
         try {
-
+            
             GeradorDeIdentificadores gerarID = new GeradorDeIdentificadores();
             int id = gerarID.getIdentificador();
-
+            
             String descricao = jTextFieldDescricaoModelo.getText();
-
+            
             String dadosJComboBox = String.valueOf(jComboBoxMarcas.getSelectedItem());
             String dados = dadosJComboBox + ";" + caminhoImagem;
             Marca marca = new Marca(dados);
             Modelo modelo = new Modelo(id, descricao, marca);
-
+            
             persistencia.incluir(modelo);
             mostrarDadosModelo(persistencia.recuperar());
             limparCampos();
             gerarID.finalizar();
-
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
@@ -284,22 +289,43 @@ public class TelaDoModelo extends javax.swing.JFrame {
                     persistencia.excluir(id);
                     mostrarDadosModelo(persistencia.recuperar());
                     limparCampos();
-
+                    
                 }
-
+                
             }
-
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
     }//GEN-LAST:event_jButtonExcluirActionPerformed
+    
 
     private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
-
+        
 
     }//GEN-LAST:event_jButtonAlterarActionPerformed
 
+    private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
+        try {
+            int indice = jTableModelos.getSelectedRow();
+            if (indice != -1) {
+                String idEmString = String.valueOf(jTableModelos.getValueAt(indice, 0));
+                String descricaoModelo = String.valueOf(jTableModelos.getValueAt(indice, 1));
+                String descricaoMarca = String.valueOf(jTableModelos.getValueAt(indice, 2));
+                Marca marca = persistencia.recuperaMarcaPorDescricao(descricaoMarca);
+                jTextFieldIdModelo.setText(idEmString);
+                jTextFieldDescricaoModelo.setText(descricaoModelo);
+                
+                jButtonAlterar.setEnabled(true);
+                jButtonIncluir.setEnabled(false);
+                jButtonExcluir.setEnabled(false);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_jButtonBuscarActionPerformed
+    
     private void limparCampos() {
         jTextFieldIdModelo.setText("");
         jTextFieldDescricaoModelo.setText("");
@@ -347,8 +373,8 @@ public class TelaDoModelo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAlterar;
+    private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonExcluir;
     private javax.swing.JButton jButtonIncluir;
     private javax.swing.JCheckBox jCheckBox1;

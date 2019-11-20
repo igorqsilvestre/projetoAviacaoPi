@@ -306,21 +306,27 @@ public class TelaDaMarca extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAdicionarImagemActionPerformed
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
-        int indice = jTableMarcas.getSelectedRow();
-        if (indice != -1) {
-            String idEmString = String.valueOf(jTableMarcas.getValueAt(indice, 0));
-            String descricao = String.valueOf(jTableMarcas.getValueAt(indice, 1));
-            String caminho = String.valueOf(jTableMarcas.getValueAt(indice, 2));
+        try {
+            int indice = jTableMarcas.getSelectedRow();
+            if (indice != -1) {
+                String idEmString = String.valueOf(jTableMarcas.getValueAt(indice, 0));
+                String descricao = String.valueOf(jTableMarcas.getValueAt(indice, 1));
+                String caminho = String.valueOf(jTableMarcas.getValueAt(indice, 2));
 
-            jTextFieldIdMarca.setText(idEmString);
-            jTextFieldDescricaoMarca.setText(descricao);
-            setaLabelComImagem(caminho);
-            caminhoImagem = caminho;
-            jButtonAlterar.setEnabled(true);
-            jButtonIncluir.setEnabled(false);
-            jButtonExcluir.setEnabled(false);
+                jTextFieldIdMarca.setText(idEmString);
+                jTextFieldDescricaoMarca.setText(descricao);
+                setaLabelComImagem(caminho);
+                caminhoImagem = caminho;
+                jButtonAlterar.setEnabled(true);
+                jButtonIncluir.setEnabled(false);
+                jButtonExcluir.setEnabled(false);
 
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
+
 
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
