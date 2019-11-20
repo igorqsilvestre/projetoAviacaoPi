@@ -26,7 +26,7 @@ import xyz.utilidades.TeclasPermitidasLetras;
 public class TelaDaMarca extends javax.swing.JFrame {
 
     private MarcaPersistencia teste = new MarcaPersistencia();
-    private String imagem;
+    private String caminhoImagem;
 
     /**
      * Creates new form TelaDaMarca
@@ -235,7 +235,7 @@ public class TelaDaMarca extends javax.swing.JFrame {
             GeradorDeIdentificadores gerarID = new GeradorDeIdentificadores();
             int id = gerarID.getIdentificador();
             String descricao = jTextFieldDescricaoMarca.getText();
-            Marca objeto = new Marca(id, descricao, imagem);
+            Marca objeto = new Marca(id, descricao, caminhoImagem);
             teste.incluir(objeto);
             mostrarDadosMarca(teste.recuperar());
             limparCampos();
@@ -273,7 +273,7 @@ public class TelaDaMarca extends javax.swing.JFrame {
         try {
             int id = Integer.parseInt(jTextFieldIdMarca.getText());
             String descricao = jTextFieldDescricaoMarca.getText();
-            teste.alterar(id, descricao, imagem);
+            teste.alterar(id, descricao, caminhoImagem);
             ArrayList<Marca> listaDeMarcas = teste.recuperar();
             mostrarDadosMarca(listaDeMarcas);
             limparCampos();
@@ -300,7 +300,7 @@ public class TelaDaMarca extends javax.swing.JFrame {
             String files = file.getPath();
 
             setaLabelComImagem(filename);
-            imagem = filename;
+            caminhoImagem = filename;
 
         }
 
@@ -316,7 +316,7 @@ public class TelaDaMarca extends javax.swing.JFrame {
             jTextFieldIdMarca.setText(idEmString);
             jTextFieldDescricaoMarca.setText(descricao);
             setaLabelComImagem(caminho);
-            imagem = caminho;
+            caminhoImagem = caminho;
             jButtonAlterar.setEnabled(true);
             jButtonIncluir.setEnabled(false);
             jButtonExcluir.setEnabled(false);
@@ -334,7 +334,7 @@ public class TelaDaMarca extends javax.swing.JFrame {
         jTextFieldIdMarca.setText("");
         jTextFieldDescricaoMarca.setText("");
         jLabelImagem.setIcon(null);
-        imagem = "";
+        caminhoImagem = "";
     }
 
     /**

@@ -1,4 +1,3 @@
-
 package xyz.gui;
 
 import javax.swing.JOptionPane;
@@ -12,16 +11,16 @@ import javax.swing.table.DefaultTableModel;
 import xyz.modelos.Modelo;
 import xyz.persistencia.ModeloPersistencia;
 import xyz.utilidades.GeradorDeIdentificadores;
-
+import xyz.utilidades.TeclasPermitidasLetras;
 
 /**
  *
  * @author eugeniojulio
-*/
-
+ */
 public class TelaDoModelo extends javax.swing.JFrame {
- 
-    ModeloPersistencia persistencia = new ModeloPersistencia();
+
+    private ModeloPersistencia persistencia = new ModeloPersistencia();
+    private String caminhoImagem;
     /**
      * Creates new form TelaDaMarca
      */
@@ -31,55 +30,60 @@ public class TelaDoModelo extends javax.swing.JFrame {
         jTextFieldIdModelo.setEnabled(false);
         this.populaJComboBox();
         this.iniciar();
+        jTextFieldDescricaoModelo.setDocument(new TeclasPermitidasLetras());
     }
 
     private void mostrarDadosModelo(ArrayList<Modelo> listaDeModelos) {
-        DefaultTableModel modelo = (DefaultTableModel)jTableModelos.getModel();
-        
+        DefaultTableModel modelo = (DefaultTableModel) jTableModelos.getModel();
+
         modelo.setNumRows(0);
         for (int i = 0; i < listaDeModelos.size(); i++) {
-            String[]saida = new String[3];
+            String[] saida = new String[3];
             Modelo aux = listaDeModelos.get(i);
-            saida[0] = ""+aux.getId();
+            saida[0] = "" + aux.getId();
             saida[1] = aux.getDescricao();
             saida[2] = aux.getMarca().getDescricao();
-            
+
             modelo.addRow(saida);
         }
-        
+
         jTableModelos.setModel(modelo);
-        
+
     }
-    
-    private void iniciar(){
+
+    private void iniciar() {
         try {
             mostrarDadosModelo(persistencia.recuperar());
-            
+
         } catch (Exception e) {
-            DefaultTableModel model =  (DefaultTableModel) jTableModelos.getModel();
+            DefaultTableModel model = (DefaultTableModel) jTableModelos.getModel();
             //Limpa a tabela 
             model.setNumRows(0);
-            String[] saida= new String[3];
-            saida[0]= "Arquivo";
-            saida[1]= "Sem dados para mostrar";
-            saida[2]= "Sem dados para mostrar";
-            
+            String[] saida = new String[3];
+            saida[0] = "Arquivo";
+            saida[1] = "Sem dados para mostrar";
+            saida[2] = "Sem dados para mostrar";
+
             //Incluir nova linha na Tabela
             model.addRow(saida);
         }
     }
 
-
-    public void populaJComboBox() throws Exception {
+    private void populaJComboBox() throws Exception {
         try {
             MarcaPersistencia marcaPersistencia = new MarcaPersistencia();
             ArrayList<Marca> listaDeMarcas = marcaPersistencia.recuperar();
-  
-                if(listaDeMarcas!=null){
-                    DefaultComboBoxModel modeloMarcas = new DefaultComboBoxModel(listaDeMarcas.toArray());
-                    jComboBoxMarcas.setModel(modeloMarcas);
-                }  
+            String saida[] = new String[listaDeMarcas.size()];
             
+            for (int i = 0; i < listaDeMarcas.size(); i++) {
+                String dados = String.valueOf(listaDeMarcas.get(i));
+                Marca marca = new Marca(dados);
+                saida[i] = "" + marca.getId() + ";" + marca.getDescricao();
+
+            }
+
+            DefaultComboBoxModel modeloMarcas = new DefaultComboBoxModel(saida);
+            jComboBoxMarcas.setModel(modeloMarcas);
 
         } catch (Exception erro) {
             erro.getMessage();
@@ -241,21 +245,22 @@ public class TelaDoModelo extends javax.swing.JFrame {
 
             GeradorDeIdentificadores gerarID = new GeradorDeIdentificadores();
             int id = gerarID.getIdentificador();
-            jTextFieldIdModelo.setText(id+"");
-            
+
             String descricao = jTextFieldDescricaoModelo.getText();
 
-            String dados = String.valueOf(jComboBoxMarcas.getSelectedItem());
+            String dadosJComboBox = String.valueOf(jComboBoxMarcas.getSelectedItem());
+            String dados = dadosJComboBox+";"+caminhoImagem;
+            System.out.println(dados);
             Marca marca = new Marca(dados);
             Modelo modelo = new Modelo(id, descricao, marca);
-           
+
             persistencia.incluir(modelo);
             mostrarDadosModelo(persistencia.recuperar());
             limparCampos();
             gerarID.finalizar();
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
     }//GEN-LAST:event_jButtonIncluirActionPerformed
@@ -272,6 +277,7 @@ public class TelaDoModelo extends javax.swing.JFrame {
     private void limparCampos() {
         jTextFieldIdModelo.setText("");
         jTextFieldDescricaoModelo.setText("");
+        caminhoImagem = "";
     }
 
     /**

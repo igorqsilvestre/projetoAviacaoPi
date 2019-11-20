@@ -21,10 +21,16 @@ public class Modelo {
         marca = null;
     }
 
-    public Modelo(int id, String descricao, Marca marca) {
-        this.id = id;
-        this.descricao = descricao;
-        this.marca = marca;
+    public Modelo(int id, String descricao, Marca marca) throws Exception {
+
+        if (!descricao.isEmpty() || !descricao.equals("")) {
+            this.id = id;
+            this.descricao = descricao;
+            this.marca = marca;
+        } else {
+            throw new Exception("O campo da descrição não pode ser vazio!");
+        }
+
     }
 
     public Modelo(String dados, Marca marca) throws Exception {
@@ -33,7 +39,7 @@ public class Modelo {
             this.id = Integer.parseInt(vetorDados[0]);
             this.descricao = vetorDados[1];
             this.marca = marca;
-        
+
         } catch (Exception erro) {
             throw new Exception("Erro na montagem do objeto");
         }
@@ -65,8 +71,13 @@ public class Modelo {
     /**
      * @param descricao the descricao to set
      */
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setDescricao(String descricao) throws Exception {
+        if (!descricao.isEmpty() || !descricao.equals("")) {
+            this.descricao = descricao;
+        } else {
+            throw new Exception("O campo da descrição não pode ser vazio!");
+        }
+
     }
 
     /**
