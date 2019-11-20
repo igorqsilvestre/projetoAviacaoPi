@@ -46,7 +46,7 @@ public class ModeloPersistencia implements IcrudModelo {
             BufferedReader br = new BufferedReader(fr);
             String linha = "";
             while ((linha = br.readLine()) != null) {
-                Marca marca = recuperaMarcaPorID(linha);
+                Marca marca = recuperaMarcaPorDados(linha);
                 Modelo modelo = new Modelo(linha, marca);
                 listaDeModelos.add(modelo);
                 
@@ -56,7 +56,7 @@ public class ModeloPersistencia implements IcrudModelo {
         return listaDeModelos;
     }
     
-    public Marca recuperaMarcaPorID(String dados) throws Exception {
+    public Marca recuperaMarcaPorDados(String dados) throws Exception {
         try {
             String[] modelo = dados.split(";");
             int id = Integer.parseInt(modelo[2]);
@@ -131,22 +131,38 @@ public class ModeloPersistencia implements IcrudModelo {
         }
     }
     
-    public Marca recuperaMarcaPorDescricao(String descricao) throws Exception {
-        try {            
-            ArrayList<Marca> listaDeMarcas = new MarcaPersistencia().recuperar();
-            Marca marca=null;
-            for (int i = 0; i < listaDeMarcas.size(); i++) {
-                if(listaDeMarcas.get(i).getDescricao().equals(descricao)){
-                    marca = listaDeMarcas.get(i);
-                    break;
+    public int recuperaIDMarcaPeloIDModelo(int idModelo) throws Exception {
+        FileReader fl = new FileReader(arquivo);
+        BufferedReader br = new BufferedReader(fl);
+        String linha ="";
+        while((linha = br.readLine())!= null){
+            
+            String dados[] = linha.split(";");
+            for (int i = 0; i < dados.length; i++) {
+                int id = Integer.parseInt(dados[0]);
+                if(id == idModelo){
+                    if(i == 2){
+                        int idMarca = Integer.parseInt(dados[2]);
+                        System.out.println(idMarca);
+                    }
+                   
+                    
                 }
             }
-            
-            return marca;
-            
-        } catch (Exception e) {
-            throw e;
         }
+        
+        
+//        for (int i = 0; i < dados.length; i++) {
+//            System.out.println(dados[i]);
+//        }
+//        for (int i = 0; i < dados.length; i++) {
+//            int id = Integer.parseInt(dados[0]);
+//            if(id == idModelo){
+//                
+//            }
+//        }
+        
+        return 0;
     }
     
 }
