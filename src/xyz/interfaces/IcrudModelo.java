@@ -6,6 +6,7 @@
 package xyz.interfaces;
 
 import java.util.ArrayList;
+import xyz.modelos.Marca;
 import xyz.modelos.Modelo;
 
 /**
@@ -15,4 +16,6 @@ import xyz.modelos.Modelo;
 public interface IcrudModelo {
     void incluir(Modelo objeto)throws Exception;
     ArrayList<Modelo> recuperar()throws Exception;
+    void excluir(int id)throws Exception;
+    void alterar(int id, String descricao, Marca marca)throws Exception;
 }

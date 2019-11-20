@@ -21,6 +21,7 @@ public class TelaDoModelo extends javax.swing.JFrame {
 
     private ModeloPersistencia persistencia = new ModeloPersistencia();
     private String caminhoImagem;
+
     /**
      * Creates new form TelaDaMarca
      */
@@ -31,6 +32,7 @@ public class TelaDoModelo extends javax.swing.JFrame {
         this.populaJComboBox();
         this.iniciar();
         jTextFieldDescricaoModelo.setDocument(new TeclasPermitidasLetras());
+        jButtonAlterar.setEnabled(false);
     }
 
     private void mostrarDadosModelo(ArrayList<Modelo> listaDeModelos) {
@@ -74,7 +76,7 @@ public class TelaDoModelo extends javax.swing.JFrame {
             MarcaPersistencia marcaPersistencia = new MarcaPersistencia();
             ArrayList<Marca> listaDeMarcas = marcaPersistencia.recuperar();
             String saida[] = new String[listaDeMarcas.size()];
-            
+
             for (int i = 0; i < listaDeMarcas.size(); i++) {
                 String dados = String.valueOf(listaDeMarcas.get(i));
                 Marca marca = new Marca(dados);
@@ -117,6 +119,7 @@ public class TelaDoModelo extends javax.swing.JFrame {
         jButtonAlterar = new javax.swing.JButton();
         jComboBoxMarcas = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -174,6 +177,8 @@ public class TelaDoModelo extends javax.swing.JFrame {
 
         jLabel4.setText("MARCA");
 
+        jButton1.setText("BUSCAR");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -206,7 +211,10 @@ public class TelaDoModelo extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jComboBoxMarcas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldIdModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jTextFieldIdModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton1)))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
@@ -215,11 +223,12 @@ public class TelaDoModelo extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel1)
-                .addGap(36, 36, 36)
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextFieldIdModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(22, 22, 22)
+                    .addComponent(jTextFieldIdModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jTextFieldDescricaoModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -249,8 +258,7 @@ public class TelaDoModelo extends javax.swing.JFrame {
             String descricao = jTextFieldDescricaoModelo.getText();
 
             String dadosJComboBox = String.valueOf(jComboBoxMarcas.getSelectedItem());
-            String dados = dadosJComboBox+";"+caminhoImagem;
-            System.out.println(dados);
+            String dados = dadosJComboBox + ";" + caminhoImagem;
             Marca marca = new Marca(dados);
             Modelo modelo = new Modelo(id, descricao, marca);
 
@@ -266,6 +274,24 @@ public class TelaDoModelo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonIncluirActionPerformed
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
+        try {
+            int indice = jTableModelos.getSelectedRow();
+            if (indice != -1) {
+                int opcao = JOptionPane.showConfirmDialog(null, "Você realmente deseja excluir ?", "Alerta", JOptionPane.WARNING_MESSAGE);
+                if (opcao == 0) {
+                    String idEmString = String.valueOf(jTableModelos.getValueAt(indice, 0));
+                    int id = Integer.parseInt(idEmString);
+                    persistencia.excluir(id);
+                    mostrarDadosModelo(persistencia.recuperar());
+                    limparCampos();
+
+                }
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
 
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
@@ -277,7 +303,7 @@ public class TelaDoModelo extends javax.swing.JFrame {
     private void limparCampos() {
         jTextFieldIdModelo.setText("");
         jTextFieldDescricaoModelo.setText("");
-        caminhoImagem = "";
+        caminhoImagem = null;
     }
 
     /**
@@ -321,6 +347,7 @@ public class TelaDoModelo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAlterar;
     private javax.swing.JButton jButtonExcluir;
     private javax.swing.JButton jButtonIncluir;

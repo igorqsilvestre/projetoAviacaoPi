@@ -249,7 +249,6 @@ public class TelaDaMarca extends javax.swing.JFrame {
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         try {
-
             int indice = jTableMarcas.getSelectedRow();
             if (indice != -1) {
                 int opcao = JOptionPane.showConfirmDialog(null, "Você realmente deseja excluir ?", "Alerta", JOptionPane.WARNING_MESSAGE);
