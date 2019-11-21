@@ -25,6 +25,7 @@ public class TelaDoModelo extends javax.swing.JFrame {
 
     /**
      * Creates new form TelaDaMarca
+     * @throws java.lang.Exception
      */
     public TelaDoModelo() throws Exception {
         initComponents();

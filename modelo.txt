@@ -1,2 +1,3 @@
-70;Sedan;51
-74;Goias;38
+18;Focus;15
+19;Corolla;13
+16;Doblo;14

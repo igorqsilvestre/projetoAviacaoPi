@@ -1,2 +1,3 @@
-38;Ferrari;C:\Users\Igor\Pictures\imagens pi\ferrari.png
-51;Volvo;C:\Users\Igor\Pictures\imagens pi\volvo.jpg
+13;Volvo;C:\Users\Igor\Pictures\imagens pi\volvo.jpg
+14;Fiat;C:\Users\Igor\Pictures\imagens pi\fiat.jpg
+15;Ford;C:\Users\Igor\Pictures\imagens pi\Ford.png
