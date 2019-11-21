@@ -19,7 +19,8 @@ import xyz.utilidades.TeclasPermitidasLetras;
  */
 public class TelaDoModelo extends javax.swing.JFrame {
     
-    private ModeloPersistencia persistencia = new ModeloPersistencia();
+    private ModeloPersistencia modeloPersistencia = new ModeloPersistencia();
+    private MarcaPersistencia marcaPersistencia = new MarcaPersistencia();
     private String caminhoImagem;
 
     /**
@@ -29,7 +30,7 @@ public class TelaDoModelo extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(this);
         jTextFieldIdModelo.setEnabled(false);
-        this.populaJComboBox();
+        this.adicionaListaDeMarcasJComboBox(marcaPersistencia.recuperar());
         this.iniciar();
         jTextFieldDescricaoModelo.setDocument(new TeclasPermitidasLetras());
         jButtonAlterar.setEnabled(false);
@@ -55,7 +56,7 @@ public class TelaDoModelo extends javax.swing.JFrame {
     
     private void iniciar() {
         try {
-            mostrarDadosModelo(persistencia.recuperar());
+            mostrarDadosModelo(modeloPersistencia.recuperar());
             
         } catch (Exception e) {
             DefaultTableModel model = (DefaultTableModel) jTableModelos.getModel();
@@ -71,10 +72,8 @@ public class TelaDoModelo extends javax.swing.JFrame {
         }
     }
     
-    private void populaJComboBox() throws Exception {
-        try {
-            MarcaPersistencia marcaPersistencia = new MarcaPersistencia();
-            ArrayList<Marca> listaDeMarcas = marcaPersistencia.recuperar();
+    private void adicionaListaDeMarcasJComboBox(ArrayList<Marca>listaDeMarcas){
+            try{
             String saida[] = new String[listaDeMarcas.size()];
             
             for (int i = 0; i < listaDeMarcas.size(); i++) {
@@ -86,11 +85,9 @@ public class TelaDoModelo extends javax.swing.JFrame {
             
             DefaultComboBoxModel modeloMarcas = new DefaultComboBoxModel(saida);
             jComboBoxMarcas.setModel(modeloMarcas);
-            
-        } catch (Exception erro) {
+            } catch (Exception erro) {
             erro.getMessage();
         }
-        
     }
 
     /**
@@ -277,8 +274,8 @@ public class TelaDoModelo extends javax.swing.JFrame {
             Marca marca = new Marca(dados);
             Modelo modelo = new Modelo(id, descricao, marca);
             
-            persistencia.incluir(modelo);
-            mostrarDadosModelo(persistencia.recuperar());
+            modeloPersistencia.incluir(modelo);
+            mostrarDadosModelo(modeloPersistencia.recuperar());
             limparCampos();
             gerarID.finalizar();
             
@@ -296,8 +293,8 @@ public class TelaDoModelo extends javax.swing.JFrame {
                 if (opcao == 0) {
                     String idEmString = String.valueOf(jTableModelos.getValueAt(indice, 0));
                     int id = Integer.parseInt(idEmString);
-                    persistencia.excluir(id);
-                    mostrarDadosModelo(persistencia.recuperar());
+                    modeloPersistencia.excluir(id);
+                    mostrarDadosModelo(modeloPersistencia.recuperar());
                     limparCampos();
                     
                 }
@@ -312,7 +309,21 @@ public class TelaDoModelo extends javax.swing.JFrame {
     
 
     private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
-        
+        try{
+        int idModelo = Integer.parseInt(jTextFieldIdModelo.getText());
+        String descricaoModelo = jTextFieldDescricaoModelo.getText();
+        String dadosJComboBox = (String)jComboBoxMarcas.getSelectedItem();
+        String dados = dadosJComboBox + ";" + caminhoImagem;
+        Marca marca = new Marca(dados);
+        modeloPersistencia.alterar(idModelo, descricaoModelo, marca);
+        mostrarDadosModelo(modeloPersistencia.recuperar());
+        limparCampos();
+        jButtonAlterar.setEnabled(false);
+        jButtonIncluir.setEnabled(true);
+        jButtonExcluir.setEnabled(true);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
 
     }//GEN-LAST:event_jButtonAlterarActionPerformed
 
@@ -323,9 +334,8 @@ public class TelaDoModelo extends javax.swing.JFrame {
                 String idModeloString = String.valueOf(jTableModelos.getValueAt(indice, 0));
                 int idModelo = Integer.parseInt(idModeloString);
                 String descricaoModelo = String.valueOf(jTableModelos.getValueAt(indice, 1));
-                String descricaoMarca = String.valueOf(jTableModelos.getValueAt(indice, 2));
-                
-                persistencia.recuperaIDMarcaPeloIDModelo(idModelo);
+                ArrayList<Marca> listaDeMarcas = modeloPersistencia.recuperaMarcasPeloIDSelecionado(idModelo);
+                adicionaListaDeMarcasJComboBox(listaDeMarcas);
                
                 jTextFieldIdModelo.setText(""+idModelo);
                 jTextFieldDescricaoModelo.setText(descricaoModelo);

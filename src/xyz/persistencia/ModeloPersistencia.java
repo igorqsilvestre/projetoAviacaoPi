@@ -20,9 +20,9 @@ import xyz.modelos.Modelo;
  * @author Igor
  */
 public class ModeloPersistencia implements IcrudModelo {
-    
+
     String arquivo = "modelo.txt";
-    
+
     @Override
     public void incluir(Modelo objeto) throws Exception {
         try {
@@ -30,13 +30,13 @@ public class ModeloPersistencia implements IcrudModelo {
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(objeto.toString() + "\n");
             bw.close();
-            
+
         } catch (Exception erro) {
             throw erro;
         }
-        
+
     }
-    
+
     @Override
     public ArrayList<Modelo> recuperar() throws Exception {
         File fl = new File(arquivo);
@@ -49,43 +49,43 @@ public class ModeloPersistencia implements IcrudModelo {
                 Marca marca = recuperaMarcaPorDados(linha);
                 Modelo modelo = new Modelo(linha, marca);
                 listaDeModelos.add(modelo);
-                
+
             }
             br.close();
         }
         return listaDeModelos;
     }
-    
+
     public Marca recuperaMarcaPorDados(String dados) throws Exception {
         try {
             String[] modelo = dados.split(";");
             int id = Integer.parseInt(modelo[2]);
-            
+
             MarcaPersistencia persistencia = new MarcaPersistencia();
             ArrayList<Marca> listaDeMarcas = persistencia.recuperar();
             Marca marca = null;
-            
+
             for (int i = 0; i < listaDeMarcas.size(); i++) {
                 if (listaDeMarcas.get(i).getId() == id) {
                     marca = listaDeMarcas.get(i);
                     break;
                 }
             }
-            
+
             return marca;
-            
+
         } catch (Exception erro) {
             throw erro;
         }
     }
-    
+
     @Override
     public void excluir(int id) throws Exception {
         try {
             ArrayList<Modelo> listaArquivo = recuperar();
             FileWriter fw = new FileWriter(arquivo);
             BufferedWriter bw = new BufferedWriter(fw);
-            
+
             if (listaArquivo != null) {
                 for (int i = 0; i < listaArquivo.size(); i++) {
                     Modelo modelo = listaArquivo.get(i);
@@ -94,75 +94,74 @@ public class ModeloPersistencia implements IcrudModelo {
                     }
                 }
             }
-            
+
             bw.close();
-            
+
         } catch (Exception e) {
             throw (e);
         }
     }
-    
+
     @Override
     public void alterar(int id, String descricao, Marca marca) throws Exception {
         try {
             ArrayList<Modelo> listaArquivo = recuperar();
             boolean controle = false;
-            
+
             for (int i = 0; i < listaArquivo.size(); i++) {
                 Modelo modelo = listaArquivo.get(i);
-                if (marca.getId() == id) {
+                if (modelo.getId() == id) {
                     if (!descricao.equals("") || !descricao.isEmpty()) {
                         controle = true;
                         excluir(id);
                     } else {
                         throw new Exception("O campo da descrição não pode estar vazio!");
                     }
-                    
+
                 }
             }
-            
+
             if (controle) {
                 Modelo modelo = new Modelo(id, descricao, marca);
                 incluir(modelo);
             }
-            
+
         } catch (Exception e) {
             throw (e);
         }
     }
-    
-    public int recuperaIDMarcaPeloIDModelo(int idModelo) throws Exception {
+
+    public ArrayList<Marca> recuperaMarcasPeloIDSelecionado(int idModelo) throws Exception {
         FileReader fl = new FileReader(arquivo);
         BufferedReader br = new BufferedReader(fl);
-        String linha ="";
-        while((linha = br.readLine())!= null){
-            
-            String dados[] = linha.split(";");
-            for (int i = 0; i < dados.length; i++) {
-                int id = Integer.parseInt(dados[0]);
-                if(id == idModelo){
-                    if(i == 2){
-                        int idMarca = Integer.parseInt(dados[2]);
-                        System.out.println(idMarca);
-                    }
-                   
-                    
-                }
+        String linha = "";
+        int idMarca = 0;
+        ArrayList<Marca> novaListaDeMarcas = new ArrayList<>();
+        ArrayList<Marca>listaVelhaDeMarcas = new ArrayList<>();
+
+        //Recupera id da marca pelo id do modelo selecionado
+        while ((linha = br.readLine()) != null) {
+            String dadosModelo[] = linha.split(";");
+            int id = Integer.parseInt(dadosModelo[0]);
+            if (id == idModelo) {
+                idMarca = Integer.parseInt(dadosModelo[2]);
+               
             }
         }
-        
-        
-//        for (int i = 0; i < dados.length; i++) {
-//            System.out.println(dados[i]);
-//        }
-//        for (int i = 0; i < dados.length; i++) {
-//            int id = Integer.parseInt(dados[0]);
-//            if(id == idModelo){
-//                
-//            }
-//        }
-        
-        return 0;
+
+        //Recupera uma lista de Marcas com a marca do modelo selecionado em primeiro na lista
+        MarcaPersistencia persistencia = new MarcaPersistencia();
+        ArrayList<Marca> listaDeMarcas = persistencia.recuperar();
+       
+            for (int y = 0; y < listaDeMarcas.size(); y++) {
+                if (listaDeMarcas.get(y).getId() == idMarca) {
+                    novaListaDeMarcas.add(listaDeMarcas.get(y));
+                }else{
+                    listaVelhaDeMarcas.add(listaDeMarcas.get(y));
+                }
+        }
+            
+            novaListaDeMarcas.addAll(listaVelhaDeMarcas);
+            return novaListaDeMarcas;
     }
-    
 }
