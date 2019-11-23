@@ -111,6 +111,7 @@
           <Font name="Lucida Grande" size="24" style="3"/>
         </Property>
         <Property name="text" type="java.lang.String" value="CADASTRO DAS MARCAS"/>
+        <Property name="verticalAlignment" type="int" value="1"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">

@@ -33,7 +33,7 @@ public class TelaDaMarca extends javax.swing.JFrame {
      */
     public TelaDaMarca() {
         initComponents();
-        this.setLocationRelativeTo(this);
+        this.setExtendedState(MAXIMIZED_BOTH);
         iniciar();
         jTextFieldIdMarca.setEnabled(false);
         jButtonAlterar.setEnabled(false);
@@ -109,6 +109,7 @@ public class TelaDaMarca extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 3, 24)); // NOI18N
         jLabel1.setText("CADASTRO DAS MARCAS");
+        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         jLabel2.setText("IDENTIFICADOR");
 

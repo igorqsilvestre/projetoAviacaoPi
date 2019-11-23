@@ -29,7 +29,7 @@ public class TelaDoModelo extends javax.swing.JFrame {
      */
     public TelaDoModelo() throws Exception {
         initComponents();
-        this.setLocationRelativeTo(this);
+        this.setExtendedState(MAXIMIZED_BOTH);
         jTextFieldIdModelo.setEnabled(false);
         this.adicionaListaDeMarcasJComboBox(marcaPersistencia.recuperar());
         this.iniciar();
