@@ -8,14 +8,10 @@ package xyz.persistencia;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import javax.swing.JLabel;
 import xyz.interfaces.IcrudOnibus;
-import xyz.modelos.Marca;
-import xyz.modelos.Modelo;
 import xyz.modelos.Onibus;
 import xyz.modelos.Situacao;
 
@@ -117,7 +113,7 @@ public class OnibusPersistencia implements IcrudOnibus {
             ArrayList<Onibus> listaArquivo = recuperar();
             boolean controle = false;
 
-            Onibus onibuss=null;
+            Onibus onibuss = null;
             for (int i = 0; i < listaArquivo.size(); i++) {
                 Onibus onibus = listaArquivo.get(i);
                 if (onibus.getId() == idOnibus) {
@@ -136,4 +132,53 @@ public class OnibusPersistencia implements IcrudOnibus {
         }
     }
 
+    @Override
+    public ArrayList<Onibus> recuperaOnibusAtivo() throws Exception {
+        try {
+            File fl = new File(arquivo);
+            ArrayList<Onibus> listaDeOnibus = new ArrayList<>();
+            if (fl.exists()) {
+                FileReader fr = new FileReader(arquivo);
+                BufferedReader br = new BufferedReader(fr);
+                String linha = "";
+                while ((linha = br.readLine()) != null) {
+                    String[] dados = linha.split(";");
+                    if (dados[4].equals("ativo")) {
+                        listaDeOnibus.add(new Onibus(linha));
+                    }
+
+                }
+                br.close();
+            }
+            return listaDeOnibus;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+
+    @Override
+    public Onibus recuperaOnibusPorID(int id) throws Exception {
+        try {
+            File fl = new File(arquivo);
+            ArrayList<Onibus> listaDeOnibus = new ArrayList<>();
+            if (fl.exists()) {
+                FileReader fr = new FileReader(arquivo);
+                BufferedReader br = new BufferedReader(fr);
+                String linha = "";
+                while ((linha = br.readLine()) != null) {
+                    String dados[] = linha.split(";");
+                    int idOnibus = Integer.parseInt(dados[0]);
+                    if (idOnibus == id) {
+                        Onibus onibus = new Onibus(linha);
+                        return onibus;
+                    }
+
+                }
+                br.close();
+            }
+            return null;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
 }

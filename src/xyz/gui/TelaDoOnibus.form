@@ -101,24 +101,29 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jComboBoxSituacao" min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="jTextFieldIdOnibus" min="-2" pref="59" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jButtonBuscar" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Component id="jTextFieldPlacaOnibus" alignment="0" min="-2" pref="459" max="-2" attributes="0"/>
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Component id="jTextFieldAnoDeFabricacao" max="32767" attributes="0"/>
-                                          <EmptySpace min="-2" pref="301" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <Component id="jTextFieldNumeroDePoltronas" min="-2" pref="158" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jComboBoxModelos" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="881" max="32767" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="jComboBoxModelos" min="-2" pref="158" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
                                       <Component id="idModelo" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="jTextFieldIdOnibus" min="-2" pref="59" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="jButtonBuscar" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Component id="jTextFieldPlacaOnibus" alignment="0" min="-2" pref="459" max="-2" attributes="0"/>
+                                              <Group type="102" alignment="1" attributes="0">
+                                                  <Component id="jTextFieldAnoDeFabricacao" max="32767" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="301" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <Component id="jTextFieldNumeroDePoltronas" min="-2" pref="158" max="-2" attributes="0"/>
+                                          <Component id="jComboBoxSituacao" alignment="0" min="-2" pref="158" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="0" pref="450" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>

@@ -97,13 +97,13 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jComboBoxMarcas" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jTextFieldIdModelo" min="-2" pref="59" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="jButtonBuscar" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jTextFieldDescricaoModelo" alignment="0" min="-2" pref="459" max="-2" attributes="0"/>
+                                  <Component id="jComboBoxMarcas" alignment="0" min="-2" pref="63" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" attributes="0">
