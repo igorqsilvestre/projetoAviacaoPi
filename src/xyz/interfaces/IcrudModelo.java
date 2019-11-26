@@ -16,6 +16,11 @@ import xyz.modelos.Modelo;
 public interface IcrudModelo {
     void incluir(Modelo objeto)throws Exception;
     ArrayList<Modelo> recuperar()throws Exception;
+    Marca recuperaMarcaPorDados(String dados) throws Exception;
     void excluir(int id)throws Exception;
     void alterar(int id, String descricao, Marca marca)throws Exception;
+    ArrayList<Marca> recuperaMarcasPeloIDSelecionado(int idModelo) throws Exception;
+    Modelo recuperaIDModeloPorDados(String dados) throws Exception;
+    Modelo recuperaModeloPorID(int id)throws Exception;
+    ArrayList<Modelo> recuperaModelosPeloIDSelecionado(int idModelo) throws Exception;
 }

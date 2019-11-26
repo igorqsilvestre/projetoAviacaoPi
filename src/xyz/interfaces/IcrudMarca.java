@@ -15,4 +15,7 @@ public interface IcrudMarca {
     ArrayList<Marca> recuperar() throws Exception;
     void excluir(int id)throws Exception;
     void alterar(int id,String descricao, String imagem)throws Exception;
+    Marca recuperarMarcaPorID(int id)throws Exception;
+ 
+  
 }

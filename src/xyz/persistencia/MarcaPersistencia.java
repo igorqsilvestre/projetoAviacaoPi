@@ -83,33 +83,54 @@ public class MarcaPersistencia implements IcrudMarca {
     }
 
     @Override
-    public void alterar(int id, String descricao,String imagem) throws Exception {
+    public void alterar(int id, String descricao, String imagem) throws Exception {
         try {
             ArrayList<Marca> listaArquivo = recuperar();
             boolean controle = false;
-            
 
+            Marca marcaa = null;
             for (int i = 0; i < listaArquivo.size(); i++) {
                 Marca marca = listaArquivo.get(i);
                 if (marca.getId() == id) {
-                    if(!descricao.equals("")||!descricao.isEmpty()){
-                         controle = true;
-                         excluir(id);
-                    }else{
-                        throw new Exception("O campo da descrição não pode estar vazio!");
-                    }
-                   
-                  
+                    marcaa = new Marca(id, descricao, imagem);
+                    controle = true;
+                    excluir(id);
+
                 }
             }
-                         
+
             if (controle) {
-                Marca marca = new Marca(id, descricao,imagem);
-                incluir(marca);
+                incluir(marcaa);
             }
 
         } catch (Exception e) {
             throw (e);
+        }
+
+    }
+
+    @Override
+    public Marca recuperarMarcaPorID(int id) throws Exception {
+        try {
+            File file = new File(nomeDoArquivo);
+            if (file.exists()) {
+                FileReader fr = new FileReader(nomeDoArquivo);
+                BufferedReader br = new BufferedReader(fr);
+                String linha = "";
+                while ((linha = br.readLine()) != null) {
+                    Marca marca = new Marca(linha);
+                    if (marca.getId() == id) {
+                        return marca;
+                    }
+                }
+                br.close();
+
+            }
+
+            return null;
+
+        } catch (Exception erro) {
+            throw erro;
         }
 
     }

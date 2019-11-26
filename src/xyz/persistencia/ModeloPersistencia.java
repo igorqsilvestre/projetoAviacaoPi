@@ -39,23 +39,28 @@ public class ModeloPersistencia implements IcrudModelo {
 
     @Override
     public ArrayList<Modelo> recuperar() throws Exception {
-        File fl = new File(arquivo);
-        ArrayList<Modelo> listaDeModelos = new ArrayList<>();
-        if (fl.exists()) {
-            FileReader fr = new FileReader(arquivo);
-            BufferedReader br = new BufferedReader(fr);
-            String linha = "";
-            while ((linha = br.readLine()) != null) {
-                Marca marca = recuperaMarcaPorDados(linha);
-                Modelo modelo = new Modelo(linha, marca);
-                listaDeModelos.add(modelo);
+        try {
+            File fl = new File(arquivo);
+            ArrayList<Modelo> listaDeModelos = new ArrayList<>();
+            if (fl.exists()) {
+                FileReader fr = new FileReader(arquivo);
+                BufferedReader br = new BufferedReader(fr);
+                String linha = "";
+                while ((linha = br.readLine()) != null) {
+                    Marca marca = recuperaMarcaPorDados(linha);
+                    Modelo modelo = new Modelo(linha, marca);
+                    listaDeModelos.add(modelo);
 
+                }
+                br.close();
             }
-            br.close();
+            return listaDeModelos;
+        } catch (Exception erro) {
+            throw erro;
         }
-        return listaDeModelos;
     }
-
+    
+    @Override
     public Marca recuperaMarcaPorDados(String dados) throws Exception {
         try {
             String[] modelo = dados.split(";");
@@ -108,22 +113,20 @@ public class ModeloPersistencia implements IcrudModelo {
             ArrayList<Modelo> listaArquivo = recuperar();
             boolean controle = false;
 
+                Modelo modeloo=null;
             for (int i = 0; i < listaArquivo.size(); i++) {
                 Modelo modelo = listaArquivo.get(i);
                 if (modelo.getId() == id) {
-                    if (!descricao.equals("") || !descricao.isEmpty()) {
+                        modeloo = new Modelo(id, descricao, marca);
                         controle = true;
                         excluir(id);
-                    } else {
-                        throw new Exception("O campo da descrição não pode estar vazio!");
-                    }
+                    
 
                 }
             }
 
             if (controle) {
-                Modelo modelo = new Modelo(id, descricao, marca);
-                incluir(modelo);
+                incluir(modeloo);
             }
 
         } catch (Exception e) {
@@ -131,13 +134,14 @@ public class ModeloPersistencia implements IcrudModelo {
         }
     }
 
+    @Override
     public ArrayList<Marca> recuperaMarcasPeloIDSelecionado(int idModelo) throws Exception {
         FileReader fl = new FileReader(arquivo);
         BufferedReader br = new BufferedReader(fl);
         String linha = "";
         int idMarca = 0;
         ArrayList<Marca> novaListaDeMarcas = new ArrayList<>();
-        ArrayList<Marca>listaVelhaDeMarcas = new ArrayList<>();
+        ArrayList<Marca> listaVelhaDeMarcas = new ArrayList<>();
 
         //Recupera id da marca pelo id do modelo selecionado
         while ((linha = br.readLine()) != null) {
@@ -145,23 +149,111 @@ public class ModeloPersistencia implements IcrudModelo {
             int id = Integer.parseInt(dadosModelo[0]);
             if (id == idModelo) {
                 idMarca = Integer.parseInt(dadosModelo[2]);
-               
+
             }
         }
 
         //Recupera uma lista de Marcas com a marca do modelo selecionado em primeiro na lista
         MarcaPersistencia persistencia = new MarcaPersistencia();
         ArrayList<Marca> listaDeMarcas = persistencia.recuperar();
-       
-            for (int y = 0; y < listaDeMarcas.size(); y++) {
-                if (listaDeMarcas.get(y).getId() == idMarca) {
-                    novaListaDeMarcas.add(listaDeMarcas.get(y));
-                }else{
-                    listaVelhaDeMarcas.add(listaDeMarcas.get(y));
-                }
+
+        for (int y = 0; y < listaDeMarcas.size(); y++) {
+            if (listaDeMarcas.get(y).getId() == idMarca) {
+                novaListaDeMarcas.add(listaDeMarcas.get(y));
+            } else {
+                listaVelhaDeMarcas.add(listaDeMarcas.get(y));
+            }
         }
+
+        novaListaDeMarcas.addAll(listaVelhaDeMarcas);
+        return novaListaDeMarcas;
+    }
+
+    @Override
+    public Modelo recuperaIDModeloPorDados(String dados) throws Exception {
+        try {
+            File fl = new File(arquivo);
+            ArrayList<Modelo> listaDeModelos = new ArrayList<>();
+            if (fl.exists()) {
+                FileReader fr = new FileReader(arquivo);
+                BufferedReader br = new BufferedReader(fr);
+                String linha = "";
+                while ((linha = br.readLine()) != null) {
+                    String dadosArquivo[] = {linha};
+                    
+                    Marca marca = recuperaMarcaPorDados(linha);
+                    Modelo modelo = new Modelo(linha, marca);
+                    listaDeModelos.add(modelo);
+
+                }
+                br.close();
+            }
+            return null;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+
+    @Override
+    public Modelo recuperaModeloPorID(int id)throws Exception{
+        try {
+            File fl = new File(arquivo);
             
-            novaListaDeMarcas.addAll(listaVelhaDeMarcas);
-            return novaListaDeMarcas;
+            if (fl.exists()) {
+                FileReader fr = new FileReader(arquivo);
+                BufferedReader br = new BufferedReader(fr);
+                String linha = "";
+                while ((linha = br.readLine()) != null) {
+                    Marca marca = recuperaMarcaPorDados(linha);
+                    Modelo modelo = new Modelo(linha, marca);
+                    if(modelo.getId() == id){
+                        return modelo;
+                    }
+                    
+
+                }
+                br.close();
+            }
+            return null;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    
+    @Override
+    public ArrayList<Modelo> recuperaModelosPeloIDSelecionado(int idModelo) throws Exception{
+        FileReader fl = new FileReader(arquivo);
+        BufferedReader br = new BufferedReader(fl);
+        MarcaPersistencia marcaPersistencia = new MarcaPersistencia();
+        String linha = "";
+        int idMarca = 0;
+        ArrayList<Modelo> novaListaDeModelos = new ArrayList<>();
+        ArrayList<Modelo> listaVelhaDeModelos = new ArrayList<>();
+        Modelo modelo=null;
+
+        //Recupera a marca do modelo pelo id do modelo selecionado
+        while ((linha = br.readLine()) != null) {
+            String dadosModelo[] = linha.split(";");
+            int id = Integer.parseInt(dadosModelo[0]);
+            if (id == idModelo) {
+                String descricao = dadosModelo[1];
+                idMarca = Integer.parseInt(dadosModelo[2]);
+                Marca marca = marcaPersistencia.recuperarMarcaPorID(idMarca);
+                modelo = new Modelo(id,descricao,marca);
+            }
+        }
+        
+        ArrayList<Modelo>listaDeModelos = new ModeloPersistencia().recuperar();
+        
+        //Recupera uma lista com o modelo selecionado em primeiro na lista
+        for (int i = 0; i < listaDeModelos.size(); i++) {
+            if(listaDeModelos.get(i).getId() == modelo.getId()){
+                novaListaDeModelos.add(modelo);
+            }else{
+                listaVelhaDeModelos.add(listaDeModelos.get(i));
+            }
+        }
+        novaListaDeModelos.addAll(listaVelhaDeModelos);
+        return novaListaDeModelos;
     }
 }
