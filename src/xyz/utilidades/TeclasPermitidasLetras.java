@@ -17,11 +17,11 @@ public class TeclasPermitidasLetras extends PlainDocument{
 
     @Override
     public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-        super.insertString(offs, str.replaceAll("[^a-z|^A-Z]", ""), a);
+        super.insertString(offs, str.replaceAll("[^a-z|^A-Z|^ ]", ""), a);
     }
     
     public void replace(int offs, String str, AttributeSet a) throws BadLocationException {
-        super.insertString(offs, str.replaceAll("[^a-z|^A-Z]", ""), a);
+        super.insertString(offs, str.replaceAll("[^a-z|^A-Z|^ ]", ""), a);
     }
     
 }

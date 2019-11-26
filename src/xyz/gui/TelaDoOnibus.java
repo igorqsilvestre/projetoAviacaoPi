@@ -162,7 +162,6 @@ public class TelaDoOnibus extends javax.swing.JFrame {
         jButtonIncluir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableOnibus = new javax.swing.JTable();
-        jButtonExcluir = new javax.swing.JButton();
         jButtonAlterar = new javax.swing.JButton();
         jComboBoxModelos = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
@@ -219,13 +218,6 @@ public class TelaDoOnibus extends javax.swing.JFrame {
             }
         ));
         jScrollPane1.setViewportView(jTableOnibus);
-
-        jButtonExcluir.setText("EXCLUIR");
-        jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonExcluirActionPerformed(evt);
-            }
-        });
 
         jButtonAlterar.setText("ALTERAR");
         jButtonAlterar.addActionListener(new java.awt.event.ActionListener() {
@@ -293,9 +285,8 @@ public class TelaDoOnibus extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButtonIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButtonExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButtonAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jButtonAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(260, 260, 260))
         );
         layout.setVerticalGroup(
@@ -332,7 +323,6 @@ public class TelaDoOnibus extends javax.swing.JFrame {
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonIncluir)
-                    .addComponent(jButtonExcluir)
                     .addComponent(jButtonAlterar))
                 .addGap(8, 8, 8)
                 .addComponent(jLabelIDMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -372,28 +362,6 @@ public class TelaDoOnibus extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButtonIncluirActionPerformed
 
-    private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
-        try {
-            int indice = jTableOnibus.getSelectedRow();
-            if (indice != -1) {
-                int opcao = JOptionPane.showConfirmDialog(null, "Você realmente deseja excluir ?", "Alerta", JOptionPane.WARNING_MESSAGE);
-                if (opcao == 0) {
-                    String idEmString = String.valueOf(jTableOnibus.getValueAt(indice, 0));
-                    int id = Integer.parseInt(idEmString);
-                    onibusPersistencia.excluir(id);
-                    iniciar();
-                    limparCampos();
-                    
-                }
-                
-            }
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-
-    }//GEN-LAST:event_jButtonExcluirActionPerformed
-
 
     private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
           try{
@@ -410,7 +378,6 @@ public class TelaDoOnibus extends javax.swing.JFrame {
         limparCampos();
         jButtonAlterar.setEnabled(false);
         jButtonIncluir.setEnabled(true);
-        jButtonExcluir.setEnabled(true);
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
@@ -448,7 +415,7 @@ public class TelaDoOnibus extends javax.swing.JFrame {
                 
                 jButtonAlterar.setEnabled(true);
                 jButtonIncluir.setEnabled(false);
-                jButtonExcluir.setEnabled(false);
+               
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
@@ -519,7 +486,6 @@ public class TelaDoOnibus extends javax.swing.JFrame {
     private javax.swing.JLabel idModelo;
     private javax.swing.JButton jButtonAlterar;
     private javax.swing.JButton jButtonBuscar;
-    private javax.swing.JButton jButtonExcluir;
     private javax.swing.JButton jButtonIncluir;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
