@@ -15,7 +15,7 @@ public class Rotas {
     private String cidadeOrigem;
     private String cidadeDestino;
     private String dataIda;
-    private String dataVolta;
+    private String dataChegada;
     private String horarioIda;
     private String horarioChegada;
     private int idOnibus;
@@ -25,19 +25,19 @@ public class Rotas {
         this.cidadeOrigem = "";
         this.cidadeDestino = "";
         this.dataIda = "";
-        this.dataVolta = "";
+        this.dataChegada = "";
         this.horarioIda = "";
         this.horarioChegada = "";
         this.idOnibus = 0;
 
     }
 
-    public Rotas(int id, String cidadeOrigem, String cidadeDestino, String dataIda, String dataVolta, String horarioIda, String horarioChegada, int idOnibus) {
+    public Rotas(int id, String cidadeOrigem, String cidadeDestino, String dataIda, String dataChegada, String horarioIda, String horarioChegada, int idOnibus) {
         this.id = id;
         this.cidadeOrigem = cidadeOrigem;
         this.cidadeDestino = cidadeDestino;
         this.dataIda = dataIda;
-        this.dataVolta = dataVolta;
+        this.dataChegada = dataChegada;
         this.horarioIda = horarioIda;
         this.horarioChegada = horarioChegada;
         this.idOnibus = idOnibus;
@@ -50,7 +50,7 @@ public class Rotas {
             this.cidadeOrigem = vetorDados[1];
             this.cidadeDestino = vetorDados[2];
             this.dataIda = vetorDados[3];
-            this.dataVolta = vetorDados[4];
+            this.dataChegada = vetorDados[4];
             this.horarioIda = vetorDados[5];
             this.horarioChegada = vetorDados[6];
             this.idOnibus = Integer.parseInt(vetorDados[7]);
@@ -62,7 +62,7 @@ public class Rotas {
 
     @Override
     public String toString() {
-        return ""+getId()+";"+getCidadeOrigem()+";"+getCidadeDestino()+";"+getDataIda()+";"+getDataVolta()+";"+getHorarioIda()+";"+getHorarioChegada()+";"+getIdOnibus()+"";
+        return ""+getId()+";"+getCidadeOrigem()+";"+getCidadeDestino()+";"+getDataIda()+";"+getDataChegada()+";"+getHorarioIda()+";"+getHorarioChegada()+";"+getIdOnibus()+"";
     }
     
     
@@ -96,17 +96,17 @@ public class Rotas {
     }
 
     /**
-     * @return the dataVolta
+     * @return the dataChegada
      */
-    public String getDataVolta() {
-        return dataVolta;
+    public String getDataChegada() {
+        return dataChegada;
     }
 
     /**
-     * @param dataVolta the dataVolta to set
+     * @param dataChegada the dataChegada to set
      */
-    public void setDataVolta(String dataVolta) {
-        this.dataVolta = dataVolta;
+    public void setDataChegada(String dataChegada) {
+        this.dataChegada = dataChegada;
     }
 
     /**

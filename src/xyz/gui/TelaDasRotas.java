@@ -62,7 +62,7 @@ public class TelaDasRotas extends javax.swing.JFrame {
                 saida[1] = aux.getCidadeOrigem();
                 saida[2] = "" + aux.getCidadeDestino();
                 saida[3] = "" + aux.getDataIda();
-                saida[4] = "" + aux.getDataVolta();
+                saida[4] = "" + aux.getDataChegada();
                 saida[5] = "" + aux.getHorarioIda();
                 saida[6] = "" + aux.getHorarioChegada();
                 Onibus onibus = onibusPersistencia.recuperaOnibusPorID(aux.getIdOnibus());
@@ -197,14 +197,14 @@ public class TelaDasRotas extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jComboBoxOnibus = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
-        jTextFieldDataIda = new javax.swing.JTextField();
-        jTextFieldDataVolta = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jComboBoxHorasIda = new javax.swing.JComboBox<>();
         ComboBoxMinutosIda = new javax.swing.JComboBox<>();
         jComboBoxHorasChegada = new javax.swing.JComboBox<>();
         ComboBoxMinutosChegada = new javax.swing.JComboBox<>();
+        jFormatteDataIda = new javax.swing.JFormattedTextField();
+        jFormattedDataChegada = new javax.swing.JFormattedTextField();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -292,6 +292,18 @@ public class TelaDasRotas extends javax.swing.JFrame {
 
         ComboBoxMinutosChegada.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" }));
 
+        try {
+            jFormatteDataIda.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        try {
+            jFormattedDataChegada.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -318,30 +330,16 @@ public class TelaDasRotas extends javax.swing.JFrame {
                                     .addComponent(jLabel8)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel9)
-                                                        .addComponent(jLabel6)
-                                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
-                                                    .addComponent(jLabel3))
-                                                .addGap(85, 85, 85))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addComponent(jLabel2)
-                                                .addGap(119, 119, 119)))
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel9)
+                                                .addComponent(jLabel6)
+                                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel2))
+                                        .addGap(85, 85, 85)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(jComboBoxCidadesOrigem, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(jComboBoxCidadesDestino, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(jTextFieldIdRotas)
-                                                    .addComponent(jComboBoxOnibus, 0, 198, Short.MAX_VALUE)
-                                                    .addComponent(jTextFieldDataVolta)
-                                                    .addComponent(jTextFieldDataIda))
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jComboBoxHorasIda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -349,7 +347,17 @@ public class TelaDasRotas extends javax.swing.JFrame {
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jComboBoxHorasChegada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(ComboBoxMinutosChegada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                                .addComponent(ComboBoxMinutosChegada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                    .addComponent(jFormattedDataChegada, javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jComboBoxCidadesOrigem, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(jComboBoxCidadesDestino, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(jTextFieldIdRotas, javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jComboBoxOnibus, javax.swing.GroupLayout.Alignment.LEADING, 0, 198, Short.MAX_VALUE)
+                                                    .addComponent(jFormatteDataIda, javax.swing.GroupLayout.Alignment.LEADING))
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(260, 260, 260))
             .addComponent(jScrollPane1)
@@ -380,12 +388,12 @@ public class TelaDasRotas extends javax.swing.JFrame {
                             .addComponent(jLabel3))
                         .addGap(23, 23, 23)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldDataIda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(jFormatteDataIda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldDataVolta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jFormattedDataChegada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(16, 16, 16)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
@@ -428,8 +436,11 @@ public class TelaDasRotas extends javax.swing.JFrame {
             String cidadeOrigem = (String.valueOf(jComboBoxCidadesOrigem.getSelectedItem()));
             String cidadeDestino = String.valueOf(jComboBoxCidadesDestino.getSelectedItem());
 
-            String dataIda = String.valueOf(jTextFieldDataIda.getText());
-            String dataVolta = String.valueOf(jTextFieldDataVolta.getText());
+//            String dataIda = String.valueOf(jTextFieldDataIda.getText());
+            String dataIda = jFormatteDataIda.getText();
+            
+//            String dataVolta = String.valueOf(jTextFieldDataVolta.getText());
+            String dataChegada = jFormattedDataChegada.getText();
 
             String horasIda = String.valueOf(jComboBoxHorasIda.getSelectedItem());
             String minutosIda = String.valueOf(ComboBoxMinutosIda.getSelectedItem());
@@ -441,7 +452,7 @@ public class TelaDasRotas extends javax.swing.JFrame {
             String onibus = String.valueOf(jComboBoxOnibus.getSelectedItem());
             int idOnibus = recuperaIDOnibusPorDadoSelecionadoJcomboBox(onibus);
 
-            Rotas rotas = new Rotas(id, cidadeOrigem, cidadeDestino, dataIda, dataVolta, horarioIda, horarioChegada, idOnibus);
+            Rotas rotas = new Rotas(id, cidadeOrigem, cidadeDestino, dataIda, dataChegada, horarioIda, horarioChegada, idOnibus);
 
             rotasPersistencia.incluir(rotas);
 
@@ -532,8 +543,8 @@ public class TelaDasRotas extends javax.swing.JFrame {
     
     private void limparCampos() {
         jTextFieldIdRotas.setText("");
-        jTextFieldDataIda.setText("");
-        jTextFieldDataVolta.setText("");
+        jFormatteDataIda.setText("");
+        jFormattedDataChegada.setText("");
         jComboBoxHorasIda.setSelectedIndex(0);
         ComboBoxMinutosIda.setSelectedIndex(0);
         jComboBoxHorasChegada.setSelectedIndex(0);
@@ -601,6 +612,8 @@ public class TelaDasRotas extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBoxHorasChegada;
     private javax.swing.JComboBox<String> jComboBoxHorasIda;
     private javax.swing.JComboBox jComboBoxOnibus;
+    private javax.swing.JFormattedTextField jFormatteDataIda;
+    private javax.swing.JFormattedTextField jFormattedDataChegada;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -617,8 +630,6 @@ public class TelaDasRotas extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableRotas;
-    private javax.swing.JTextField jTextFieldDataIda;
-    private javax.swing.JTextField jTextFieldDataVolta;
     private javax.swing.JTextField jTextFieldIdRotas;
     // End of variables declaration//GEN-END:variables
 }
