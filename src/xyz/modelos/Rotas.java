@@ -17,7 +17,7 @@ public class Rotas {
     private String dataIda;
     private String dataVolta;
     private String horarioIda;
-    private String horarioVolta;
+    private String horarioChegada;
     private int idOnibus;
 
     public Rotas() {
@@ -27,19 +27,19 @@ public class Rotas {
         this.dataIda = "";
         this.dataVolta = "";
         this.horarioIda = "";
-        this.horarioVolta = "";
+        this.horarioChegada = "";
         this.idOnibus = 0;
 
     }
 
-    public Rotas(int id, String cidadeOrigem, String cidadeDestino, String dataIda, String dataVolta, String horarioIda, String horarioVolta, int idOnibus) {
+    public Rotas(int id, String cidadeOrigem, String cidadeDestino, String dataIda, String dataVolta, String horarioIda, String horarioChegada, int idOnibus) {
         this.id = id;
         this.cidadeOrigem = cidadeOrigem;
         this.cidadeDestino = cidadeDestino;
         this.dataIda = dataIda;
         this.dataVolta = dataVolta;
         this.horarioIda = horarioIda;
-        this.horarioVolta = horarioVolta;
+        this.horarioChegada = horarioChegada;
         this.idOnibus = idOnibus;
     }
 
@@ -52,7 +52,7 @@ public class Rotas {
             this.dataIda = vetorDados[3];
             this.dataVolta = vetorDados[4];
             this.horarioIda = vetorDados[5];
-            this.horarioVolta = vetorDados[6];
+            this.horarioChegada = vetorDados[6];
             this.idOnibus = Integer.parseInt(vetorDados[7]);
 
         } catch (Exception erro) {
@@ -62,7 +62,7 @@ public class Rotas {
 
     @Override
     public String toString() {
-        return ""+getId()+";"+getCidadeOrigem()+";"+getCidadeDestino()+";"+getDataIda()+";"+getDataVolta()+";"+getHorarioIda()+";"+getHorarioVolta()+";"+getIdOnibus()+"";
+        return ""+getId()+";"+getCidadeOrigem()+";"+getCidadeDestino()+";"+getDataIda()+";"+getDataVolta()+";"+getHorarioIda()+";"+getHorarioChegada()+";"+getIdOnibus()+"";
     }
     
     
@@ -166,17 +166,17 @@ public class Rotas {
     }
 
     /**
-     * @return the horarioVolta
+     * @return the horarioChegada
      */
-    public String getHorarioVolta() {
-        return horarioVolta;
+    public String getHorarioChegada() {
+        return horarioChegada;
     }
 
     /**
-     * @param horarioVolta the horarioVolta to set
+     * @param horarioChegada the horarioChegada to set
      */
-    public void setHorarioVolta(String horarioVolta) {
-        this.horarioVolta = horarioVolta;
+    public void setHorarioChegada(String horarioChegada) {
+        this.horarioChegada = horarioChegada;
     }
 
 }
