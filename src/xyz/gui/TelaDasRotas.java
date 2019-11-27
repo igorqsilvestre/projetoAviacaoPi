@@ -436,10 +436,7 @@ public class TelaDasRotas extends javax.swing.JFrame {
             String cidadeOrigem = (String.valueOf(jComboBoxCidadesOrigem.getSelectedItem()));
             String cidadeDestino = String.valueOf(jComboBoxCidadesDestino.getSelectedItem());
 
-//            String dataIda = String.valueOf(jTextFieldDataIda.getText());
             String dataIda = jFormatteDataIda.getText();
-            
-//            String dataVolta = String.valueOf(jTextFieldDataVolta.getText());
             String dataChegada = jFormattedDataChegada.getText();
 
             String horasIda = String.valueOf(jComboBoxHorasIda.getSelectedItem());
