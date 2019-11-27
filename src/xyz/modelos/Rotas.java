@@ -32,7 +32,14 @@ public class Rotas {
 
     }
 
-    public Rotas(int id, String cidadeOrigem, String cidadeDestino, String dataIda, String dataChegada, String horarioIda, String horarioChegada, int idOnibus) {
+    public Rotas(int id, String cidadeOrigem, String cidadeDestino, String dataIda, String dataChegada, String horarioIda, String horarioChegada, int idOnibus) throws Exception {
+        if (cidadeOrigem.equals(cidadeDestino)) {
+            throw new Exception("As cidades de origem e destino não podem ser iguais!");
+        }
+
+        if (dataIda.equals("  /  /    ") || dataChegada.equals("  /  /    ")) {
+            throw new Exception("A data não pode estar vazia!");
+        }
         this.id = id;
         this.cidadeOrigem = cidadeOrigem;
         this.cidadeDestino = cidadeDestino;
@@ -62,10 +69,8 @@ public class Rotas {
 
     @Override
     public String toString() {
-        return ""+getId()+";"+getCidadeOrigem()+";"+getCidadeDestino()+";"+getDataIda()+";"+getDataChegada()+";"+getHorarioIda()+";"+getHorarioChegada()+";"+getIdOnibus()+"";
+        return "" + getId() + ";" + getCidadeOrigem() + ";" + getCidadeDestino() + ";" + getDataIda() + ";" + getDataChegada() + ";" + getHorarioIda() + ";" + getHorarioChegada() + ";" + getIdOnibus() + "";
     }
-    
-    
 
     /**
      * @return the id
@@ -90,9 +95,17 @@ public class Rotas {
 
     /**
      * @param dataIda the dataIda to set
+     * @throws java.lang.Exception
      */
-    public void setDataIda(String dataIda) {
-        this.dataIda = dataIda;
+    public void setDataIda(String dataIda) throws Exception {
+        if (dataIda.equals("  /  /    ")) {
+            throw new Exception("A data não pode estar vazia!");
+
+        }else{
+            this.dataIda = dataIda;
+        }
+
+        
     }
 
     /**
@@ -104,9 +117,14 @@ public class Rotas {
 
     /**
      * @param dataChegada the dataChegada to set
+     * @throws java.lang.Exception
      */
-    public void setDataChegada(String dataChegada) {
-        this.dataChegada = dataChegada;
+    public void setDataChegada(String dataChegada) throws Exception {
+        if(dataChegada.equals("  /  /    ")){
+            throw new Exception("A data não pode estar vazia!");
+        }else{
+             this.dataChegada = dataChegada;
+        }
     }
 
     /**
