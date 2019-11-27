@@ -1,6 +1,5 @@
 package xyz.gui;
 
-import java.awt.event.ItemEvent;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -15,7 +14,6 @@ import xyz.persistencia.MarcaPersistencia;
 import xyz.persistencia.ModeloPersistencia;
 import xyz.persistencia.OnibusPersistencia;
 import xyz.persistencia.RotasPersistencia;
-import xyz.utilidades.GeradorDeCidades;
 import xyz.utilidades.GeradorDeIdentificadores;
 
 /**
