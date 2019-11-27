@@ -12,20 +12,19 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import xyz.interfaces.IcrudRotas;
-import xyz.modelos.Onibus;
 import xyz.modelos.Rotas;
 
 /**
  *
  * @author Igor
  */
-public class RotasPersistencia implements IcrudRotas{
- 
+public class RotasPersistencia implements IcrudRotas {
+
     String arquivo = "rotas.txt";
 
     @Override
     public void incluir(Rotas objeto) throws Exception {
-         try {
+        try {
             FileWriter fw = new FileWriter(arquivo, true);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(objeto.toString() + "\n");
@@ -36,8 +35,8 @@ public class RotasPersistencia implements IcrudRotas{
         }
     }
 
-    public ArrayList<Rotas> recuperar()throws Exception {
-         try {
+    public ArrayList<Rotas> recuperar() throws Exception {
+        try {
             File fl = new File(arquivo);
             ArrayList<Rotas> listaDeRotas = new ArrayList<>();
             if (fl.exists()) {
@@ -56,5 +55,28 @@ public class RotasPersistencia implements IcrudRotas{
             throw erro;
         }
     }
-    
+
+    @Override
+    public void excluir(int id) throws Exception {
+        try {
+            ArrayList<Rotas> listaArquivo = recuperar();
+            FileWriter fw = new FileWriter(arquivo);
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            if (listaArquivo != null) {
+                for (int i = 0; i < listaArquivo.size(); i++) {
+                    Rotas rotas = listaArquivo.get(i);
+                    if (rotas.getId() != id) {
+                        bw.write(rotas.toString() + "\n");
+                    }
+                }
+            }
+
+            bw.close();
+
+        } catch (Exception e) {
+            throw (e);
+        }
+    }
+
 }

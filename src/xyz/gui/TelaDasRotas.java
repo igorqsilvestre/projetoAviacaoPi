@@ -196,7 +196,7 @@ public class TelaDasRotas extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jComboBoxOnibus = new javax.swing.JComboBox();
-        jButton1 = new javax.swing.JButton();
+        jButtonExluir = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jComboBoxHorasIda = new javax.swing.JComboBox<>();
@@ -278,7 +278,12 @@ public class TelaDasRotas extends javax.swing.JFrame {
 
         jLabel7.setText("ÔNIBUS");
 
-        jButton1.setText("EXCLUIR");
+        jButtonExluir.setText("EXCLUIR");
+        jButtonExluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExluirActionPerformed(evt);
+            }
+        });
 
         jLabel9.setText("HORÁRIO DE IDA");
 
@@ -324,7 +329,7 @@ public class TelaDasRotas extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jButtonIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButtonExluir, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jButtonAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel8)
@@ -417,7 +422,7 @@ public class TelaDasRotas extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonIncluir)
                     .addComponent(jButtonAlterar)
-                    .addComponent(jButton1))
+                    .addComponent(jButtonExluir))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -528,6 +533,27 @@ public class TelaDasRotas extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jComboBoxCidadesOrigemItemStateChanged
 
+    private void jButtonExluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExluirActionPerformed
+       try {
+            int indice = jTableRotas.getSelectedRow();
+            if (indice != -1) {
+                int opcao = JOptionPane.showConfirmDialog(null, "Você realmente deseja excluir ?", "Alerta", JOptionPane.WARNING_MESSAGE);
+                if (opcao == 0) {
+                    String idEmString = String.valueOf(jTableRotas.getValueAt(indice, 0));
+                    int id = Integer.parseInt(idEmString);
+                    rotasPersistencia.excluir(id);
+                    mostrarDadosRotas(rotasPersistencia.recuperar());
+                    limparCampos();
+                    
+                }
+                
+            }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }//GEN-LAST:event_jButtonExluirActionPerformed
+
     private int recuperaIDOnibusPorDadoSelecionadoJcomboBox(String dados) {
         String dadoOnibus[] = dados.split(";");
         int idOnibus = 0;
@@ -598,9 +624,9 @@ public class TelaDasRotas extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> ComboBoxMinutosChegada;
     private javax.swing.JComboBox<String> ComboBoxMinutosIda;
     private javax.swing.JLabel idModelo;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAlterar;
     private javax.swing.JButton jButtonBuscar;
+    private javax.swing.JButton jButtonExluir;
     private javax.swing.JButton jButtonIncluir;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;

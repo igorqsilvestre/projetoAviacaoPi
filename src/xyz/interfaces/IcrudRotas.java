@@ -15,4 +15,5 @@ import xyz.modelos.Rotas;
 public interface IcrudRotas {
     void incluir(Rotas objeto)throws Exception;
     ArrayList<Rotas> recuperar()throws Exception;
+     void excluir(int id)throws Exception;
 }
