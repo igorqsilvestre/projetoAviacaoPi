@@ -37,9 +37,14 @@ public class Rotas {
             throw new Exception("As cidades de origem e destino não podem ser iguais!");
         }
 
-        if (dataIda.equals("  /  /    ") || dataChegada.equals("  /  /    ")) {
+        if (dataIda.equals("  /  /    ")) {
             throw new Exception("A data não pode estar vazia!");
         }
+        
+        if(dataChegada.equals("  /  /    ") || horarioChegada.equals("")){
+            throw new Exception("Clique no botão para calcular o horário de chegada!");
+        }
+        
         this.id = id;
         this.cidadeOrigem = cidadeOrigem;
         this.cidadeDestino = cidadeDestino;

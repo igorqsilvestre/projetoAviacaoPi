@@ -21,7 +21,7 @@ import xyz.modelos.Rotas;
 public class RotasPersistencia implements IcrudRotas {
 
     String arquivo = "rotas.txt";
-
+    
     @Override
     public void incluir(Rotas objeto) throws Exception {
         try {
@@ -35,7 +35,7 @@ public class RotasPersistencia implements IcrudRotas {
         }
     }
 
-    public ArrayList<Rotas> recuperar() throws Exception {
+    public ArrayList<Rotas> recuperar() throws Exception {        
         try {
             File fl = new File(arquivo);
             ArrayList<Rotas> listaDeRotas = new ArrayList<>();

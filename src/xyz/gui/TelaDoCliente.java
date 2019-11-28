@@ -129,7 +129,6 @@ public class TelaDoCliente extends javax.swing.JFrame {
         jLabelIDMarca = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         idModelo = new javax.swing.JLabel();
-        jButtonExluir = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         jTextFieldNome = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -202,13 +201,6 @@ public class TelaDoCliente extends javax.swing.JFrame {
 
         jLabel8.setText("NOME");
 
-        jButtonExluir.setText("EXCLUIR");
-        jButtonExluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonExluirActionPerformed(evt);
-            }
-        });
-
         jLabel11.setText("CPF");
 
         jLabel2.setText("DATA DE NASCIMENTO");
@@ -273,8 +265,6 @@ public class TelaDoCliente extends javax.swing.JFrame {
                                 .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButtonIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButtonExluir, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButtonAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -335,8 +325,7 @@ public class TelaDoCliente extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButtonIncluir)
-                            .addComponent(jButtonAlterar)
-                            .addComponent(jButtonExluir))
+                            .addComponent(jButtonAlterar))
                         .addGap(31, 31, 31)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -430,26 +419,6 @@ public class TelaDoCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
 
-    private void jButtonExluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExluirActionPerformed
-        try {
-            int indice = jTableClientes.getSelectedRow();
-            if (indice != -1) {
-                int opcao = JOptionPane.showConfirmDialog(null, "Você realmente deseja excluir ?", "Alerta", JOptionPane.WARNING_MESSAGE);
-                if (opcao == 0) {
-                    String cpf = String.valueOf(jTableClientes.getValueAt(indice, 1));
-                    clientePersistencia.excluir(cpf);
-                    mostrarDadosCliente(clientePersistencia.recuperar());
-                    limparCampos();
-
-                }
-
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-    }//GEN-LAST:event_jButtonExluirActionPerformed
-
 //    private int recuperaIDOnibusPorDadoSelecionadoJcomboBox(String dados) {
 //        String dadoOnibus[] = dados.split(";");
 //        int idOnibus = 0;
@@ -527,7 +496,6 @@ public class TelaDoCliente extends javax.swing.JFrame {
     private javax.swing.JLabel idModelo;
     private javax.swing.JButton jButtonAlterar;
     private javax.swing.JButton jButtonBuscar;
-    private javax.swing.JButton jButtonExluir;
     private javax.swing.JButton jButtonIncluir;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;

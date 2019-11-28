@@ -35,7 +35,7 @@ public class TelaDoOnibus extends javax.swing.JFrame {
     public TelaDoOnibus() throws Exception {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
-        jTextFieldIdOnibus.setEnabled(false);
+        jTextFieldIdOnibus.setEnabled(false);        
         adicionaSituacaojComboBox();
         this.adicionaListaDeModelosJComboBox(modeloPersistencia.recuperar());
         this.iniciar();
