@@ -1,5 +1,6 @@
 package xyz.gui;
 
+import java.awt.Image;
 import javax.swing.JOptionPane;
 import xyz.modelos.Marca;
 import xyz.persistencia.MarcaPersistencia;
@@ -7,13 +8,16 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import xyz.modelos.Modelo;
 import xyz.modelos.Onibus;
 import xyz.modelos.Situacao;
 import xyz.persistencia.ModeloPersistencia;
 import xyz.persistencia.OnibusPersistencia;
 import xyz.utilidades.GeradorDeIdentificadores;
+import xyz.utilidades.JTableRenderer;
 import xyz.utilidades.TeclasPermitidasNumeros;
 
 /**
@@ -46,29 +50,32 @@ public class TelaDoOnibus extends javax.swing.JFrame {
 
     private void mostrarDadosOnibus(ArrayList<Onibus> listaDeOnibus) throws Exception {
         try{
-        DefaultTableModel model = (DefaultTableModel) jTableOnibus.getModel();
-        
-        model.setNumRows(0);
-        for (int i = 0; i < listaDeOnibus.size(); i++) {
-            String[] saida = new String[7];
-            Onibus aux = listaDeOnibus.get(i);
-            saida[0] = "" + aux.getId();
-            saida[1] = aux.getPlaca();
-            saida[2] = ""+aux.getNumeroDePoltronas();
-            saida[3] = ""+aux.getAnoDeFabricacao();
-            saida[4] = ""+aux.getSituacao();
-            Modelo modelo = modeloPersistencia.recuperaModeloPorID(aux.getIdModelo());
-            saida[5] = ""+modelo.getDescricao();
-            saida[6] = ""+modelo.getMarca().getDescricao();
             
-            model.addRow(saida);
-        }
-        
-        jTableOnibus.setModel(model);
+            TableColumnModel columModel = jTableOnibus.getColumnModel();
+            JTableRenderer renderer = new JTableRenderer();
+            jTableOnibus.setRowHeight(60);
+            DefaultTableModel model = (DefaultTableModel) jTableOnibus.getModel();
+
+            model.setNumRows(0);
+            for (int i = 0; i < listaDeOnibus.size(); i++) {                
+                Onibus aux = listaDeOnibus.get(i);
+                
+                Modelo modelo = modeloPersistencia.recuperaModeloPorID(aux.getIdModelo());
+                ImageIcon img = new ImageIcon(modelo.getMarca().getImagem());
+                Image image = img.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+                columModel.getColumn(7).setCellRenderer(renderer);
+                
+                model.addRow(new Object[]{aux.getId(), aux.getPlaca(), aux.getNumeroDePoltronas(),
+                aux.getAnoDeFabricacao(), aux.getSituacao(), modelo.getDescricao(), modelo.getMarca().getDescricao(),
+                new ImageIcon(image)});
+            }
+
+            
+            
         }catch(Exception erro){
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
-        
+
     }
     
     private void iniciar() {
@@ -215,7 +222,7 @@ public class TelaDoOnibus extends javax.swing.JFrame {
 
             },
             new String [] {
-                "IDENTIFICADOR", "PLACA", "NUMERO DE POLTRONAS", "ANO DE FABRICAÇÃO", "SITUAÇÃO", "MODELO", "MARCA"
+                "IDENTIFICADOR", "PLACA", "NUMERO DE POLTRONAS", "ANO DE FABRICAÇÃO", "SITUAÇÃO", "MODELO", "MARCA", "LOGOTIPO"
             }
         ));
         jScrollPane1.setViewportView(jTableOnibus);
@@ -233,6 +240,12 @@ public class TelaDoOnibus extends javax.swing.JFrame {
         jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonBuscarActionPerformed(evt);
+            }
+        });
+
+        jTextFieldNumeroDePoltronas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldNumeroDePoltronasActionPerformed(evt);
             }
         });
 
@@ -425,6 +438,10 @@ public class TelaDoOnibus extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_jButtonBuscarActionPerformed
+
+    private void jTextFieldNumeroDePoltronasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNumeroDePoltronasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldNumeroDePoltronasActionPerformed
 
     private int recuperaIDModeloPorDadoSelecionadoJcomboBox(String dados) {
         String dadoModelo[] = dados.split(";");

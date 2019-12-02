@@ -1,20 +1,28 @@
 package xyz.gui;
 
+import java.awt.event.ItemEvent;
+import java.text.DecimalFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
-import xyz.modelos.Marca;
+import xyz.modelos.Cliente;
 import xyz.modelos.Modelo;
 import xyz.modelos.Onibus;
+import xyz.modelos.Passagem;
 import xyz.modelos.Rotas;
+import xyz.persistencia.ClientePersistencia;
 import xyz.persistencia.MarcaPersistencia;
 import xyz.persistencia.ModeloPersistencia;
 import xyz.persistencia.OnibusPersistencia;
+import xyz.persistencia.PassagemPersistencia;
 import xyz.persistencia.RotasPersistencia;
 import xyz.utilidades.GeradorDeIdentificadores;
+import xyz.utilidades.ThreadPopulaClientesNoJcomboBox;
 
 /**
  *
@@ -26,8 +34,8 @@ public class TelaDasPassagens extends javax.swing.JFrame {
     private MarcaPersistencia marcaPersistencia = new MarcaPersistencia();
     private OnibusPersistencia onibusPersistencia = new OnibusPersistencia();
     private RotasPersistencia rotasPersistencia = new RotasPersistencia();
-//    private Situacao situacao;
-//    private int idDoModelo;
+    private ClientePersistencia clientePersistencia = new ClientePersistencia();
+    private PassagemPersistencia passagemPersistencia = new PassagemPersistencia();
 
     /**
      * Creates new form TelaDaMarca
@@ -38,73 +46,84 @@ public class TelaDasPassagens extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
         jTextFieldIdPassagem.setEnabled(false);
-        adicionaListaDeMarcasJComboBox(rotasPersistencia.recuperar());
+        adicionaListaDeRotasJComboBox(rotasPersistencia.recuperar());
         jTextFieldValorDaPassagem.setEnabled(false);
-//        adicionaListaDeOnibusJComboBox(onibusPersistencia.recuperaOnibusAtivo());
-//        this.iniciar();
-
+        adicionaListaDeClientesJComboBox();
+        populaAssentojComboBox();
+        this.iniciar();
         jButtonAlterar.setEnabled(false);
 
     }
 
-//    private void mostrarDadosRotas(ArrayList<Rotas> listaDeRotas) throws Exception {
-//        try {
-//            DefaultTableModel model = (DefaultTableModel) jTablePassagem.getModel();
-//
-//            model.setNumRows(0);
-//            for (int i = 0; i < listaDeRotas.size(); i++) {
-//                String[] saida = new String[10];
-//                Rotas aux = listaDeRotas.get(i);
-//                saida[0] = "" + aux.getId();
-//                saida[1] = aux.getCidadeOrigem();
-//                saida[2] = "" + aux.getCidadeDestino();
-//                saida[3] = "" + aux.getDataIda();
-//                saida[4] = "" + aux.getDataChegada();
-//                saida[5] = "" + aux.getHorarioIda();
-//                saida[6] = "" + aux.getHorarioChegada();
-//                Onibus onibus = onibusPersistencia.recuperaOnibusPorID(aux.getIdOnibus());
-//                Modelo modelo = modeloPersistencia.recuperaModeloPorID(onibus.getIdModelo());
-//                Marca marca = modeloPersistencia.recuperaMarcaPorDados(modelo.toString());
-//                saida[7] = "" + onibus.getPlaca();
-//                saida[8] = "" + modelo.getDescricao();
-//                saida[9] = "" + marca.getDescricao();
-//
-//                model.addRow(saida);
-//            }
-//
-//            jTablePassagem.setModel(model);
-//        } catch (Exception erro) {
-//            JOptionPane.showMessageDialog(null, erro.getMessage());
-//        }
-//
-//    }
+    private void mostrarDadosPassagens(ArrayList<Passagem> listaDePassagens) throws Exception {
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTablePassagem.getModel();
 
-//    private void iniciar() {
-//        try {
-//            mostrarDadosRotas(rotasPersistencia.recuperar());
-//
-//        } catch (Exception e) {
-//            DefaultTableModel model = (DefaultTableModel) jTablePassagem.getModel();
-//            //Limpa a tabela 
-//            model.setNumRows(0);
-//            String[] saida = new String[10];
-//            saida[0] = "Arquivo";
-//            saida[1] = "Sem dados para mostrar";
-//            saida[2] = "Sem dados para mostrar";
-//            saida[3] = "Sem dados para mostrar";
-//            saida[4] = "Sem dados para mostrar";
-//            saida[5] = "Sem dados para mostrar";
-//            saida[6] = "Sem dados para mostrar";
-//            saida[7] = "Sem dados para mostrar";
-//            saida[8] = "Sem dados para mostrar";
-//            saida[9] = "Sem dados para mostrar";
-//
-//            //Incluir nova linha na Tabela
-//            model.addRow(saida);
-//        }
-//    }
+            model.setNumRows(0);
+            for (int i = 0; i < listaDePassagens.size(); i++) {
+                String[] saida = new String[15];
 
-    private void adicionaListaDeMarcasJComboBox(ArrayList<Rotas> listaDeRotas) {
+                Passagem aux = listaDePassagens.get(i);
+                Cliente cliente = clientePersistencia.recuperaClientePorCPF(aux.getCpfCliente());
+                Rotas rota = rotasPersistencia.recuperaRotaPorId(aux.getIdRotas());
+                Onibus onibus = onibusPersistencia.recuperaOnibusPorID(rota.getIdOnibus());
+                Modelo modelo = modeloPersistencia.recuperaModeloPorID(onibus.getIdModelo());
+                saida[0] = "" + aux.getId();
+                saida[1] = cliente.getNome();
+                saida[2] = "" + cliente.getCpf();
+                saida[3] = "" + rota.getCidadeOrigem();
+                saida[4] = "" + rota.getCidadeDestino();
+                saida[5] = "" + rota.getDataIda();
+                saida[6] = "" + rota.getDataChegada();
+                saida[7] = "" + rota.getHorarioIda();
+                saida[8] = "" + rota.getHorarioChegada();
+                saida[9] = "" + onibus.getPlaca();
+                saida[10] = "" + modelo.getMarca().getDescricao();
+                saida[11] = "" + modelo.getDescricao();
+                saida[12] = "" + aux.getValorPassagem();
+                saida[13] = "" + aux.getFormaDePagamento();
+                saida[14] = "" + aux.getAssento();
+                model.addRow(saida);
+            }
+
+            jTablePassagem.setModel(model);
+        } catch (Exception erro) {
+            JOptionPane.showMessageDialog(null, erro.getMessage());
+        }
+
+    }
+
+    private void iniciar() {
+        try {
+            mostrarDadosPassagens(passagemPersistencia.recuperar());
+
+        } catch (Exception e) {
+            DefaultTableModel model = (DefaultTableModel) jTablePassagem.getModel();
+            //Limpa a tabela 
+            model.setNumRows(0);
+            String[] saida = new String[15];
+            saida[0] = "Arquivo";
+            saida[1] = "Sem dados para mostrar";
+            saida[2] = "Sem dados para mostrar";
+            saida[3] = "Sem dados para mostrar";
+            saida[4] = "Sem dados para mostrar";
+            saida[5] = "Sem dados para mostrar";
+            saida[6] = "Sem dados para mostrar";
+            saida[7] = "Sem dados para mostrar";
+            saida[8] = "Sem dados para mostrar";
+            saida[9] = "Sem dados para mostrar";
+            saida[10] = "Sem dados para mostrar";
+            saida[11] = "Sem dados para mostrar";
+            saida[12] = "Sem dados para mostrar";
+            saida[13] = "Sem dados para mostrar";
+            saida[14] = "Sem dados para mostrar";
+
+            //Incluir nova linha na Tabela
+            model.addRow(saida);
+        }
+    }
+
+    private void adicionaListaDeRotasJComboBox(ArrayList<Rotas> listaDeRotas) {
         try {
             String saida[] = new String[listaDeRotas.size()];
             for (int i = 0; i < listaDeRotas.size(); i++) {
@@ -114,9 +133,10 @@ public class TelaDasPassagens extends javax.swing.JFrame {
                 for (int j = 0; j < dadosOnibus.length; j++) {
                     rotas = new Rotas(lista);
                 }
-     
-                saida[i] = "" + rotas.getId() + ";" + rotas.getCidadeOrigem() + ";" + rotas.getCidadeDestino()+ ";" 
-                               +rotas.getDataIda()+ ";"+rotas.getDataChegada()+";"+rotas.getHorarioIda()+";"+rotas.getHorarioChegada();
+
+                saida[i] = "" + rotas.getId() + ";" + rotas.getCidadeOrigem() + ";" + rotas.getCidadeDestino() + ";"
+                        + rotas.getDataIda() + ";" + rotas.getDataChegada() + ";" + rotas.getHorarioIda() + ";"
+                        + rotas.getHorarioChegada() + ";" + rotas.getIdOnibus();
             }
 
             DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(saida);
@@ -125,6 +145,36 @@ public class TelaDasPassagens extends javax.swing.JFrame {
         } catch (Exception erro) {
             erro.getMessage();
         }
+    }
+
+    private void adicionaListaDeClientesJComboBox() {
+        try {
+            ThreadPopulaClientesNoJcomboBox buscarClientes = new ThreadPopulaClientesNoJcomboBox(jComboBoxCliente, true);
+            buscarClientes.start();
+        } catch (Exception erro) {
+            erro.getMessage();
+
+        }
+    }
+    
+    private void populaJComboBoxRotaAPartirDaBusca(int id){
+        ArrayList<String> listanovaRotas = new ArrayList<>();
+         ArrayList<String> listaVelhaRotas = new ArrayList<>();
+        for (int i = 0; i < jComboBoxRotas.getItemCount(); i++) {
+            String rotas = jComboBoxRotas.getItemAt(i);
+            String dados[] = rotas.split(";");
+            int idRota = Integer.parseInt(dados[0]);
+            if(idRota == id){
+                listanovaRotas.add(rotas);
+            }else{
+                listaVelhaRotas.add(rotas);
+            }
+        }
+        
+        jComboBoxRotas.removeAllItems();
+        listanovaRotas.addAll(listaVelhaRotas);
+        DefaultComboBoxModel model = new DefaultComboBoxModel(listanovaRotas.toArray());
+        jComboBoxRotas.setModel(model);
     }
 
     /**
@@ -155,14 +205,17 @@ public class TelaDasPassagens extends javax.swing.JFrame {
         idModelo = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButtonExluir = new javax.swing.JButton();
-        jComboBoxRotas = new javax.swing.JComboBox<>();
+        jComboBoxRotas = new javax.swing.JComboBox<String>();
         jLabel11 = new javax.swing.JLabel();
-        jComboBoxFormasDePagamento = new javax.swing.JComboBox<>();
+        jComboBoxFormasDePagamento = new javax.swing.JComboBox<String>();
         jLabel4 = new javax.swing.JLabel();
-        jComboBoxCliente = new javax.swing.JComboBox<>();
+        jComboBoxCliente = new javax.swing.JComboBox<String>();
         jButtonCadastrarCliente = new javax.swing.JButton();
         jTextFieldValorDaPassagem = new javax.swing.JTextField();
         jButtonCalcularPassagem = new javax.swing.JButton();
+        jToggleButton1 = new javax.swing.JToggleButton();
+        jLabel6 = new javax.swing.JLabel();
+        jComboBoxAssento = new javax.swing.JComboBox<String>();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -201,7 +254,7 @@ public class TelaDasPassagens extends javax.swing.JFrame {
 
             },
             new String [] {
-                "IDENTIFICADOR", "CLIENTE", "CPF", "CIDADE ORIGEM", "CIDADE DESTINO", "DATA DE IDA", "DATA DE CHEGADA", "HORARIO DE IDA", "HORARIO DE CHEGADA", "ONIBUS", "MARCA", "MODELO", "VALOR DA PASSAGEM", "FORMA DE PAGAMENTO"
+                "IDENTIFICADOR", "CLIENTE", "CPF", "CIDADE ORIGEM", "CIDADE DESTINO", "DATA DE IDA", "DATA DE CHEGADA", "HORARIO DE IDA", "HORARIO DE CHEGADA", "ONIBUS", "MARCA", "MODELO", "VALOR DA PASSAGEM", "FORMA DE PAGAMENTO", "ASSENTO"
             }
         ));
         jTablePassagem.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -232,13 +285,24 @@ public class TelaDasPassagens extends javax.swing.JFrame {
             }
         });
 
+        jComboBoxRotas.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBoxRotasItemStateChanged(evt);
+            }
+        });
+
         jLabel11.setText("FORMA DE PAGAMENTO");
 
-        jComboBoxFormasDePagamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dinheiro", "Cartão de crédito", "Cartão de débito" }));
+        jComboBoxFormasDePagamento.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Dinheiro", "Cartão de crédito", "Cartão de débito" }));
 
         jLabel4.setText("CLIENTE");
 
         jButtonCadastrarCliente.setText("CADASTRAR CLIENTE");
+        jButtonCadastrarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCadastrarClienteActionPerformed(evt);
+            }
+        });
 
         jButtonCalcularPassagem.setText("CALCULAR PASSAGEM");
         jButtonCalcularPassagem.addActionListener(new java.awt.event.ActionListener() {
@@ -246,6 +310,10 @@ public class TelaDasPassagens extends javax.swing.JFrame {
                 jButtonCalcularPassagemActionPerformed(evt);
             }
         });
+
+        jToggleButton1.setText("Mostrar Passagens Emitidas");
+
+        jLabel6.setText("SELECIONAR ASSENTO:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -265,24 +333,30 @@ public class TelaDasPassagens extends javax.swing.JFrame {
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel8)
                                     .addComponent(jLabel11)
-                                    .addComponent(jLabel4))
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel6))
                                 .addGap(94, 94, 94)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jComboBoxRotas, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextFieldIdPassagem)
-                                    .addComponent(jComboBoxFormasDePagamento, 0, 277, Short.MAX_VALUE)
-                                    .addComponent(jComboBoxCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextFieldValorDaPassagem))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(idModelo))
-                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jComboBoxRotas, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jTextFieldIdPassagem)
+                                            .addComponent(jComboBoxFormasDePagamento, 0, 277, Short.MAX_VALUE)
+                                            .addComponent(jComboBoxCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jTextFieldValorDaPassagem))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jButtonCadastrarCliente)
-                                            .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jButtonCalcularPassagem))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                .addComponent(idModelo))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jButtonCalcularPassagem)
+                                                    .addComponent(jButtonCadastrarCliente))
+                                                .addGap(0, 0, Short.MAX_VALUE))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jComboBoxAssento, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 0, Short.MAX_VALUE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jButtonIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -291,19 +365,23 @@ public class TelaDasPassagens extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButtonAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
-                .addGap(260, 260, 260))
-            .addComponent(jScrollPane1)
+                .addGap(101, 101, 101)
+                .addComponent(jToggleButton1)
+                .addGap(54, 54, 54))
             .addGroup(layout.createSequentialGroup()
                 .addGap(1491, 1491, 1491)
                 .addComponent(jLabelIDMarca)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 153, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(idModelo)
@@ -330,19 +408,24 @@ public class TelaDasPassagens extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jComboBoxCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4)
-                            .addComponent(jButtonCadastrarCliente))
-                        .addGap(53, 53, 53)))
+                            .addComponent(jButtonCadastrarCliente)
+                            .addComponent(jToggleButton1))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(jComboBoxAssento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabelIDMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(57, 57, 57))
+                        .addContainerGap(296, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButtonIncluir)
                             .addComponent(jButtonAlterar)
                             .addComponent(jButtonExluir))
-                        .addGap(36, 36, 36)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(36, 36, 36)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         pack();
@@ -352,41 +435,44 @@ public class TelaDasPassagens extends javax.swing.JFrame {
     private void jButtonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIncluirActionPerformed
 
         try {
-
             GeradorDeIdentificadores gerarID = new GeradorDeIdentificadores();
             int id = gerarID.getIdentificador();
-            
-            
-//
-//            String cidadeOrigem = (String.valueOf(jComboBoxCidadesOrigem.getSelectedItem()));
-//            String cidadeDestino = String.valueOf(jComboBoxCidadesDestino.getSelectedItem());
-//
-//            String dataIda = jFormatteDataIda.getText();
-//            String dataChegada = jFormattedDataChegada.getText();
-//
-//            String horasIda = String.valueOf(jComboBoxHorasIda.getSelectedItem());
-//            String minutosIda = String.valueOf(ComboBoxMinutosIda.getSelectedItem());
-//            String horarioIda = "" + horasIda + ":" + minutosIda + "";
-//            String horasChegada = String.valueOf(jComboBoxHorasChegada.getSelectedItem());
-//           String minutosChegada = String.valueOf(ComboBoxMinutosChegada.getSelectedItem());
-//            String horarioChegada = "" + horasChegada + ":" + minutosChegada + "";
-//
-//            String onibus = String.valueOf(jComboBoxOnibus.getSelectedItem());
-//            int idOnibus = recuperaIDOnibusPorDadoSelecionadoJcomboBox(onibus);
-//
-//            Rotas rotas = new Rotas(id, cidadeOrigem, cidadeDestino, dataIda, dataChegada, horarioIda, horarioChegada, idOnibus);
-//
-//            rotasPersistencia.incluir(rotas);
-//
-//            iniciar();
-//            limparCampos();
-//            gerarID.finalizar();
+            String rotas = String.valueOf(jComboBoxRotas.getSelectedItem());
+            String valorPassagem = jTextFieldValorDaPassagem.getText();
+            String formaDePagamento = String.valueOf(jComboBoxFormasDePagamento.getSelectedItem());
+            String cliente = String.valueOf(jComboBoxCliente.getSelectedItem());
+            int assento = Integer.parseInt(String.valueOf(jComboBoxAssento.getSelectedItem()));
+
+            int idRotas = recuperaIDRotasJComboBox(rotas);
+            String cpfCliente = recuperaCPFClientesJComboBox(cliente);
+
+            verificarAssentoDisponivel(idRotas, cpfCliente);
+            Passagem passagem = new Passagem(id, idRotas, valorPassagem, formaDePagamento, cpfCliente, assento);
+            passagemPersistencia.incluir(passagem);
+
+            iniciar();
+            limparCampos();
+            gerarID.finalizar();
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
     }//GEN-LAST:event_jButtonIncluirActionPerformed
 
+    private void verificarAssentoDisponivel(int id, String cpf)throws Exception{     
+            ArrayList<Passagem> listaDePassagens = passagemPersistencia.recuperar();
+            for (int i = 0; i < listaDePassagens.size(); i++) {
+                 Passagem passagem = listaDePassagens.get(i);
+                 if(passagem.getIdRotas() == id && passagem.getCpfCliente().equals(cpf) && passagem.getAssento()!= 0){
+                     throw new Exception("Cliente já possui assento para esta rota!");
+                 } 
+            }
+            
+        
+    }
+    
+    
 
     private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
 //          try{
@@ -410,87 +496,152 @@ public class TelaDasPassagens extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAlterarActionPerformed
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
-// try {
-//            int indice = jTableRotas.getSelectedRow();
-//            if (indice != -1) {
-//                String idOnibusString = String.valueOf(jTableRotas.getValueAt(indice, 0));
-//                String placa = String.valueOf(jTableRotas.getValueAt(indice, 1));
-//                String nPoltronas = String.valueOf(jTableRotas.getValueAt(indice,2));
-//                String anoFabricacao = String.valueOf(jTableRotas.getValueAt(indice,3));
-//                String s = String.valueOf(jTableRotas.getValueAt(indice,4));
-//                String modelo = String.valueOf(jTableRotas.getValueAt(indice,5));
-//                String marca = String.valueOf(jTableRotas.getValueAt(indice,6));
-//                
-//                int idOnibus = Integer.parseInt(idOnibusString);
-//                int numeroPoltronas = Integer.parseInt(nPoltronas);               
-//                int ano = Integer.parseInt(anoFabricacao);
-//                situacao = Situacao.valueOf(s);
-//                
-//                jTextFieldIdRotas.setText(""+idOnibus);
-//                jTextFieldPlacaOnibus.setText(placa);
-//                jTextFieldNumeroDePoltronas.setText(""+numeroPoltronas);
-//                jTextFieldAnoDeFabricacao.setText(""+ano);
-//               
+ try {
+            int indice = jTablePassagem.getSelectedRow();
+            if (indice != -1) {
+                int idPassagem = Integer.parseInt(String.valueOf(jTablePassagem.getValueAt(indice, 0)));
+                
+                Passagem passagem = passagemPersistencia.recuperarPassagemPorID(idPassagem);
+                passagem.getIdRotas();
+               
+               jTextFieldIdPassagem.setText(""+idPassagem);
+                populaJComboBoxRotaAPartirDaBusca(passagem.getIdRotas());
+               
 //                adicionaSituacaojComboBox();
 //                
 //                int idModelo = onibusPersistencia.recuperaIDModeloPorOnibusSelecionado(idOnibus);
 //                idDoModelo = idModelo;
 //                ArrayList<Modelo> listaDeModelos = modeloPersistencia.recuperaModelosPeloIDSelecionado(idModelo);
 //                adicionaListaDeModelosJComboBox(listaDeModelos);
-//                
-//                jButtonAlterar.setEnabled(true);
-//                jButtonIncluir.setEnabled(false);
-//               
-//            }
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, e);
-//        }
+                
+                jButtonAlterar.setEnabled(true);
+                jButtonIncluir.setEnabled(false);
+               
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
-    
+
     private void jButtonExluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExluirActionPerformed
-//        try {
-//            int indice = jTablePassagem.getSelectedRow();
-//            if (indice != -1) {
-//                int opcao = JOptionPane.showConfirmDialog(null, "Você realmente deseja excluir ?", "Alerta", JOptionPane.WARNING_MESSAGE);
-//                if (opcao == 0) {
-//                    String idEmString = String.valueOf(jTablePassagem.getValueAt(indice, 0));
-//                    int id = Integer.parseInt(idEmString);
-//                    rotasPersistencia.excluir(id);
-//                    mostrarDadosRotas(rotasPersistencia.recuperar());
-//                    limparCampos();
-//
-//                }
-//
-//            }
-//
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, e.getMessage());
-//        }
+        try {
+            int indice = jTablePassagem.getSelectedRow();
+            if (indice != -1) {
+                int opcao = JOptionPane.showConfirmDialog(null, "Você realmente deseja excluir ?", "Alerta", JOptionPane.WARNING_MESSAGE);
+                if (opcao == 0) {
+                    String idEmString = String.valueOf(jTablePassagem.getValueAt(indice, 0));
+                    int id = Integer.parseInt(idEmString);
+                    passagemPersistencia.excluir(id);
+                    mostrarDadosPassagens(passagemPersistencia.recuperar());
+                    limparCampos();
+
+                }
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
     }//GEN-LAST:event_jButtonExluirActionPerformed
 
     private void jButtonCalcularPassagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalcularPassagemActionPerformed
-       
+        String rotas = String.valueOf(jComboBoxRotas.getSelectedItem());
+
+        String[] dados = rotas.split(";");
+
+        String horaIda = dados[5];
+        String horariosIda[] = horaIda.split(":");
+        int horarioIda = Integer.parseInt(horariosIda[0]);
+        int minutosIda = Integer.parseInt(horariosIda[0]);
+
+        String horaChegada = dados[6];
+
+        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
+
+        LocalTime horario = LocalTime.of(horarioIda, minutosIda);
+        LocalTime desejada = LocalTime.parse(horaChegada, formatoHora);
+
+        LocalTime tempoGasto = desejada.minusHours(horario.getHour()).minusMinutes(horario.getMinute());
+
+        String diferenca[] = String.valueOf(tempoGasto).split(":");
+        int horaGasta = Integer.parseInt(diferenca[0]);
+        int minutosGasto = Integer.parseInt(diferenca[1]);
+        int hora = 0;
+        for (int i = 1; i < horaGasta; i++) {
+            hora = hora + 20;
+        }
+        double minuto = 0;
+        for (int i = 0; i < minutosGasto; i++) {
+            minuto = minuto + 0.33;
+        }
+        double total = hora + minuto;
+        DecimalFormat formatador = new DecimalFormat("R$ #,##0.00");
+        jTextFieldValorDaPassagem.setText(formatador.format(total));
+
+
     }//GEN-LAST:event_jButtonCalcularPassagemActionPerformed
 
-//    private int recuperaIDOnibusPorDadoSelecionadoJcomboBox(String dados) {
-//        String dadoOnibus[] = dados.split(";");
-//        int idOnibus = 0;
-//        for (int i = 0; i < dadoOnibus.length; i++) {
-//            idOnibus = Integer.parseInt(dadoOnibus[0]);
-//        }
-//        return idOnibus;
-//    }
-//
-//    private void limparCampos() {
-//        jTextFieldIdPassagem.setText("");
-//        jFormatteDataIda.setText("");
-//        jFormattedDataChegada.setText("");
-//        jComboBoxHorasIda.setSelectedIndex(0);
-//        ComboBoxMinutosIda.setSelectedIndex(0);
-//        jComboBoxHorasChegada.setSelectedIndex(0);
-//        ComboBoxMinutosChegada.setSelectedIndex(0);
-//    }
+    private void jButtonCadastrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarClienteActionPerformed
+        try {
+            new TelaDoCliente().setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(TelaDasPassagens.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonCadastrarClienteActionPerformed
+
+    private void populaAssentojComboBox() throws Exception {
+        try {
+            String item = String.valueOf(jComboBoxRotas.getSelectedItem());
+            String assento[] = item.split(";");
+            int assentoOnibus = Integer.parseInt(assento[7]);
+            Onibus onibus = onibusPersistencia.recuperaOnibusPorID(assentoOnibus);
+            int numeroPoltronas = onibus.getNumeroDePoltronas();
+
+            String onibusNumeroPoltronas[] = new String[numeroPoltronas];
+            for (int i = 1; i < onibusNumeroPoltronas.length + 1; i++) {
+                onibusNumeroPoltronas[i - 1] = "" + i;
+            }
+
+            DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(onibusNumeroPoltronas);
+            jComboBoxAssento.setModel(comboBoxModel);
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    private void jComboBoxRotasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxRotasItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            try {
+                populaAssentojComboBox();
+            } catch (Exception erro) {
+                //Trata exceção
+                JOptionPane.showMessageDialog(rootPane, erro.getMessage());
+            }
+        }
+    }//GEN-LAST:event_jComboBoxRotasItemStateChanged
+
+    private int recuperaIDRotasJComboBox(String dados) {
+        String dadoRotas[] = dados.split(";");
+        int idRotas = 0;
+        for (int i = 0; i < dadoRotas.length; i++) {
+            idRotas = Integer.parseInt(dadoRotas[0]);
+        }
+        return idRotas;
+    }
+
+    private String recuperaCPFClientesJComboBox(String dados) {
+        String dadosCliente[] = dados.split(";");
+        String cpfCliente = "";
+        for (int i = 0; i < dadosCliente.length; i++) {
+            cpfCliente = dadosCliente[1];
+        }
+        return cpfCliente;
+    }
+
+    private void limparCampos() {
+        jTextFieldIdPassagem.setText("");
+        jTextFieldValorDaPassagem.setText("");
+    }
 
     /**
      * @param args the command line arguments
@@ -533,17 +684,13 @@ public class TelaDasPassagens extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
+        try {
+            new TelaDasPassagens().setVisible(true);
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new TelaDasPassagens().setVisible(true);
-                } catch (Exception ex) {
-                    Logger.getLogger(TelaDasPassagens.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
+        } catch (Exception erro) {
+            Logger.getLogger(TelaDoCliente.class.getName()).log(Level.SEVERE, null, erro);
+        }
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -556,6 +703,7 @@ public class TelaDasPassagens extends javax.swing.JFrame {
     private javax.swing.JButton jButtonIncluir;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox<String> jComboBoxAssento;
     private javax.swing.JComboBox<String> jComboBoxCliente;
     private javax.swing.JComboBox<String> jComboBoxFormasDePagamento;
     private javax.swing.JComboBox<String> jComboBoxRotas;
@@ -565,6 +713,7 @@ public class TelaDasPassagens extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabelIDMarca;
     private javax.swing.JList jList1;
@@ -574,5 +723,7 @@ public class TelaDasPassagens extends javax.swing.JFrame {
     private javax.swing.JTable jTablePassagem;
     private javax.swing.JTextField jTextFieldIdPassagem;
     private javax.swing.JTextField jTextFieldValorDaPassagem;
+    private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
+
 }

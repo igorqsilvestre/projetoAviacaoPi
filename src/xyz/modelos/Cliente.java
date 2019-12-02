@@ -64,6 +64,8 @@ public class Cliente {
     public String toString() {
         return "" + getNome() + ";" + getCpf() + ";" + getDataDeNascimento() + ";" + getTelefone() + ";" + getCidade() + ";" + getEstado() + ";" + getEndereco() + ";" + getCep();
     }
+    
+    
 
     /**
      * @return the nome
@@ -97,8 +99,8 @@ public class Cliente {
      * @throws java.lang.Exception
      */
     public void setCpf(String cpf) throws Exception {
-        if (cpf.equals("") || cpf.isEmpty()||cpf.length()>11) {
-            throw new Exception("Cpf não pode estar vazio!");
+        if (cpf.equals("") || cpf.isEmpty()||cpf.length()!=11) {
+            throw new Exception("Cpf inválido!");
         } else {
             this.cpf = cpf;
         }
@@ -137,8 +139,8 @@ public class Cliente {
      * @throws java.lang.Exception
      */
     public void setTelefone(String telefone) throws Exception {
-         if (telefone.equals("")||telefone.isEmpty()||telefone.length()>11) {
-            throw new Exception("O telefone não pode ser vazio!");
+         if (telefone.equals("")||telefone.isEmpty()) {
+            throw new Exception(" telefone inválido!");
         } else {
             this.telefone = telefone;
         }
@@ -177,7 +179,7 @@ public class Cliente {
      * @throws java.lang.Exception
      */
     public void setEstado(String estado) throws Exception {
-        if (estado.equals("") || estado.isEmpty()) {
+        if (estado.equals("") && estado.isEmpty()) {
             throw new Exception("O estado não pode estar vazio");
         } else {
             this.estado = estado;
@@ -217,8 +219,8 @@ public class Cliente {
      * @throws java.lang.Exception
      */
     public void setCep(String cep) throws Exception {
-         if (cep.equals("")||cep.isEmpty()|| cep.length()>8) {
-            throw new Exception("O cep não pode estar vazio");
+         if (cep.equals("")||cep.isEmpty()|| cep.length()!=8) {
+            throw new Exception("cep inválido!");
         } else {
             this.cep = cep;
         }

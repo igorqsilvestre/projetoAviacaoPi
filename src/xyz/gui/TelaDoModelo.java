@@ -1,5 +1,6 @@
 package xyz.gui;
 
+import java.awt.Image;
 import javax.swing.JOptionPane;
 import xyz.modelos.Marca;
 import xyz.persistencia.MarcaPersistencia;
@@ -7,10 +8,13 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import xyz.modelos.Modelo;
 import xyz.persistencia.ModeloPersistencia;
 import xyz.utilidades.GeradorDeIdentificadores;
+import xyz.utilidades.JTableRenderer;
 import xyz.utilidades.TeclasPermitidasLetras;
 
 /**
@@ -38,21 +42,30 @@ public class TelaDoModelo extends javax.swing.JFrame {
     }
     
     private void mostrarDadosModelo(ArrayList<Modelo> listaDeModelos) {
-        DefaultTableModel modelo = (DefaultTableModel) jTableModelos.getModel();
-        
-        modelo.setNumRows(0);
-        for (int i = 0; i < listaDeModelos.size(); i++) {
-            String[] saida = new String[3];
-            Modelo aux = listaDeModelos.get(i);
-            saida[0] = "" + aux.getId();
-            saida[1] = aux.getDescricao();
-            saida[2] = aux.getMarca().getDescricao();
+        try{
             
-            modelo.addRow(saida);
+            TableColumnModel columModel = jTableModelos.getColumnModel();
+            JTableRenderer renderer = new JTableRenderer();
+            jTableModelos.setRowHeight(60);
+            DefaultTableModel modelo = (DefaultTableModel) jTableModelos.getModel();
+
+            modelo.setNumRows(0);
+            for (int i = 0; i < listaDeModelos.size(); i++) {
+                String[] saida = new String[3];
+                Modelo aux = listaDeModelos.get(i);                
+                
+                ImageIcon img = new ImageIcon(aux.getMarca().getImagem());
+                Image image = img.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
+                columModel.getColumn(3).setCellRenderer(renderer);
+
+                modelo.addRow(new Object[]{aux.getId(), aux.getDescricao(), aux.getMarca().getDescricao(),
+                new ImageIcon(image)});
+            }
+            
+        
+        } catch (Exception erro) {
+            erro.getMessage();
         }
-        
-        jTableModelos.setModel(modelo);
-        
     }
     
     private void iniciar() {
@@ -160,7 +173,7 @@ public class TelaDoModelo extends javax.swing.JFrame {
 
             },
             new String [] {
-                "IDENTIFICADOR", "DESCRICAO", "MARCA"
+                "IDENTIFICADOR", "DESCRICAO", "MARCA", "LOGOTIPO"
             }
         ));
         jScrollPane1.setViewportView(jTableModelos);

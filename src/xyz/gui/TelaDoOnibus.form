@@ -234,7 +234,7 @@
         <Component class="javax.swing.JTable" name="jTableOnibus">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="7" rowCount="0">
+              <Table columnCount="8" rowCount="0">
                 <Column editable="true" title="IDENTIFICADOR" type="java.lang.Object"/>
                 <Column editable="true" title="PLACA" type="java.lang.Object"/>
                 <Column editable="true" title="NUMERO DE POLTRONAS" type="java.lang.Object"/>
@@ -242,10 +242,16 @@
                 <Column editable="true" title="SITUA&#xc7;&#xc3;O" type="java.lang.Object"/>
                 <Column editable="true" title="MODELO" type="java.lang.Object"/>
                 <Column editable="true" title="MARCA" type="java.lang.Object"/>
+                <Column editable="true" title="LOGOTIPO" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="0">
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
@@ -321,6 +327,9 @@
     <Component class="javax.swing.JLabel" name="jLabelIDMarca">
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldNumeroDePoltronas">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldNumeroDePoltronasActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>

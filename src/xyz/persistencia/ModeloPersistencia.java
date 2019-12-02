@@ -111,23 +111,26 @@ public class ModeloPersistencia implements IcrudModelo {
     public void alterar(int id, String descricao, Marca marca) throws Exception {
         try {
             ArrayList<Modelo> listaArquivo = recuperar();
-            boolean controle = false;
-
-                Modelo modeloo=null;
+            FileWriter fw = new FileWriter(arquivo);
+            BufferedWriter bw = new BufferedWriter(fw);
+            
+            Modelo modeloo = null;
+            
             for (int i = 0; i < listaArquivo.size(); i++) {
+                
                 Modelo modelo = listaArquivo.get(i);
+                
+                if (modelo.getId() != id) {
+                    bw.write(modelo.toString() + "\n");
+               }
+                
                 if (modelo.getId() == id) {
-                        modeloo = new Modelo(id, descricao, marca);
-                        controle = true;
-                        excluir(id);
-                    
-
+                    modeloo = new Modelo(id, descricao, marca);                    
+                    bw.write(modeloo + "\n");
                 }
             }
 
-            if (controle) {
-                incluir(modeloo);
-            }
+            bw.close();
 
         } catch (Exception e) {
             throw (e);

@@ -12,6 +12,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import xyz.interfaces.IcrudRotas;
+import xyz.modelos.Marca;
 import xyz.modelos.Rotas;
 
 /**
@@ -21,7 +22,7 @@ import xyz.modelos.Rotas;
 public class RotasPersistencia implements IcrudRotas {
 
     String arquivo = "rotas.txt";
-    
+
     @Override
     public void incluir(Rotas objeto) throws Exception {
         try {
@@ -35,7 +36,8 @@ public class RotasPersistencia implements IcrudRotas {
         }
     }
 
-    public ArrayList<Rotas> recuperar() throws Exception {        
+    @Override
+    public ArrayList<Rotas> recuperar() throws Exception {
         try {
             File fl = new File(arquivo);
             ArrayList<Rotas> listaDeRotas = new ArrayList<>();
@@ -79,4 +81,89 @@ public class RotasPersistencia implements IcrudRotas {
         }
     }
 
+    @Override
+    public Rotas recuperaRotaPorId(int id) throws Exception {
+        try {
+            File fl = new File(arquivo);
+            if (fl.exists()) {
+                FileReader fr = new FileReader(arquivo);
+                BufferedReader br = new BufferedReader(fr);
+                String linha = "";
+                while ((linha = br.readLine()) != null) {
+                    String dados[] = linha.split(";");
+                    int idRotas = Integer.parseInt(dados[0]);
+                    if (idRotas == id) {
+                        Rotas rota = new Rotas(linha);
+                        return rota;
+                    }
+
+                }
+                br.close();
+            }
+            return null;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+
+    @Override
+    public ArrayList<String> recuperaListaOrdemSelecionadaCidadeOrigem(String cidadeOrigem, ArrayList<String> cidades) throws Exception {
+        try {
+            ArrayList<String> novaLista = new ArrayList<>();
+            for (int i = 0; i < cidades.size(); i++) {
+                if (cidades.get(i).equals(cidadeOrigem)) {
+                    novaLista.add(0, cidades.get(i));
+                } else {
+                    novaLista.add(cidades.get(i));
+                }
+            }
+            return novaLista;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+
+    @Override
+    public ArrayList<String> recuperaListaOrdemSelecionadaCidadeDestino(String cidadeDestino, ArrayList<String> cidades) throws Exception {
+        try {
+            ArrayList<String> novaLista = new ArrayList<>();
+            for (int i = 0; i < cidades.size(); i++) {
+                if (cidades.get(i).equals(cidadeDestino)) {
+                    novaLista.add(0, cidades.get(i));
+                } else {
+                    novaLista.add(cidades.get(i));
+                }
+            }
+            return novaLista;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+
+    @Override
+    public void alterar(int idRotas, String cidadeOrigem, String cidadeDestino, String dataIda, String dataChegada, String saidaHorarioIda, String saidaHorarioChegada, int idOnibus) throws Exception {
+        try {
+            ArrayList<Rotas> listaArquivo = recuperar();
+            FileWriter fw = new FileWriter(arquivo);
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            Rotas rotass = null;
+
+            for (int i = 0; i < listaArquivo.size(); i++) {
+                Rotas rotas = listaArquivo.get(i);
+                if (rotas.getId() != idRotas) {
+                    bw.write(rotas.toString() + "\n");
+                }
+                if (rotas.getId() == idRotas) {
+                    rotass = new Rotas(idRotas, cidadeOrigem, cidadeDestino, dataIda, dataChegada, saidaHorarioIda, saidaHorarioChegada, idOnibus);
+                    bw.write(rotass + "\n");
+                }
+            }
+
+            bw.close();
+
+        } catch (Exception e) {
+            throw (e);
+        }
+    }
 }

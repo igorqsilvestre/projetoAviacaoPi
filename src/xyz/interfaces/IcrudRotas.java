@@ -16,4 +16,8 @@ public interface IcrudRotas {
     void incluir(Rotas objeto)throws Exception;
     ArrayList<Rotas> recuperar()throws Exception;
      void excluir(int id)throws Exception;
+     Rotas recuperaRotaPorId(int id)throws Exception;
+     ArrayList<String> recuperaListaOrdemSelecionadaCidadeOrigem(String cidadeOrigem,ArrayList<String>cidades) throws Exception ;
+     ArrayList<String> recuperaListaOrdemSelecionadaCidadeDestino(String cidadeDestino,ArrayList<String>cidades) throws Exception;
+     void alterar(int idRotas, String cidadeOrigem, String cidadeDestino, String dataIda, String dataChegada, String saidaHorarioIda, String saidaHorarioChegada, int idOnibus) throws Exception;
 }

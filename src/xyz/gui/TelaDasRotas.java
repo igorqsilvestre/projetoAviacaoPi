@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
 import xyz.modelos.Marca;
 import xyz.modelos.Modelo;
@@ -22,7 +23,7 @@ import xyz.utilidades.GeradorDeIdentificadores;
  * @author eugeniojulio
  */
 public class TelaDasRotas extends javax.swing.JFrame {
-    
+
     private ModeloPersistencia modeloPersistencia = new ModeloPersistencia();
     private MarcaPersistencia marcaPersistencia = new MarcaPersistencia();
     private OnibusPersistencia onibusPersistencia = new OnibusPersistencia();
@@ -45,13 +46,13 @@ public class TelaDasRotas extends javax.swing.JFrame {
         adicionaListaDeOnibusJComboBox(onibusPersistencia.recuperaOnibusAtivo());
         this.iniciar();
         jButtonAlterar.setEnabled(false);
-        
+
     }
-    
+
     private void mostrarDadosRotas(ArrayList<Rotas> listaDeRotas) throws Exception {
         try {
             DefaultTableModel model = (DefaultTableModel) jTableRotas.getModel();
-            
+
             model.setNumRows(0);
             for (int i = 0; i < listaDeRotas.size(); i++) {
                 String[] saida = new String[10];
@@ -69,22 +70,32 @@ public class TelaDasRotas extends javax.swing.JFrame {
                 saida[7] = "" + onibus.getPlaca();
                 saida[8] = "" + modelo.getDescricao();
                 saida[9] = "" + marca.getDescricao();
-                
+
                 model.addRow(saida);
             }
-            
+
             jTableRotas.setModel(model);
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
-        
+
     }
-    
+
+    private void populajComboBoxCidadeOrigem(ArrayList<String> cidadesOrigem) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel(cidadesOrigem.toArray());
+        jComboBoxCidadesOrigem.setModel(model);
+
+    }
+
+    private void populajComboBoxCidadeDestino(ArrayList<String> cidadesDestino) {
+        DefaultComboBoxModel model = new DefaultComboBoxModel(cidadesDestino.toArray());
+        jComboBoxCidadesDestino.setModel(model);
+    }
+
     private void iniciar() {
         try {
             mostrarDadosRotas(rotasPersistencia.recuperar());
-            jButtonCarregarArquivoTexto.setEnabled(false);
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, "Arquivo Texto corrompido, insira um novo arquivo");
             DefaultTableModel model = (DefaultTableModel) jTableRotas.getModel();
@@ -104,10 +115,9 @@ public class TelaDasRotas extends javax.swing.JFrame {
 
             //Incluir nova linha na Tabela
             model.addRow(saida);
-            jButtonCarregarArquivoTexto.setEnabled(true);
         }
     }
-    
+
     private void adicionaListaDeOnibusJComboBox(ArrayList<Onibus> listaDeOnibus) {
         try {
             String saida[] = new String[listaDeOnibus.size()];
@@ -118,15 +128,15 @@ public class TelaDasRotas extends javax.swing.JFrame {
                 for (int j = 0; j < dadosOnibus.length; j++) {
                     onibus = new Onibus(lista);
                 }
-                
+
                 Modelo modelo = modeloPersistencia.recuperaModeloPorID(onibus.getIdModelo());
                 Marca marca = modeloPersistencia.recuperaMarcaPorDados(modelo.toString());
                 saida[i] = "" + onibus.getId() + ";" + onibus.getPlaca() + ";" + modelo.getDescricao() + ";" + marca.getDescricao() + "";
             }
-            
+
             DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(saida);
             jComboBoxOnibus.setModel(comboBoxModel);
-            
+
         } catch (Exception erro) {
             erro.getMessage();
         }
@@ -174,7 +184,6 @@ public class TelaDasRotas extends javax.swing.JFrame {
         ComboBoxMinutosChegada = new javax.swing.JComboBox<String>();
         jFormatteDataIda = new javax.swing.JFormattedTextField();
         jFormattedDataChegada = new javax.swing.JFormattedTextField();
-        jButtonCarregarArquivoTexto = new javax.swing.JButton();
         calcularHorarioChegada = new javax.swing.JButton();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -276,13 +285,6 @@ public class TelaDasRotas extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
-        jButtonCarregarArquivoTexto.setText("CARREGAR ARQUIVO TEXTO");
-        jButtonCarregarArquivoTexto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonCarregarArquivoTextoActionPerformed(evt);
-            }
-        });
-
         calcularHorarioChegada.setText("CALCULAR HORÁRIO CHEGADA");
         calcularHorarioChegada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -343,10 +345,7 @@ public class TelaDasRotas extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(calcularHorarioChegada)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jButtonCarregarArquivoTexto)))))
+                                            .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(260, 260, 260))
             .addComponent(jScrollPane1)
@@ -366,8 +365,7 @@ public class TelaDasRotas extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextFieldIdRotas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButtonBuscar)
-                            .addComponent(jLabel2)
-                            .addComponent(jButtonCarregarArquivoTexto))
+                            .addComponent(jLabel2))
                         .addGap(16, 16, 16)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jComboBoxCidadesOrigem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -418,31 +416,31 @@ public class TelaDasRotas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIncluirActionPerformed
-        
+
         try {
-            
+
             GeradorDeIdentificadores gerarID = new GeradorDeIdentificadores();
             int id = gerarID.getIdentificador();
-            
+
             String cidadeOrigem = (String.valueOf(jComboBoxCidadesOrigem.getSelectedItem()));
             String cidadeDestino = String.valueOf(jComboBoxCidadesDestino.getSelectedItem());
-            
+
             String dataIda = jFormatteDataIda.getText();
             String dataChegada = jFormattedDataChegada.getText();
-            
+
             String horasIda = String.valueOf(jComboBoxHorasIda.getSelectedItem());
             String minutosIda = String.valueOf(ComboBoxMinutosIda.getSelectedItem());
             String horarioIda = "" + horasIda + ":" + minutosIda + "";
             String horasChegada = String.valueOf(jComboBoxHorasChegada.getSelectedItem());
             String minutosChegada = String.valueOf(ComboBoxMinutosChegada.getSelectedItem());
             String horarioChegada = "" + horasChegada + ":" + minutosChegada + "";
-            
+
             String onibus = String.valueOf(jComboBoxOnibus.getSelectedItem());
             int idOnibus = recuperaIDOnibusPorDadoSelecionadoJcomboBox(onibus);
-            
+
             Rotas rotas = new Rotas(id, cidadeOrigem, cidadeDestino, dataIda, dataChegada, horarioIda, horarioChegada, idOnibus);
             rotasPersistencia.incluir(rotas);
-            
+
             iniciar();
             limparCampos();
             gerarID.finalizar();
@@ -451,67 +449,138 @@ public class TelaDasRotas extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jButtonIncluirActionPerformed
-    
+
 
     private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
-//          try{
-//        int idOnibus = Integer.parseInt(jTextFieldIdRotas.getText());
-//        String placa = jTextFieldPlacaOnibus.getText();
-//        int numeroPoltronas = Integer.parseInt(jTextFieldNumeroDePoltronas.getText());
-//        int ano = Integer.parseInt(jTextFieldAnoDeFabricacao.getText());
-//        
-//        Situacao situacaoOnibus = (Situacao)jComboBoxSituacao.getSelectedItem();
-//        
-//
-//        onibusPersistencia.alterar(idOnibus, placa, numeroPoltronas,ano,situacaoOnibus,idDoModelo);
-//        mostrarDadosOnibus(onibusPersistencia.recuperar());
-//        limparCampos();
-//        jButtonAlterar.setEnabled(false);
-//        jButtonIncluir.setEnabled(true);
-//        }catch(Exception e){
-//            JOptionPane.showMessageDialog(null, e.getMessage());
-//        }
+        try {
+            int idRotas = Integer.parseInt(jTextFieldIdRotas.getText());
+            String cidadeOrigem = String.valueOf(jComboBoxCidadesOrigem.getSelectedItem());
+            String cidadeDestino = String.valueOf(jComboBoxCidadesDestino.getSelectedItem());
+            String dataIda  = String.valueOf(jFormatteDataIda.getText());
+            String dataChegada  = String.valueOf(jFormattedDataChegada.getText());
+            String horaIda = String.valueOf(jComboBoxHorasIda.getSelectedItem());
+            String minutoIda = String.valueOf(ComboBoxMinutosIda.getSelectedItem());
+            String saidaHorarioIda  = ""+horaIda+":"+minutoIda+"";
+            String horaChegada = String.valueOf(jComboBoxHorasChegada.getSelectedItem());
+            String minutoChegada = String.valueOf(ComboBoxMinutosChegada.getSelectedItem());
+            String saidaHorarioChegada = ""+horaChegada+":"+minutoChegada+"";
+            String onibus = String.valueOf(jComboBoxOnibus.getSelectedItem());
+            int idOnibus = recuperaIDOnibusPorDadoSelecionadoJcomboBox(onibus);
+            
+            rotasPersistencia.alterar(idRotas,cidadeOrigem,cidadeDestino,dataIda,dataChegada,saidaHorarioIda,saidaHorarioChegada,idOnibus);
+            
+            iniciar();
+            limparCampos();
+            jButtonAlterar.setEnabled(false);
+            jButtonIncluir.setEnabled(true);
+            jButtonExluir.setEnabled(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
 
     }//GEN-LAST:event_jButtonAlterarActionPerformed
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
-// try {
-//            int indice = jTableRotas.getSelectedRow();
-//            if (indice != -1) {
-//                String idOnibusString = String.valueOf(jTableRotas.getValueAt(indice, 0));
-//                String placa = String.valueOf(jTableRotas.getValueAt(indice, 1));
-//                String nPoltronas = String.valueOf(jTableRotas.getValueAt(indice,2));
-//                String anoFabricacao = String.valueOf(jTableRotas.getValueAt(indice,3));
-//                String s = String.valueOf(jTableRotas.getValueAt(indice,4));
-//                String modelo = String.valueOf(jTableRotas.getValueAt(indice,5));
-//                String marca = String.valueOf(jTableRotas.getValueAt(indice,6));
-//                
-//                int idOnibus = Integer.parseInt(idOnibusString);
-//                int numeroPoltronas = Integer.parseInt(nPoltronas);               
-//                int ano = Integer.parseInt(anoFabricacao);
-//                situacao = Situacao.valueOf(s);
-//                
-//                jTextFieldIdRotas.setText(""+idOnibus);
-//                jTextFieldPlacaOnibus.setText(placa);
-//                jTextFieldNumeroDePoltronas.setText(""+numeroPoltronas);
-//                jTextFieldAnoDeFabricacao.setText(""+ano);
-//               
-//                adicionaSituacaojComboBox();
-//                
-//                int idModelo = onibusPersistencia.recuperaIDModeloPorOnibusSelecionado(idOnibus);
-//                idDoModelo = idModelo;
-//                ArrayList<Modelo> listaDeModelos = modeloPersistencia.recuperaModelosPeloIDSelecionado(idModelo);
-//                adicionaListaDeModelosJComboBox(listaDeModelos);
-//                
-//                jButtonAlterar.setEnabled(true);
-//                jButtonIncluir.setEnabled(false);
-//               
-//            }
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, e);
-//        }
+        try {
+            int indice = jTableRotas.getSelectedRow();
+            if (indice != -1) {
+                int idRota = Integer.parseInt(String.valueOf(jTableRotas.getValueAt(indice, 0)));
+                String cidadeOrigem = String.valueOf(jTableRotas.getValueAt(indice, 1));
+                String cidadeDestino = String.valueOf(jTableRotas.getValueAt(indice, 2));
+                String dataIda = String.valueOf(jTableRotas.getValueAt(indice, 3));
+                String dataChegada = String.valueOf(jTableRotas.getValueAt(indice, 4));
+                String horarioIda = String.valueOf(jTableRotas.getValueAt(indice, 5));
+                String horarioChegada = String.valueOf(jTableRotas.getValueAt(indice, 6));
+                String placaOnibus = String.valueOf(jTableRotas.getValueAt(indice, 7));
+                ArrayList<String> cidades = retornaListaCidadesJcomboBox();
+                ArrayList<String> cidadesOrigem = rotasPersistencia.recuperaListaOrdemSelecionadaCidadeOrigem(cidadeOrigem, cidades);
+                ArrayList<String> cidadesDestino = rotasPersistencia.recuperaListaOrdemSelecionadaCidadeDestino(cidadeDestino, cidades);
+
+                jTextFieldIdRotas.setText("" + idRota);
+                populajComboBoxCidadeOrigem(cidadesOrigem);
+                populajComboBoxCidadeDestino(cidadesDestino);
+                jFormatteDataIda.setText(dataIda);
+                populaHorarioIdaSelecionado(jComboBoxHorasIda, horarioIda);
+                populaMinutoIdaSelecionado(ComboBoxMinutosIda, horarioIda);
+                populaRotasJComboBoxSelecionado(jComboBoxOnibus, placaOnibus);
+                jButtonAlterar.setEnabled(true);
+                jButtonIncluir.setEnabled(false);
+                jButtonExluir.setEnabled(false);
+
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_jButtonBuscarActionPerformed
-    
+
+    private void populaRotasJComboBoxSelecionado(JComboBox comboBoxOnibus, String placa) {
+        try {
+            Onibus onibus = onibusPersistencia.recuperaOnibusPorPlaca(placa);
+            ArrayList<String> listaOnibus = new ArrayList<>();
+
+            for (int i = 0; i < comboBoxOnibus.getItemCount(); i++) {
+                String dadosComboBox = String.valueOf(comboBoxOnibus.getItemAt(i));
+                String dados[] = dadosComboBox.split(";");
+                if (dados[1].equals(onibus.getPlaca())) {
+                    listaOnibus.add(0, dadosComboBox);
+                } else {
+                    listaOnibus.add(dadosComboBox);
+                }
+            }
+
+            DefaultComboBoxModel model = new DefaultComboBoxModel(listaOnibus.toArray());
+            comboBoxOnibus.setModel(model);
+        } catch (Exception ex) {
+            Logger.getLogger(TelaDasRotas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    private ArrayList<String> retornaListaCidadesJcomboBox() {
+        ArrayList<String> cidades = new ArrayList<>();
+        for (int i = 0; i < jComboBoxCidadesOrigem.getItemCount(); i++) {
+            String dados = String.valueOf(jComboBoxCidadesOrigem.getItemAt(i));
+            cidades.add(dados);
+        }
+        return cidades;
+    }
+
+    private void populaHorarioIdaSelecionado(JComboBox comboBoxHora, String horarioIda) {
+        String dados[] = horarioIda.split(":");
+        ArrayList<String> horasIda = new ArrayList<>();
+
+        for (int i = 0; i < comboBoxHora.getItemCount(); i++) {
+            if (comboBoxHora.getItemAt(i).equals(dados[0])) {
+                horasIda.add(0, String.valueOf(comboBoxHora.getItemAt(i)));
+            } else {
+                horasIda.add(String.valueOf(comboBoxHora.getItemAt(i)));
+            }
+        }
+        comboBoxHora.removeAllItems();
+        DefaultComboBoxModel model = new DefaultComboBoxModel(horasIda.toArray());
+        comboBoxHora.setModel(model);
+
+    }
+
+    private void populaMinutoIdaSelecionado(JComboBox comboBoxMinuto, String minutoIda) {
+        String dados[] = minutoIda.split(":");
+        ArrayList<String> minutosida = new ArrayList<>();
+
+        for (int i = 0; i < comboBoxMinuto.getItemCount(); i++) {
+            if (comboBoxMinuto.getItemAt(i).equals(dados[1])) {
+                minutosida.add(0, String.valueOf(comboBoxMinuto.getItemAt(i)));
+            } else {
+                minutosida.add(String.valueOf(comboBoxMinuto.getItemAt(i)));
+            }
+        }
+        comboBoxMinuto.removeAllItems();
+        DefaultComboBoxModel model = new DefaultComboBoxModel(minutosida.toArray());
+        comboBoxMinuto.setModel(model);
+
+    }
+
+ 
+
 
     private void jButtonExluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExluirActionPerformed
         try {
@@ -524,39 +593,35 @@ public class TelaDasRotas extends javax.swing.JFrame {
                     rotasPersistencia.excluir(id);
                     mostrarDadosRotas(rotasPersistencia.recuperar());
                     limparCampos();
-                    
+
                 }
-                
+
             }
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }//GEN-LAST:event_jButtonExluirActionPerformed
 
-    private void jButtonCarregarArquivoTextoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCarregarArquivoTextoActionPerformed
-        iniciar();
-    }//GEN-LAST:event_jButtonCarregarArquivoTextoActionPerformed
-
     private void calcularHorarioChegadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcularHorarioChegadaActionPerformed
         try {
             String cidadeOrigem = (String.valueOf(jComboBoxCidadesOrigem.getSelectedItem()));
             String cidadeDestino = String.valueOf(jComboBoxCidadesDestino.getSelectedItem());
-            
+
             if (cidadeOrigem.equals(cidadeDestino)) {
                 throw new Exception("As cidades de origem e destino não podem ser iguais!");
             }
-            
+
             String dataIda = jFormatteDataIda.getText();
             String dataChegada = jFormattedDataChegada.getText();
-            
+
             if (dataIda.equals("  /  /    ")) {
                 throw new Exception("A data não pode estar vazia!");
             }
-            
+
             int horasIda = Integer.parseInt(String.valueOf(jComboBoxHorasIda.getSelectedItem()));
             int minutosIda = Integer.parseInt(String.valueOf(ComboBoxMinutosIda.getSelectedItem()));
-            
+
             CalculoHorario calc = new CalculoHorario();
             String chegadas[] = calc.calculaHorario(cidadeOrigem, cidadeDestino, dataIda, horasIda, minutosIda);
             jFormattedDataChegada.setText(chegadas[0]);
@@ -568,12 +633,12 @@ public class TelaDasRotas extends javax.swing.JFrame {
             modeloMinutos.addElement(horaEMinutos[1]);
             jComboBoxHorasChegada.setModel(modeloHora);
             ComboBoxMinutosChegada.setModel(modeloMinutos);
-            
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
     }//GEN-LAST:event_calcularHorarioChegadaActionPerformed
-    
+
     private int recuperaIDOnibusPorDadoSelecionadoJcomboBox(String dados) {
         String dadoOnibus[] = dados.split(";");
         int idOnibus = 0;
@@ -582,15 +647,18 @@ public class TelaDasRotas extends javax.swing.JFrame {
         }
         return idOnibus;
     }
-    
+
     private void limparCampos() {
         jTextFieldIdRotas.setText("");
         jFormatteDataIda.setText("");
         jFormattedDataChegada.setText("");
         jComboBoxHorasIda.setSelectedIndex(0);
         ComboBoxMinutosIda.setSelectedIndex(0);
-        jComboBoxHorasChegada.removeItemAt(0);
-        ComboBoxMinutosChegada.removeItemAt(0);
+        if (jComboBoxHorasChegada.getItemCount() > 0) {
+            jComboBoxHorasChegada.removeItemAt(0);
+            ComboBoxMinutosChegada.removeItemAt(0);
+        }
+
     }
 
     /**
@@ -646,7 +714,6 @@ public class TelaDasRotas extends javax.swing.JFrame {
     private javax.swing.JLabel idModelo;
     private javax.swing.JButton jButtonAlterar;
     private javax.swing.JButton jButtonBuscar;
-    private javax.swing.JButton jButtonCarregarArquivoTexto;
     private javax.swing.JButton jButtonExluir;
     private javax.swing.JButton jButtonIncluir;
     private javax.swing.JCheckBox jCheckBox1;

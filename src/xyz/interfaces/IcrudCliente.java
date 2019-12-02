@@ -17,4 +17,6 @@ public interface IcrudCliente {
      boolean consultaCPF(String cpf) throws Exception;
      ArrayList<Cliente> recuperar() throws Exception; 
      void excluir(String cpf) throws Exception;
+     Cliente recuperaClientePorCPF(String cpf)throws Exception;
+     void alterar(String nome, String cpf, String dataDeNascimento, String telefone, String cidade, String estado, String endereco, String cep) throws Exception; 
 }

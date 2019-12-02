@@ -41,9 +41,10 @@ public class Rotas {
             throw new Exception("A data não pode estar vazia!");
         }
         
-        if(dataChegada.equals("  /  /    ") || horarioChegada.equals("")){
+        if(dataChegada.equals("  /  /    ") || horarioChegada.equals("") || horarioChegada.equals("null:null")){
             throw new Exception("Clique no botão para calcular o horário de chegada!");
         }
+
         
         this.id = id;
         this.cidadeOrigem = cidadeOrigem;

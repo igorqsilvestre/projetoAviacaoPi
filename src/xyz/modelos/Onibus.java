@@ -29,8 +29,8 @@ public class Onibus {
     }
 
     public Onibus(int id, String placa, int numeroDePoltronas, int anoDeFabricacao, Situacao situacao, int idModelo) throws Exception {
-        if (placa.length() > 7) {
-            throw new Exception("O número da placa não pode ser maior que 7!");
+        if (placa.length() != 7) {
+            throw new Exception("O tamanho do número da placa não pode ser maior ou menor que 7!");
         }
         
         if(placa.isEmpty()){
@@ -93,8 +93,8 @@ public class Onibus {
      * @param placa the placa to set
      */
     public void setPlaca(String placa) throws Exception {
-        if (placa.length() > 7) {
-            throw new Exception("O número da placa não pode ser maior que 7!");
+        if (placa.length() != 7) {
+             throw new Exception("O tamanho do número da placa não pode ser maior ou menor que 7!");
         }
         if(placa.isEmpty()){
             throw new Exception("O campo da placa não pode estar vazio!");

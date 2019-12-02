@@ -86,22 +86,23 @@ public class MarcaPersistencia implements IcrudMarca {
     public void alterar(int id, String descricao, String imagem) throws Exception {
         try {
             ArrayList<Marca> listaArquivo = recuperar();
-            boolean controle = false;
+            FileWriter fw = new FileWriter(nomeDoArquivo);
+            BufferedWriter bw = new BufferedWriter(fw);
 
             Marca marcaa = null;
+            
             for (int i = 0; i < listaArquivo.size(); i++) {
                 Marca marca = listaArquivo.get(i);
+                if (marca.getId() != id) {
+                    bw.write(marca.toString() + "\n");
+                }
                 if (marca.getId() == id) {
-                    marcaa = new Marca(id, descricao, imagem);
-                    controle = true;
-                    excluir(id);
-
+                    marcaa = new Marca(id, descricao, imagem);         
+                    bw.write(marcaa + "\n");
                 }
             }
 
-            if (controle) {
-                incluir(marcaa);
-            }
+            bw.close();
 
         } catch (Exception e) {
             throw (e);

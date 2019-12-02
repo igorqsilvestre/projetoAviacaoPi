@@ -18,7 +18,7 @@ import xyz.modelos.Cliente;
  *
  * @author Igor
  */
-public class ClientePersistencia implements IcrudCliente{
+public class ClientePersistencia implements IcrudCliente {
 
     String arquivo = "cliente.txt";
 
@@ -30,7 +30,7 @@ public class ClientePersistencia implements IcrudCliente{
                 BufferedWriter bw = new BufferedWriter(fw);
                 bw.write(objeto.toString() + "\n");
                 bw.close();
-            }else{
+            } else {
                 throw new Exception("O cpf já existe, insira outro!");
             }
 
@@ -90,8 +90,8 @@ public class ClientePersistencia implements IcrudCliente{
     }
 
     @Override
-    public void excluir(String cpf)throws Exception {
-         try {
+    public void excluir(String cpf) throws Exception {
+        try {
             ArrayList<Cliente> listaArquivo = recuperar();
             FileWriter fw = new FileWriter(arquivo);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -111,7 +111,57 @@ public class ClientePersistencia implements IcrudCliente{
             throw (e);
         }
     }
-    
-    
 
+    @Override
+    public Cliente recuperaClientePorCPF(String cpf) throws Exception {
+        try {
+            File fl = new File(arquivo);
+            ArrayList<Cliente> listaDeClientes = new ArrayList<>();
+            if (fl.exists()) {
+                FileReader fr = new FileReader(arquivo);
+                BufferedReader br = new BufferedReader(fr);
+                String linha = "";
+                while ((linha = br.readLine()) != null) {
+                    String dados[] = linha.split(";");
+                    String cpfCliente = dados[1];
+                    if (cpfCliente.equals(cpf)) {
+                        Cliente cliente = new Cliente(linha);
+                        return cliente;
+                    }
+
+                }
+                br.close();
+            }
+            return null;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+
+    @Override
+    public void alterar(String nome, String cpf, String dataDeNascimento, String telefone, String cidade, String estado, String endereco, String cep) throws Exception {
+        try {
+            ArrayList<Cliente> listaArquivo = recuperar();
+            FileWriter fw = new FileWriter(arquivo);
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            Cliente clientee = null;
+            
+            for (int i = 0; i < listaArquivo.size(); i++) {
+                Cliente cliente = listaArquivo.get(i);
+                if (!(cliente.getCpf().equals(cpf))) {
+                    bw.write(cliente.toString() + "\n");
+                }
+                if (cliente.getCpf().equals(cpf)) {
+                    clientee = new Cliente(nome, cpf, dataDeNascimento,telefone,cidade,estado,endereco,cep);         
+                    bw.write(clientee + "\n");
+                }
+            }
+
+            bw.close();
+
+        } catch (Exception e) {
+            throw (e);
+        }
+    }
 }

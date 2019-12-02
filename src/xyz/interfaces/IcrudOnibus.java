@@ -19,4 +19,6 @@ public interface IcrudOnibus {
     void alterar(int idOnibus, String placa, int numeroPoltronas, int ano, Situacao situacaoOnibus, int idModelo) throws Exception ;
     ArrayList<Onibus> recuperaOnibusAtivo()throws Exception;
     Onibus recuperaOnibusPorID(int id) throws Exception;
+    boolean consultaPlaca(String placa) throws Exception;
+    Onibus recuperaOnibusPorPlaca(String placa) throws Exception; 
 }

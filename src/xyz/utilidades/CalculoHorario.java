@@ -31,8 +31,7 @@ public class CalculoHorario {
             chegadas[0] = formatarData.format(calendar.getTime());
             chegadas[1] = formatarHora.format(calendar.getTime());
 
-            System.out.println(chegadas[0]);
-            System.out.println(chegadas[1]);
+          
         }
 
         else if (cidadeOrigem.equals("Goiânia") && cidadeDestino.equals("Uberaba")) {
@@ -43,8 +42,7 @@ public class CalculoHorario {
             chegadas[0] = formatarData.format(calendar.getTime());
             chegadas[1] = formatarHora.format(calendar.getTime());
 
-            System.out.println(chegadas[0]);
-            System.out.println(chegadas[1]);
+            
         }
 
         else if (cidadeOrigem.equals("Goiânia") && cidadeDestino.equals("São Paulo")) {
@@ -55,8 +53,7 @@ public class CalculoHorario {
             chegadas[0] = formatarData.format(calendar.getTime());
             chegadas[1] = formatarHora.format(calendar.getTime());
 
-            System.out.println(chegadas[0]);
-            System.out.println(chegadas[1]);
+           
         }
 
         else if (cidadeOrigem.equals("Uberlândia") && cidadeDestino.equals("Uberaba")) {
@@ -67,8 +64,7 @@ public class CalculoHorario {
             chegadas[0] = formatarData.format(calendar.getTime());
             chegadas[1] = formatarHora.format(calendar.getTime());
 
-            System.out.println(chegadas[0]);
-            System.out.println(chegadas[1]);
+            
         }
 
         else if (cidadeOrigem.equals("Uberlândia") && cidadeDestino.equals("São Paulo")) {
@@ -79,8 +75,7 @@ public class CalculoHorario {
             chegadas[0] = formatarData.format(calendar.getTime());
             chegadas[1] = formatarHora.format(calendar.getTime());
 
-            System.out.println(chegadas[0]);
-            System.out.println(chegadas[1]);
+           
         }
 
        else if (cidadeOrigem.equals("Uberlândia") && cidadeDestino.equals("Goiânia")) {
@@ -91,8 +86,7 @@ public class CalculoHorario {
             chegadas[0] = formatarData.format(calendar.getTime());
             chegadas[1] = formatarHora.format(calendar.getTime());
 
-            System.out.println(chegadas[0]);
-            System.out.println(chegadas[1]);
+           
         }
         
         else if (cidadeOrigem.equals("Uberaba") && cidadeDestino.equals("Uberlândia")) {
@@ -103,8 +97,7 @@ public class CalculoHorario {
             chegadas[0] = formatarData.format(calendar.getTime());
             chegadas[1] = formatarHora.format(calendar.getTime());
 
-            System.out.println(chegadas[0]);
-            System.out.println(chegadas[1]);
+          
         }
         
          else if (cidadeOrigem.equals("Uberaba") && cidadeDestino.equals("São Paulo")) {
@@ -115,8 +108,7 @@ public class CalculoHorario {
             chegadas[0] = formatarData.format(calendar.getTime());
             chegadas[1] = formatarHora.format(calendar.getTime());
 
-            System.out.println(chegadas[0]);
-            System.out.println(chegadas[1]);
+           
         }
         
         else if (cidadeOrigem.equals("Uberaba") && cidadeDestino.equals("Goiânia")) {
@@ -127,8 +119,7 @@ public class CalculoHorario {
             chegadas[0] = formatarData.format(calendar.getTime());
             chegadas[1] = formatarHora.format(calendar.getTime());
 
-            System.out.println(chegadas[0]);
-            System.out.println(chegadas[1]);
+          
         }
         
         else if (cidadeOrigem.equals("São Paulo") && cidadeDestino.equals("Uberaba")) {
@@ -139,8 +130,7 @@ public class CalculoHorario {
             chegadas[0] = formatarData.format(calendar.getTime());
             chegadas[1] = formatarHora.format(calendar.getTime());
 
-            System.out.println(chegadas[0]);
-            System.out.println(chegadas[1]);
+          
         }
         
         else if (cidadeOrigem.equals("São Paulo") && cidadeDestino.equals("Uberlândia")) {
@@ -151,8 +141,7 @@ public class CalculoHorario {
             chegadas[0] = formatarData.format(calendar.getTime());
             chegadas[1] = formatarHora.format(calendar.getTime());
 
-            System.out.println(chegadas[0]);
-            System.out.println(chegadas[1]);
+            
         }
         
         else if (cidadeOrigem.equals("São Paulo") && cidadeDestino.equals("Goiânia")) {
@@ -163,8 +152,6 @@ public class CalculoHorario {
             chegadas[0] = formatarData.format(calendar.getTime());
             chegadas[1] = formatarHora.format(calendar.getTime());
 
-            System.out.println(chegadas[0]);
-            System.out.println(chegadas[1]);
         }
 
 

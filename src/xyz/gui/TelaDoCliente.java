@@ -29,7 +29,7 @@ public class TelaDoCliente extends javax.swing.JFrame {
         jTextFieldCpf.setDocument(new TeclasPermitidasNumeros());
         jTextFieldTelefone.setDocument(new TeclasPermitidasNumeros());
         jTextFieldCEP.setDocument(new TeclasPermitidasNumeros());
-        //jButtonAlterar.setEnabled(false);
+        jButtonAlterar.setEnabled(false);
 
     }
 
@@ -82,29 +82,7 @@ public class TelaDoCliente extends javax.swing.JFrame {
         }
     }
 
-//    private void adicionaListaDeOnibusJComboBox(ArrayList<Onibus> listaDeOnibus) {
-//        try {
-//            String saida[] = new String[listaDeOnibus.size()];
-//            for (int i = 0; i < listaDeOnibus.size(); i++) {
-//                Onibus onibus = null;
-//                String lista = String.valueOf(listaDeOnibus.get(i));
-//                String dadosOnibus[] = lista.split(";");
-//                for (int j = 0; j < dadosOnibus.length; j++) {
-//                    onibus = new Onibus(lista);
-//                }
-//
-//                Modelo modelo = modeloPersistencia.recuperaModeloPorID(onibus.getIdModelo());
-//                Marca marca = modeloPersistencia.recuperaMarcaPorDados(modelo.toString());
-//                saida[i] = "" + onibus.getId() + ";" + onibus.getPlaca() + ";" + modelo.getDescricao() + ";" + marca.getDescricao() + "";
-//            }
-//
-//            DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(saida);
-//            jComboBoxOnibus.setModel(comboBoxModel);
-//
-//        } catch (Exception erro) {
-//            erro.getMessage();
-//        }
-//    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -160,7 +138,7 @@ public class TelaDoCliente extends javax.swing.JFrame {
 
         jLabel5.setText("jLabel5");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CADASTRO");
         setResizable(false);
 
@@ -360,73 +338,62 @@ public class TelaDoCliente extends javax.swing.JFrame {
 
 
     private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
-//          try{
-//        int idOnibus = Integer.parseInt(jTextFieldIdRotas.getText());
-//        String placa = jTextFieldPlacaOnibus.getText();
-//        int numeroPoltronas = Integer.parseInt(jTextFieldNumeroDePoltronas.getText());
-//        int ano = Integer.parseInt(jTextFieldAnoDeFabricacao.getText());
-//        
-//        Situacao situacaoOnibus = (Situacao)jComboBoxSituacao.getSelectedItem();
-//        
-//
-//        onibusPersistencia.alterar(idOnibus, placa, numeroPoltronas,ano,situacaoOnibus,idDoModelo);
-//        mostrarDadosOnibus(onibusPersistencia.recuperar());
-//        limparCampos();
-//        jButtonAlterar.setEnabled(false);
-//        jButtonIncluir.setEnabled(true);
-//        }catch(Exception e){
-//            JOptionPane.showMessageDialog(null, e.getMessage());
-//        }
+        try {
+            String nome = jTextFieldNome.getText();
+            String cpf = jTextFieldCpf.getText();
+            String dataDeNascimento = jFormattedTextFieldDataDeNascimento.getText();
+            String telefone = jTextFieldTelefone.getText();
+            String cidade = jTextFieldCidade.getText();
+            String estado = jTextFieldEstado.getText();
+            String endereco = jTextFieldEndereco.getText();
+            String cep = jTextFieldCEP.getText();
+
+            clientePersistencia.alterar(nome, cpf, dataDeNascimento, telefone, cidade, estado,endereco,cep);
+            iniciar();
+            limparCampos();
+            jButtonAlterar.setEnabled(false);
+            jButtonIncluir.setEnabled(true);
+            jTextFieldCpf.setEnabled(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
 
     }//GEN-LAST:event_jButtonAlterarActionPerformed
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
-// try {
-//            int indice = jTableRotas.getSelectedRow();
-//            if (indice != -1) {
-//                String idOnibusString = String.valueOf(jTableRotas.getValueAt(indice, 0));
-//                String placa = String.valueOf(jTableRotas.getValueAt(indice, 1));
-//                String nPoltronas = String.valueOf(jTableRotas.getValueAt(indice,2));
-//                String anoFabricacao = String.valueOf(jTableRotas.getValueAt(indice,3));
-//                String s = String.valueOf(jTableRotas.getValueAt(indice,4));
-//                String modelo = String.valueOf(jTableRotas.getValueAt(indice,5));
-//                String marca = String.valueOf(jTableRotas.getValueAt(indice,6));
-//                
-//                int idOnibus = Integer.parseInt(idOnibusString);
-//                int numeroPoltronas = Integer.parseInt(nPoltronas);               
-//                int ano = Integer.parseInt(anoFabricacao);
-//                situacao = Situacao.valueOf(s);
-//                
-//                jTextFieldIdRotas.setText(""+idOnibus);
-//                jTextFieldPlacaOnibus.setText(placa);
-//                jTextFieldNumeroDePoltronas.setText(""+numeroPoltronas);
-//                jTextFieldAnoDeFabricacao.setText(""+ano);
-//               
-//                adicionaSituacaojComboBox();
-//                
-//                int idModelo = onibusPersistencia.recuperaIDModeloPorOnibusSelecionado(idOnibus);
-//                idDoModelo = idModelo;
-//                ArrayList<Modelo> listaDeModelos = modeloPersistencia.recuperaModelosPeloIDSelecionado(idModelo);
-//                adicionaListaDeModelosJComboBox(listaDeModelos);
-//                
-//                jButtonAlterar.setEnabled(true);
-//                jButtonIncluir.setEnabled(false);
-//               
-//            }
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, e);
-//        }
+        try {
+            int indice = jTableClientes.getSelectedRow();
+            if (indice != -1) {
+                String nome = String.valueOf(jTableClientes.getValueAt(indice, 0));
+                String cpf = String.valueOf(jTableClientes.getValueAt(indice, 1));
+                String dataDeNascimento = String.valueOf(jTableClientes.getValueAt(indice,2));
+                String telefone = String.valueOf(jTableClientes.getValueAt(indice,3));
+                String cidade = String.valueOf(jTableClientes.getValueAt(indice,4));
+                String estado = String.valueOf(jTableClientes.getValueAt(indice,5));
+                String endereco = String.valueOf(jTableClientes.getValueAt(indice,6));
+                String cep = String.valueOf(jTableClientes.getValueAt(indice,7));
+                
+                jTextFieldNome.setText(nome);
+                jTextFieldCpf.setText(cpf);
+                jFormattedTextFieldDataDeNascimento.setText(dataDeNascimento);
+                jTextFieldTelefone.setText(telefone);
+                jTextFieldCidade.setText(cidade);
+                jTextFieldEstado.setText(estado);
+                jTextFieldEndereco.setText(endereco);
+                jTextFieldCEP.setText(cep);
+         
+                jTextFieldCpf.setEnabled(false);          
+                jButtonAlterar.setEnabled(true);
+                jButtonIncluir.setEnabled(false);
+               
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
 
-//    private int recuperaIDOnibusPorDadoSelecionadoJcomboBox(String dados) {
-//        String dadoOnibus[] = dados.split(";");
-//        int idOnibus = 0;
-//        for (int i = 0; i < dadoOnibus.length; i++) {
-//            idOnibus = Integer.parseInt(dadoOnibus[0]);
-//        }
-//        return idOnibus;
-//    }
+
     private void limparCampos() {
         jTextFieldNome.setText("");
         jTextFieldCpf.setText("");

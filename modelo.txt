@@ -1,3 +1,2 @@
-18;Focus;15
-19;Corolla;13
-16;Doblo;14
+81;Uno;78
+82;Doblo;78

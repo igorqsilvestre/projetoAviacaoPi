@@ -26,10 +26,40 @@ public class OnibusPersistencia implements IcrudOnibus {
     @Override
     public void incluir(Onibus objeto) throws Exception {
         try {
-            FileWriter fw = new FileWriter(arquivo, true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(objeto.toString() + "\n");
-            bw.close();
+            if (consultaPlaca(objeto.getPlaca())) {
+                FileWriter fw = new FileWriter(arquivo, true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(objeto.toString() + "\n");
+                bw.close();
+            }else{
+                throw new Exception("Placa já existe insira outra");
+            }
+
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+
+    @Override
+    public boolean consultaPlaca(String placa) throws Exception {
+        try {
+            File file = new File(arquivo);
+            if (file.exists()) {
+                FileReader fr = new FileReader(arquivo);
+                BufferedReader br = new BufferedReader(fr);
+                String linha = "";
+                while ((linha = br.readLine()) != null) {
+                    String dados[] = linha.split(";");
+                    if (dados[1].equals(placa)) {
+                        return false;
+                    }
+
+                }
+                br.close();
+
+            }
+
+            return true;
 
         } catch (Exception erro) {
             throw erro;
@@ -111,21 +141,23 @@ public class OnibusPersistencia implements IcrudOnibus {
     public void alterar(int idOnibus, String placa, int numeroPoltronas, int ano, Situacao situacaoOnibus, int idModelo) throws Exception {
         try {
             ArrayList<Onibus> listaArquivo = recuperar();
-            boolean controle = false;
+            FileWriter fw = new FileWriter(arquivo);
+            BufferedWriter bw = new BufferedWriter(fw);
 
             Onibus onibuss = null;
             for (int i = 0; i < listaArquivo.size(); i++) {
                 Onibus onibus = listaArquivo.get(i);
+
+                if (onibus.getId() != idOnibus) {
+                    bw.write(onibus.toString() + "\n");
+                }
                 if (onibus.getId() == idOnibus) {
                     onibuss = new Onibus(idOnibus, placa, numeroPoltronas, ano, situacaoOnibus, idModelo);
-                    controle = true;
-                    excluir(idOnibus);
+                    bw.write(onibuss + "\n");
                 }
             }
 
-            if (controle) {
-                incluir(onibuss);
-            }
+            bw.close();
 
         } catch (Exception e) {
             throw (e);
@@ -160,7 +192,6 @@ public class OnibusPersistencia implements IcrudOnibus {
     public Onibus recuperaOnibusPorID(int id) throws Exception {
         try {
             File fl = new File(arquivo);
-            ArrayList<Onibus> listaDeOnibus = new ArrayList<>();
             if (fl.exists()) {
                 FileReader fr = new FileReader(arquivo);
                 BufferedReader br = new BufferedReader(fr);
@@ -169,6 +200,30 @@ public class OnibusPersistencia implements IcrudOnibus {
                     String dados[] = linha.split(";");
                     int idOnibus = Integer.parseInt(dados[0]);
                     if (idOnibus == id) {
+                        Onibus onibus = new Onibus(linha);
+                        return onibus;
+                    }
+
+                }
+                br.close();
+            }
+            return null;
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
+    
+     @Override
+    public Onibus recuperaOnibusPorPlaca(String placa) throws Exception {
+        try {
+            File fl = new File(arquivo);
+            if (fl.exists()) {
+                FileReader fr = new FileReader(arquivo);
+                BufferedReader br = new BufferedReader(fr);
+                String linha = "";
+                while ((linha = br.readLine()) != null) {
+                    String dados[] = linha.split(";");
+                    if (dados[1].equals(placa) ) {
                         Onibus onibus = new Onibus(linha);
                         return onibus;
                     }
