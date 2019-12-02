@@ -30,16 +30,21 @@ public class Onibus {
 
     public Onibus(int id, String placa, int numeroDePoltronas, int anoDeFabricacao, Situacao situacao, int idModelo) throws Exception {
         if (placa.length() != 7) {
-            throw new Exception("O tamanho do número da placa não pode ser maior ou menor que 7!");
+            throw new Exception("O tamanho do número da placa não pode ser diferente de 7!");
         }
         
         if(placa.isEmpty()){
             throw new Exception("O campo da placa não pode estar vazio!");
         }
+        
+        if(numeroDePoltronas > 50){
+            throw new Exception("O o número de poltronas não pode ser maior que 50");
+        }
 
         if (numeroDePoltronas < 0 || anoDeFabricacao < 0) {
             throw new Exception("O campo não pode ser menor do que 0");
         }
+        
         this.id = id;
         this.placa = placa;
         this.numeroDePoltronas = numeroDePoltronas;

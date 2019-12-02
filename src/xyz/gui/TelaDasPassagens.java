@@ -88,7 +88,7 @@ public class TelaDasPassagens extends javax.swing.JFrame {
             
             jTablePassagem.setModel(model);
         } catch (Exception erro) {
-            JOptionPane.showMessageDialog(null, erro.getMessage());
+           throw erro;
         }
         
     }

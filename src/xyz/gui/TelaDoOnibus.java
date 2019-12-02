@@ -59,7 +59,6 @@ public class TelaDoOnibus extends javax.swing.JFrame {
             model.setNumRows(0);
             for (int i = 0; i < listaDeOnibus.size(); i++) {                
                 Onibus aux = listaDeOnibus.get(i);
-                
                 Modelo modelo = modeloPersistencia.recuperaModeloPorID(aux.getIdModelo());
                 ImageIcon img = new ImageIcon(modelo.getMarca().getImagem());
                 Image image = img.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
@@ -72,9 +71,10 @@ public class TelaDoOnibus extends javax.swing.JFrame {
 
             
             
-        }catch(Exception erro){
-            JOptionPane.showMessageDialog(null, erro.getMessage());
+       }catch(Exception erro){
+          throw erro;
         }
+        
 
     }
     
@@ -372,8 +372,8 @@ public class TelaDoOnibus extends javax.swing.JFrame {
             iniciar();
             limparCampos();
             gerarID.finalizar();
-
-        } catch (Exception e) {
+            
+        }catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
 

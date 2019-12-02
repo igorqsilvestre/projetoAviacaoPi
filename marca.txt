@@ -1,2 +1,0 @@
-78;Fiat;C:\Users\Igor\Pictures\imagens pi\fiat.png
-79;Volvo;C:\Users\Igor\Pictures\imagens pi\volvo.png

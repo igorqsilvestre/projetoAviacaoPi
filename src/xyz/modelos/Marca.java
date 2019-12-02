@@ -27,13 +27,14 @@ public class Marca {
     public Marca(int id, String descricao,String imagem) throws Exception {
         
         if(!descricao.isEmpty() || !descricao.equals("")){
+            throw new Exception("O campo da descrição não pode estar vazio!");
+        }
+        if(imagem.equals("")||imagem.equals(null)){
+            throw new Exception("O caminho da imagem não pode estar vazio"); 
+        }
             this.id = id;
             this.descricao = descricao;
             this.imagem = imagem;
-        }else{
-            throw new Exception("O campo da descrição não pode estar vazio!");
-        }
-       
     }
 
     public Marca(String dados) throws Exception {
@@ -97,8 +98,12 @@ public class Marca {
     /**
      * @param imagem the imagem to set
      */
-    public void setImagem(String imagem) {
-        this.imagem = imagem;
+    public void setImagem(String imagem) throws Exception {
+        if(imagem.equals("")||imagem.equals(null)){
+            throw new Exception("O caminho da imagem não pode estar vazio"); 
+        }else{
+            this.imagem = imagem;
+        } 
     }
     
     

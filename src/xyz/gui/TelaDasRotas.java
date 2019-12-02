@@ -76,7 +76,7 @@ public class TelaDasRotas extends javax.swing.JFrame {
 
             jTableRotas.setModel(model);
         } catch (Exception erro) {
-            JOptionPane.showMessageDialog(null, erro.getMessage());
+            throw erro;
         }
 
     }
@@ -97,7 +97,6 @@ public class TelaDasRotas extends javax.swing.JFrame {
             mostrarDadosRotas(rotasPersistencia.recuperar());
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, "Arquivo Texto corrompido, insira um novo arquivo");
             DefaultTableModel model = (DefaultTableModel) jTableRotas.getModel();
             //Limpa a tabela 
             model.setNumRows(0);

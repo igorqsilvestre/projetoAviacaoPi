@@ -30,6 +30,10 @@ public class Modelo {
         } else {
             throw new Exception("O campo da descrição não pode ser vazio!");
         }
+        
+        if(marca == null){
+            throw new Exception("Não existe marca cadastrada disponível para o modelo");
+        }
 
     }
 
