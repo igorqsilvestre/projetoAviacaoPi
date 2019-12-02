@@ -327,9 +327,6 @@
     <Component class="javax.swing.JLabel" name="jLabelIDMarca">
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldNumeroDePoltronas">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldNumeroDePoltronasActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>

@@ -26,7 +26,7 @@ public class Marca {
 
     public Marca(int id, String descricao,String imagem) throws Exception {
         
-        if(!descricao.isEmpty() || !descricao.equals("")){
+        if(descricao.isEmpty() || descricao.equals("")){
             throw new Exception("O campo da descrição não pode estar vazio!");
         }
         if(imagem.equals("")||imagem.equals(null)){

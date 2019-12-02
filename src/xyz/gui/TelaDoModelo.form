@@ -103,7 +103,7 @@
                                       <Component id="jButtonBuscar" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jTextFieldDescricaoModelo" alignment="0" min="-2" pref="459" max="-2" attributes="0"/>
-                                  <Component id="jComboBoxMarcas" alignment="0" min="-2" pref="63" max="-2" attributes="0"/>
+                                  <Component id="jComboBoxMarcas" alignment="0" min="-2" pref="157" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" attributes="0">
