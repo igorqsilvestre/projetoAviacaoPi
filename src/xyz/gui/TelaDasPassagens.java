@@ -29,7 +29,7 @@ import xyz.utilidades.ThreadPopulaClientesNoJcomboBox;
  * @author eugeniojulio
  */
 public class TelaDasPassagens extends javax.swing.JFrame {
-
+    
     private ModeloPersistencia modeloPersistencia = new ModeloPersistencia();
     private MarcaPersistencia marcaPersistencia = new MarcaPersistencia();
     private OnibusPersistencia onibusPersistencia = new OnibusPersistencia();
@@ -52,17 +52,17 @@ public class TelaDasPassagens extends javax.swing.JFrame {
         populaAssentojComboBox();
         this.iniciar();
         jButtonAlterar.setEnabled(false);
-
+        
     }
-
+    
     private void mostrarDadosPassagens(ArrayList<Passagem> listaDePassagens) throws Exception {
         try {
             DefaultTableModel model = (DefaultTableModel) jTablePassagem.getModel();
-
+            
             model.setNumRows(0);
             for (int i = 0; i < listaDePassagens.size(); i++) {
                 String[] saida = new String[15];
-
+                
                 Passagem aux = listaDePassagens.get(i);
                 Cliente cliente = clientePersistencia.recuperaClientePorCPF(aux.getCpfCliente());
                 Rotas rota = rotasPersistencia.recuperaRotaPorId(aux.getIdRotas());
@@ -85,18 +85,18 @@ public class TelaDasPassagens extends javax.swing.JFrame {
                 saida[14] = "" + aux.getAssento();
                 model.addRow(saida);
             }
-
+            
             jTablePassagem.setModel(model);
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(null, erro.getMessage());
         }
-
+        
     }
-
+    
     private void iniciar() {
         try {
             mostrarDadosPassagens(passagemPersistencia.recuperar());
-
+            
         } catch (Exception e) {
             DefaultTableModel model = (DefaultTableModel) jTablePassagem.getModel();
             //Limpa a tabela 
@@ -122,7 +122,7 @@ public class TelaDasPassagens extends javax.swing.JFrame {
             model.addRow(saida);
         }
     }
-
+    
     private void adicionaListaDeRotasJComboBox(ArrayList<Rotas> listaDeRotas) {
         try {
             String saida[] = new String[listaDeRotas.size()];
@@ -133,40 +133,40 @@ public class TelaDasPassagens extends javax.swing.JFrame {
                 for (int j = 0; j < dadosOnibus.length; j++) {
                     rotas = new Rotas(lista);
                 }
-
+                
                 saida[i] = "" + rotas.getId() + ";" + rotas.getCidadeOrigem() + ";" + rotas.getCidadeDestino() + ";"
                         + rotas.getDataIda() + ";" + rotas.getDataChegada() + ";" + rotas.getHorarioIda() + ";"
                         + rotas.getHorarioChegada() + ";" + rotas.getIdOnibus();
             }
-
+            
             DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(saida);
             jComboBoxRotas.setModel(comboBoxModel);
-
+            
         } catch (Exception erro) {
             erro.getMessage();
         }
     }
-
+    
     private void adicionaListaDeClientesJComboBox() {
         try {
             ThreadPopulaClientesNoJcomboBox buscarClientes = new ThreadPopulaClientesNoJcomboBox(jComboBoxCliente, true);
             buscarClientes.start();
         } catch (Exception erro) {
             erro.getMessage();
-
+            
         }
     }
     
-    private void populaJComboBoxRotaAPartirDaBusca(int id){
+    private void populaJComboBoxRotaAPartirDaBusca(int id) {
         ArrayList<String> listanovaRotas = new ArrayList<>();
-         ArrayList<String> listaVelhaRotas = new ArrayList<>();
+        ArrayList<String> listaVelhaRotas = new ArrayList<>();
         for (int i = 0; i < jComboBoxRotas.getItemCount(); i++) {
             String rotas = jComboBoxRotas.getItemAt(i);
             String dados[] = rotas.split(";");
             int idRota = Integer.parseInt(dados[0]);
-            if(idRota == id){
+            if (idRota == id) {
                 listanovaRotas.add(rotas);
-            }else{
+            } else {
                 listaVelhaRotas.add(rotas);
             }
         }
@@ -433,7 +433,7 @@ public class TelaDasPassagens extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIncluirActionPerformed
-
+        
         try {
             GeradorDeIdentificadores gerarID = new GeradorDeIdentificadores();
             int id = gerarID.getIdentificador();
@@ -442,87 +442,132 @@ public class TelaDasPassagens extends javax.swing.JFrame {
             String formaDePagamento = String.valueOf(jComboBoxFormasDePagamento.getSelectedItem());
             String cliente = String.valueOf(jComboBoxCliente.getSelectedItem());
             int assento = Integer.parseInt(String.valueOf(jComboBoxAssento.getSelectedItem()));
-
+            
             int idRotas = recuperaIDRotasJComboBox(rotas);
             String cpfCliente = recuperaCPFClientesJComboBox(cliente);
-
+            
             verificarAssentoDisponivel(idRotas, cpfCliente);
             Passagem passagem = new Passagem(id, idRotas, valorPassagem, formaDePagamento, cpfCliente, assento);
             passagemPersistencia.incluir(passagem);
-
+            
             iniciar();
             limparCampos();
             gerarID.finalizar();
-
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
     }//GEN-LAST:event_jButtonIncluirActionPerformed
-
-    private void verificarAssentoDisponivel(int id, String cpf)throws Exception{     
-            ArrayList<Passagem> listaDePassagens = passagemPersistencia.recuperar();
-            for (int i = 0; i < listaDePassagens.size(); i++) {
-                 Passagem passagem = listaDePassagens.get(i);
-                 if(passagem.getIdRotas() == id && passagem.getCpfCliente().equals(cpf) && passagem.getAssento()!= 0){
-                     throw new Exception("Cliente já possui assento para esta rota!");
-                 } 
+    
+    private void verificarAssentoDisponivel(int id, String cpf) throws Exception {
+        ArrayList<Passagem> listaDePassagens = passagemPersistencia.recuperar();
+        for (int i = 0; i < listaDePassagens.size(); i++) {
+            Passagem passagem = listaDePassagens.get(i);
+            if (passagem.getIdRotas() == id && passagem.getCpfCliente().equals(cpf) && passagem.getAssento() != 0) {
+                throw new Exception("Cliente já possui assento para esta rota!");
             }
-            
+        }
         
     }
     
-    
 
     private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
-//          try{
-//        int idOnibus = Integer.parseInt(jTextFieldIdRotas.getText());
-//        String placa = jTextFieldPlacaOnibus.getText();
-//        int numeroPoltronas = Integer.parseInt(jTextFieldNumeroDePoltronas.getText());
-//        int ano = Integer.parseInt(jTextFieldAnoDeFabricacao.getText());
-//        
-//        Situacao situacaoOnibus = (Situacao)jComboBoxSituacao.getSelectedItem();
-//        
-//
-//        onibusPersistencia.alterar(idOnibus, placa, numeroPoltronas,ano,situacaoOnibus,idDoModelo);
-//        mostrarDadosOnibus(onibusPersistencia.recuperar());
-//        limparCampos();
-//        jButtonAlterar.setEnabled(false);
-//        jButtonIncluir.setEnabled(true);
-//        }catch(Exception e){
-//            JOptionPane.showMessageDialog(null, e.getMessage());
-//        }
+        try {
+            int idPassagem = Integer.parseInt(jTextFieldIdPassagem.getText());
+            String rotas = String.valueOf(jComboBoxRotas.getSelectedItem());
+            String valorPassagem = jTextFieldValorDaPassagem.getText();
+            String formaDePagamento = String.valueOf(jComboBoxFormasDePagamento.getSelectedItem());
+            String cliente = String.valueOf(jComboBoxCliente.getSelectedItem());
+            int assento = Integer.parseInt(String.valueOf(jComboBoxAssento.getSelectedItem()));
+            int idRotas = recuperaIDRotasJComboBox(rotas);
+            String cpfCliente = recuperaCPFClientesJComboBox(cliente);
+            
+            passagemPersistencia.alterar(idPassagem,valorPassagem,formaDePagamento,assento,idRotas,cpfCliente);
+            iniciar();
+            limparCampos();
+            jButtonAlterar.setEnabled(false);
+            jButtonIncluir.setEnabled(true);
+            jButtonExluir.setEnabled(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
 
     }//GEN-LAST:event_jButtonAlterarActionPerformed
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
- try {
+        try {
             int indice = jTablePassagem.getSelectedRow();
             if (indice != -1) {
                 int idPassagem = Integer.parseInt(String.valueOf(jTablePassagem.getValueAt(indice, 0)));
                 
                 Passagem passagem = passagemPersistencia.recuperarPassagemPorID(idPassagem);
                 passagem.getIdRotas();
-               
-               jTextFieldIdPassagem.setText(""+idPassagem);
+                
+                jTextFieldIdPassagem.setText("" + idPassagem);
                 populaJComboBoxRotaAPartirDaBusca(passagem.getIdRotas());
-               
-//                adicionaSituacaojComboBox();
-//                
-//                int idModelo = onibusPersistencia.recuperaIDModeloPorOnibusSelecionado(idOnibus);
-//                idDoModelo = idModelo;
-//                ArrayList<Modelo> listaDeModelos = modeloPersistencia.recuperaModelosPeloIDSelecionado(idModelo);
-//                adicionaListaDeModelosJComboBox(listaDeModelos);
+                populaFormaDePagamentoAPartirDaBusca(passagem.getFormaDePagamento());
+                populaClientesAPartirDaBusca(passagem.getCpfCliente());
+                populaAssentoAPartirDaBusca(passagem.getAssento());
                 
                 jButtonAlterar.setEnabled(true);
                 jButtonIncluir.setEnabled(false);
-               
+                jButtonExluir.setEnabled(false);
+                
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_jButtonBuscarActionPerformed
-
+    
+    private void populaAssentoAPartirDaBusca(int assento) {
+        ArrayList<Integer> listaAssentos = new ArrayList<>();
+        for (int i = 0; i < jComboBoxAssento.getItemCount(); i++) {
+            int assentos = Integer.parseInt(String.valueOf(jComboBoxAssento.getItemAt(i)));
+            if (assentos == assento) {
+                listaAssentos.add(0, assentos);
+            } else {
+                listaAssentos.add(assentos);
+            }
+        }
+        jComboBoxAssento.removeAllItems();
+        DefaultComboBoxModel model = new DefaultComboBoxModel(listaAssentos.toArray());
+        jComboBoxAssento.setModel(model);
+    }
+    
+    private void populaClientesAPartirDaBusca(String cpf) {
+        ArrayList<String> listaClientes = new ArrayList<>();
+        for (int i = 0; i < jComboBoxCliente.getItemCount(); i++) {
+            String tiposCliente = String.valueOf(jComboBoxCliente.getItemAt(i));
+            String dadosCliente[] = tiposCliente.split(";");
+            if (dadosCliente[1].equals(cpf)) {
+                listaClientes.add(0, tiposCliente);
+            } else {
+                listaClientes.add(tiposCliente);
+            }
+        }
+        jComboBoxCliente.removeAllItems();
+        DefaultComboBoxModel model = new DefaultComboBoxModel(listaClientes.toArray());
+        jComboBoxCliente.setModel(model);
+        
+    }
+    
+    private void populaFormaDePagamentoAPartirDaBusca(String formaDePagamento) {
+        ArrayList<String> listaFormasPagamento = new ArrayList<>();
+        for (int i = 0; i < jComboBoxFormasDePagamento.getItemCount(); i++) {
+            String tiposPagamento = String.valueOf(jComboBoxFormasDePagamento.getItemAt(i));
+            if (tiposPagamento.equals(formaDePagamento)) {
+                listaFormasPagamento.add(0, tiposPagamento);
+            } else {
+                listaFormasPagamento.add(tiposPagamento);
+            }
+        }
+        
+        jComboBoxFormasDePagamento.removeAllItems();
+        DefaultComboBoxModel model = new DefaultComboBoxModel(listaFormasPagamento.toArray());
+        jComboBoxFormasDePagamento.setModel(model);
+        
+    }
 
     private void jButtonExluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExluirActionPerformed
         try {
@@ -535,11 +580,11 @@ public class TelaDasPassagens extends javax.swing.JFrame {
                     passagemPersistencia.excluir(id);
                     mostrarDadosPassagens(passagemPersistencia.recuperar());
                     limparCampos();
-
+                    
                 }
-
+                
             }
-
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
@@ -547,23 +592,23 @@ public class TelaDasPassagens extends javax.swing.JFrame {
 
     private void jButtonCalcularPassagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCalcularPassagemActionPerformed
         String rotas = String.valueOf(jComboBoxRotas.getSelectedItem());
-
+        
         String[] dados = rotas.split(";");
-
+        
         String horaIda = dados[5];
         String horariosIda[] = horaIda.split(":");
         int horarioIda = Integer.parseInt(horariosIda[0]);
         int minutosIda = Integer.parseInt(horariosIda[0]);
-
+        
         String horaChegada = dados[6];
-
+        
         DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
-
+        
         LocalTime horario = LocalTime.of(horarioIda, minutosIda);
         LocalTime desejada = LocalTime.parse(horaChegada, formatoHora);
-
+        
         LocalTime tempoGasto = desejada.minusHours(horario.getHour()).minusMinutes(horario.getMinute());
-
+        
         String diferenca[] = String.valueOf(tempoGasto).split(":");
         int horaGasta = Integer.parseInt(diferenca[0]);
         int minutosGasto = Integer.parseInt(diferenca[1]);
@@ -578,7 +623,7 @@ public class TelaDasPassagens extends javax.swing.JFrame {
         double total = hora + minuto;
         DecimalFormat formatador = new DecimalFormat("R$ #,##0.00");
         jTextFieldValorDaPassagem.setText(formatador.format(total));
-
+        
 
     }//GEN-LAST:event_jButtonCalcularPassagemActionPerformed
 
@@ -589,7 +634,7 @@ public class TelaDasPassagens extends javax.swing.JFrame {
             Logger.getLogger(TelaDasPassagens.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonCadastrarClienteActionPerformed
-
+    
     private void populaAssentojComboBox() throws Exception {
         try {
             String item = String.valueOf(jComboBoxRotas.getSelectedItem());
@@ -597,12 +642,12 @@ public class TelaDasPassagens extends javax.swing.JFrame {
             int assentoOnibus = Integer.parseInt(assento[7]);
             Onibus onibus = onibusPersistencia.recuperaOnibusPorID(assentoOnibus);
             int numeroPoltronas = onibus.getNumeroDePoltronas();
-
+            
             String onibusNumeroPoltronas[] = new String[numeroPoltronas];
             for (int i = 1; i < onibusNumeroPoltronas.length + 1; i++) {
                 onibusNumeroPoltronas[i - 1] = "" + i;
             }
-
+            
             DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(onibusNumeroPoltronas);
             jComboBoxAssento.setModel(comboBoxModel);
         } catch (Exception erro) {
@@ -619,7 +664,7 @@ public class TelaDasPassagens extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jComboBoxRotasItemStateChanged
-
+    
     private int recuperaIDRotasJComboBox(String dados) {
         String dadoRotas[] = dados.split(";");
         int idRotas = 0;
@@ -628,7 +673,7 @@ public class TelaDasPassagens extends javax.swing.JFrame {
         }
         return idRotas;
     }
-
+    
     private String recuperaCPFClientesJComboBox(String dados) {
         String dadosCliente[] = dados.split(";");
         String cpfCliente = "";
@@ -637,7 +682,7 @@ public class TelaDasPassagens extends javax.swing.JFrame {
         }
         return cpfCliente;
     }
-
+    
     private void limparCampos() {
         jTextFieldIdPassagem.setText("");
         jTextFieldValorDaPassagem.setText("");
@@ -686,11 +731,11 @@ public class TelaDasPassagens extends javax.swing.JFrame {
         //</editor-fold>
         try {
             new TelaDasPassagens().setVisible(true);
-
+            
         } catch (Exception erro) {
             Logger.getLogger(TelaDoCliente.class.getName()).log(Level.SEVERE, null, erro);
         }
-
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

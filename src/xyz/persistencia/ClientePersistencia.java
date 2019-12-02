@@ -13,6 +13,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import xyz.interfaces.IcrudCliente;
 import xyz.modelos.Cliente;
+import xyz.modelos.Passagem;
 
 /**
  *
@@ -140,28 +141,26 @@ public class ClientePersistencia implements IcrudCliente {
 
     @Override
     public void alterar(String nome, String cpf, String dataDeNascimento, String telefone, String cidade, String estado, String endereco, String cep) throws Exception {
-        try {
-            ArrayList<Cliente> listaArquivo = recuperar();
+     try {
+            ArrayList<Cliente>listaClientes = recuperar();
             FileWriter fw = new FileWriter(arquivo);
             BufferedWriter bw = new BufferedWriter(fw);
-
-            Cliente clientee = null;
             
-            for (int i = 0; i < listaArquivo.size(); i++) {
-                Cliente cliente = listaArquivo.get(i);
-                if (!(cliente.getCpf().equals(cpf))) {
-                    bw.write(cliente.toString() + "\n");
-                }
-                if (cliente.getCpf().equals(cpf)) {
-                    clientee = new Cliente(nome, cpf, dataDeNascimento,telefone,cidade,estado,endereco,cep);         
-                    bw.write(clientee + "\n");
-                }
-            }
-
+             for (int i = 0; i < listaClientes.size(); i++) {
+                 Cliente cliente = listaClientes.get(i);
+                 if(cliente.getCpf().equals(cpf) ){
+                     Cliente clienteAlterado = new Cliente(nome,cpf, dataDeNascimento, telefone, cidade, estado,endereco,cep);
+                     bw.write(clienteAlterado.toString() + "\n");
+                 }else if(!cliente.getCpf().equals(cpf) ){
+                     bw.write(cliente.toString() + "\n");
+                 }
+             }
+            
             bw.close();
 
-        } catch (Exception e) {
-            throw (e);
+        } catch (Exception erro) {
+            throw erro;
         }
+
     }
 }

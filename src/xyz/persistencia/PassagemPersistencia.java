@@ -110,4 +110,28 @@ public class PassagemPersistencia implements IcrudPassagem {
         }
 
     }
+
+    @Override
+    public void alterar(int idPassagem, String valorPassagem, String formaDePagamento, int assento, int idRotas, String cpfCliente) throws Exception {
+         try {
+            ArrayList<Passagem>listaPassagens = recuperar();
+            FileWriter fw = new FileWriter(arquivo);
+            BufferedWriter bw = new BufferedWriter(fw);
+            
+             for (int i = 0; i < listaPassagens.size(); i++) {
+                 Passagem passagem = listaPassagens.get(i);
+                 if(passagem.getId() == idPassagem){
+                     Passagem passagemAlterada = new Passagem(idPassagem, idRotas, valorPassagem, formaDePagamento, cpfCliente, assento);
+                     bw.write(passagemAlterada.toString() + "\n");
+                 }else if(passagem.getId()  != idPassagem){
+                     bw.write(passagem.toString() + "\n");
+                 }
+             }
+            
+            bw.close();
+
+        } catch (Exception erro) {
+            throw erro;
+        }
+    }
 }

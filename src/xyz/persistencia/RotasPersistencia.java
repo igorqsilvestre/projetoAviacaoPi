@@ -143,20 +143,17 @@ public class RotasPersistencia implements IcrudRotas {
     @Override
     public void alterar(int idRotas, String cidadeOrigem, String cidadeDestino, String dataIda, String dataChegada, String saidaHorarioIda, String saidaHorarioChegada, int idOnibus) throws Exception {
         try {
-            ArrayList<Rotas> listaArquivo = recuperar();
+            ArrayList<Rotas> listaClientes = recuperar();
             FileWriter fw = new FileWriter(arquivo);
             BufferedWriter bw = new BufferedWriter(fw);
 
-            Rotas rotass = null;
-
-            for (int i = 0; i < listaArquivo.size(); i++) {
-                Rotas rotas = listaArquivo.get(i);
-                if (rotas.getId() != idRotas) {
-                    bw.write(rotas.toString() + "\n");
-                }
-                if (rotas.getId() == idRotas) {
-                    rotass = new Rotas(idRotas, cidadeOrigem, cidadeDestino, dataIda, dataChegada, saidaHorarioIda, saidaHorarioChegada, idOnibus);
-                    bw.write(rotass + "\n");
+            for (int i = 0; i < listaClientes.size(); i++) {
+                Rotas rota = listaClientes.get(i);
+                if (rota.getId() == idRotas) {
+                    Rotas rotaAlterada = new Rotas(idRotas, cidadeOrigem, cidadeDestino, dataIda, dataChegada, saidaHorarioIda, saidaHorarioChegada, idOnibus);
+                    bw.write(rotaAlterada.toString() + "\n");
+                } else if (rota.getId() != idRotas) {
+                    bw.write(rota.toString() + "\n");
                 }
             }
 

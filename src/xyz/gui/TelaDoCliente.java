@@ -82,7 +82,6 @@ public class TelaDoCliente extends javax.swing.JFrame {
         }
     }
 
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -110,7 +109,6 @@ public class TelaDoCliente extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jTextFieldNome = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jFormattedTextFieldDataDeNascimento = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jTextFieldCidade = new javax.swing.JTextField();
@@ -122,6 +120,7 @@ public class TelaDoCliente extends javax.swing.JFrame {
         jTextFieldCpf = new javax.swing.JTextField();
         jTextFieldTelefone = new javax.swing.JTextField();
         jTextFieldCEP = new javax.swing.JTextField();
+        jFormattedTextFieldDataDeNascimento = new javax.swing.JFormattedTextField();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -183,12 +182,6 @@ public class TelaDoCliente extends javax.swing.JFrame {
 
         jLabel2.setText("DATA DE NASCIMENTO");
 
-        try {
-            jFormattedTextFieldDataDeNascimento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-
         jLabel3.setText("TELEFONE");
 
         jLabel4.setText("CIDADE");
@@ -198,6 +191,12 @@ public class TelaDoCliente extends javax.swing.JFrame {
         jLabel7.setText("CEP");
 
         jLabel9.setText("ESTADO");
+
+        try {
+            jFormattedTextFieldDataDeNascimento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -231,14 +230,14 @@ public class TelaDoCliente extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addComponent(jTextFieldCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                    .addComponent(jFormattedTextFieldDataDeNascimento, javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jTextFieldNome, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                            .addComponent(jTextFieldEstado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jTextFieldCpf, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jTextFieldTelefone, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(jTextFieldCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(jTextFieldEstado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(jTextFieldCpf, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jTextFieldTelefone, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jFormattedTextFieldDataDeNascimento, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
@@ -348,7 +347,7 @@ public class TelaDoCliente extends javax.swing.JFrame {
             String endereco = jTextFieldEndereco.getText();
             String cep = jTextFieldCEP.getText();
 
-            clientePersistencia.alterar(nome, cpf, dataDeNascimento, telefone, cidade, estado,endereco,cep);
+            clientePersistencia.alterar(nome, cpf, dataDeNascimento, telefone, cidade, estado, endereco, cep);
             iniciar();
             limparCampos();
             jButtonAlterar.setEnabled(false);
@@ -366,13 +365,13 @@ public class TelaDoCliente extends javax.swing.JFrame {
             if (indice != -1) {
                 String nome = String.valueOf(jTableClientes.getValueAt(indice, 0));
                 String cpf = String.valueOf(jTableClientes.getValueAt(indice, 1));
-                String dataDeNascimento = String.valueOf(jTableClientes.getValueAt(indice,2));
-                String telefone = String.valueOf(jTableClientes.getValueAt(indice,3));
-                String cidade = String.valueOf(jTableClientes.getValueAt(indice,4));
-                String estado = String.valueOf(jTableClientes.getValueAt(indice,5));
-                String endereco = String.valueOf(jTableClientes.getValueAt(indice,6));
-                String cep = String.valueOf(jTableClientes.getValueAt(indice,7));
-                
+                String dataDeNascimento = String.valueOf(jTableClientes.getValueAt(indice, 2));
+                String telefone = String.valueOf(jTableClientes.getValueAt(indice, 3));
+                String cidade = String.valueOf(jTableClientes.getValueAt(indice, 4));
+                String estado = String.valueOf(jTableClientes.getValueAt(indice, 5));
+                String endereco = String.valueOf(jTableClientes.getValueAt(indice, 6));
+                String cep = String.valueOf(jTableClientes.getValueAt(indice, 7));
+
                 jTextFieldNome.setText(nome);
                 jTextFieldCpf.setText(cpf);
                 jFormattedTextFieldDataDeNascimento.setText(dataDeNascimento);
@@ -381,18 +380,16 @@ public class TelaDoCliente extends javax.swing.JFrame {
                 jTextFieldEstado.setText(estado);
                 jTextFieldEndereco.setText(endereco);
                 jTextFieldCEP.setText(cep);
-         
-                jTextFieldCpf.setEnabled(false);          
+
+                jTextFieldCpf.setEnabled(false);
                 jButtonAlterar.setEnabled(true);
                 jButtonIncluir.setEnabled(false);
-               
+
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_jButtonBuscarActionPerformed
-
-
 
     private void limparCampos() {
         jTextFieldNome.setText("");

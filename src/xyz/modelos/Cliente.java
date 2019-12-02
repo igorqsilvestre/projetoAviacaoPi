@@ -140,7 +140,7 @@ public class Cliente {
      */
     public void setTelefone(String telefone) throws Exception {
          if (telefone.equals("")||telefone.isEmpty()) {
-            throw new Exception(" telefone inválido!");
+            throw new Exception("telefone inválido!");
         } else {
             this.telefone = telefone;
         }

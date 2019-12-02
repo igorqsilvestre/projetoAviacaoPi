@@ -17,4 +17,5 @@ public interface IcrudPassagem {
      ArrayList<Passagem>recuperar()throws Exception;
      void excluir(int id)throws Exception;
      Passagem recuperarPassagemPorID(int id) throws Exception;
+      void alterar(int idPassagem, String valorPassagem, String formaDePagamento, int assento, int idRotas, String cpfCliente) throws Exception;
 }

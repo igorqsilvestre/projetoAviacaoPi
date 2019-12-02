@@ -37,7 +37,7 @@ public class Rotas {
             throw new Exception("As cidades de origem e destino não podem ser iguais!");
         }
 
-        if (dataIda.equals("  /  /    ")) {
+        if (dataIda.equals("  /  /    ")|| dataIda.equals("")|| dataIda.isEmpty()) {
             throw new Exception("A data não pode estar vazia!");
         }
         
