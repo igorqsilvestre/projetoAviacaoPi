@@ -9,6 +9,7 @@ import xyz.interfaces.IcrudMarca;
 import xyz.modelos.Marca;
 import java.io.*;
 import java.util.ArrayList;
+import xyz.modelos.Cliente;
 
 /**
  *
@@ -84,28 +85,31 @@ public class MarcaPersistencia implements IcrudMarca {
 
     @Override
     public void alterar(int id, String descricao, String imagem) throws Exception {
-        try {
+         try {
             ArrayList<Marca> listaArquivo = recuperar();
-            FileWriter fw = new FileWriter(nomeDoArquivo);
-            BufferedWriter bw = new BufferedWriter(fw);
-
-            Marca marcaa = null;
+            ArrayList<Marca> listaNovaArquivo = new ArrayList<>();
             
             for (int i = 0; i < listaArquivo.size(); i++) {
                 Marca marca = listaArquivo.get(i);
-                if (marca.getId() != id) {
-                    bw.write(marca.toString() + "\n");
-                }
-                if (marca.getId() == id) {
-                    marcaa = new Marca(id, descricao, imagem);         
-                    bw.write(marcaa + "\n");
+                if(marca.getId() == id){
+                 listaNovaArquivo.add(i, new Marca(id,descricao,imagem));
+                }else{
+                 listaNovaArquivo.add(marca);
                 }
             }
-
+                FileWriter fw = new FileWriter(nomeDoArquivo);
+                BufferedWriter bw = new BufferedWriter(fw);
+            
+            for (int i = 0; i < listaNovaArquivo.size(); i++) {
+                Marca marcaa = listaNovaArquivo.get(i);
+                bw.write(marcaa.toString() + "\n");
+            }
+            
             bw.close();
-
-        } catch (Exception e) {
-            throw (e);
+                
+            
+        } catch (Exception erro) {
+            throw erro;
         }
 
     }

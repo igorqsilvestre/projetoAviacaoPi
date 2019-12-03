@@ -12,7 +12,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import xyz.interfaces.IcrudRotas;
-import xyz.modelos.Marca;
 import xyz.modelos.Rotas;
 
 /**
@@ -143,24 +142,29 @@ public class RotasPersistencia implements IcrudRotas {
     @Override
     public void alterar(int idRotas, String cidadeOrigem, String cidadeDestino, String dataIda, String dataChegada, String saidaHorarioIda, String saidaHorarioChegada, int idOnibus) throws Exception {
         try {
-            ArrayList<Rotas> listaClientes = recuperar();
-            FileWriter fw = new FileWriter(arquivo);
-            BufferedWriter bw = new BufferedWriter(fw);
-
-            for (int i = 0; i < listaClientes.size(); i++) {
-                Rotas rota = listaClientes.get(i);
-                if (rota.getId() == idRotas) {
-                    Rotas rotaAlterada = new Rotas(idRotas, cidadeOrigem, cidadeDestino, dataIda, dataChegada, saidaHorarioIda, saidaHorarioChegada, idOnibus);
-                    bw.write(rotaAlterada.toString() + "\n");
-                } else if (rota.getId() != idRotas) {
-                    bw.write(rota.toString() + "\n");
+            ArrayList<Rotas> listaArquivo = recuperar();
+            ArrayList<Rotas> listaNovaArquivo = new ArrayList<>();
+            
+            for (int i = 0; i < listaArquivo.size(); i++) {
+                Rotas rotas = listaArquivo.get(i);
+                if(rotas.getId() == idRotas ){
+                 listaNovaArquivo.add(i, new Rotas(idRotas,cidadeOrigem,cidadeDestino,dataIda,dataChegada,saidaHorarioIda,saidaHorarioChegada,idOnibus));
+                }else{
+                 listaNovaArquivo.add(rotas);
                 }
             }
-
-            bw.close();
-
-        } catch (Exception e) {
-            throw (e);
+                FileWriter fw = new FileWriter(arquivo);
+                BufferedWriter bw = new BufferedWriter(fw);
+            
+            for (int i = 0; i < listaNovaArquivo.size(); i++) {
+                Rotas rotass = listaNovaArquivo.get(i);
+                bw.write(rotass.toString() + "\n");
+            }
+            
+            bw.close();      
+            
+        } catch (Exception erro) {
+            throw erro;
         }
     }
 }

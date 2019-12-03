@@ -32,7 +32,7 @@ public class Modelo {
         }
         
         if(marca == null){
-            throw new Exception("Não existe marca cadastrada disponível para o modelo");
+            throw new Exception("Não existe marca cadastrada disponível para o modelo!");
         }
 
     }

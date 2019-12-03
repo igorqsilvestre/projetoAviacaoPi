@@ -30,7 +30,7 @@ public class Marca {
             throw new Exception("O campo da descrição não pode estar vazio!");
         }
         if(imagem.equals("")||imagem.equals(null)){
-            throw new Exception("O caminho da imagem não pode estar vazio"); 
+            throw new Exception("O caminho da imagem não pode estar vazio!"); 
         }
             this.id = id;
             this.descricao = descricao;
@@ -100,7 +100,7 @@ public class Marca {
      */
     public void setImagem(String imagem) throws Exception {
         if(imagem.equals("")||imagem.equals(null)){
-            throw new Exception("O caminho da imagem não pode estar vazio"); 
+            throw new Exception("O caminho da imagem não pode estar vazio!"); 
         }else{
             this.imagem = imagem;
         } 

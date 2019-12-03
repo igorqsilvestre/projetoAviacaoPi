@@ -216,6 +216,8 @@ public class TelaDasPassagens extends javax.swing.JFrame {
         jToggleButton1 = new javax.swing.JToggleButton();
         jLabel6 = new javax.swing.JLabel();
         jComboBoxAssento = new javax.swing.JComboBox<String>();
+        jButtonCadastrarRotas = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -232,7 +234,7 @@ public class TelaDasPassagens extends javax.swing.JFrame {
 
         jLabel5.setText("jLabel5");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CADASTRO");
         setResizable(false);
 
@@ -315,6 +317,15 @@ public class TelaDasPassagens extends javax.swing.JFrame {
 
         jLabel6.setText("SELECIONAR ASSENTO:");
 
+        jButtonCadastrarRotas.setText("CADASTRAR ROTAS");
+        jButtonCadastrarRotas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCadastrarRotasActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("IR PARA O MENU");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -350,10 +361,11 @@ public class TelaDasPassagens extends javax.swing.JFrame {
                                                 .addGap(0, 0, Short.MAX_VALUE)
                                                 .addComponent(idModelo))
                                             .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                     .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(jButtonCalcularPassagem)
-                                                    .addComponent(jButtonCadastrarCliente))
+                                                    .addComponent(jButtonCalcularPassagem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(jButtonCadastrarCliente)
+                                                    .addComponent(jButtonCadastrarRotas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                 .addGap(0, 0, Short.MAX_VALUE))))
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jComboBoxAssento, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -364,6 +376,8 @@ public class TelaDasPassagens extends javax.swing.JFrame {
                                 .addComponent(jButtonExluir, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButtonAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(410, 410, 410)
+                                .addComponent(jButton1)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(101, 101, 101)
                 .addComponent(jToggleButton1)
@@ -381,7 +395,7 @@ public class TelaDasPassagens extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(idModelo)
@@ -391,10 +405,11 @@ public class TelaDasPassagens extends javax.swing.JFrame {
                             .addComponent(jTextFieldIdPassagem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButtonBuscar)
                             .addComponent(jLabel2))
-                        .addGap(16, 16, 16)
+                        .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
-                            .addComponent(jComboBoxRotas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBoxRotas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonCadastrarRotas))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
@@ -418,12 +433,13 @@ public class TelaDasPassagens extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabelIDMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(296, Short.MAX_VALUE))
+                        .addContainerGap(295, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButtonIncluir)
                             .addComponent(jButtonAlterar)
-                            .addComponent(jButtonExluir))
+                            .addComponent(jButtonExluir)
+                            .addComponent(jButton1))
                         .addGap(36, 36, 36)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
@@ -682,6 +698,14 @@ public class TelaDasPassagens extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jComboBoxRotasItemStateChanged
 
+    private void jButtonCadastrarRotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarRotasActionPerformed
+        try {
+            new TelaDasRotas().setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(TelaDasPassagens.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonCadastrarRotasActionPerformed
+
     private int recuperaIDRotasJComboBox(String dados) {
         String dadoRotas[] = dados.split(";");
         int idRotas = 0;
@@ -764,9 +788,11 @@ public class TelaDasPassagens extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel idModelo;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAlterar;
     private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonCadastrarCliente;
+    private javax.swing.JButton jButtonCadastrarRotas;
     private javax.swing.JButton jButtonCalcularPassagem;
     private javax.swing.JButton jButtonExluir;
     private javax.swing.JButton jButtonIncluir;

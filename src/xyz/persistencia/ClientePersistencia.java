@@ -13,6 +13,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import xyz.interfaces.IcrudCliente;
 import xyz.modelos.Cliente;
+import xyz.modelos.Marca;
 import xyz.modelos.Passagem;
 
 /**
@@ -20,9 +21,9 @@ import xyz.modelos.Passagem;
  * @author Igor
  */
 public class ClientePersistencia implements IcrudCliente {
-
+    
     String arquivo = "cliente.txt";
-
+    
     @Override
     public void incluir(Cliente objeto) throws Exception {
         try {
@@ -34,12 +35,12 @@ public class ClientePersistencia implements IcrudCliente {
             } else {
                 throw new Exception("O cpf já existe, insira outro!");
             }
-
+            
         } catch (Exception erro) {
             throw erro;
         }
     }
-
+    
     @Override
     public boolean consultaCPF(String cpf) throws Exception {
         try {
@@ -53,19 +54,19 @@ public class ClientePersistencia implements IcrudCliente {
                     if (dados[1].equals(cpf)) {
                         return false;
                     }
-
+                    
                 }
                 br.close();
-
+                
             }
-
+            
             return true;
-
+            
         } catch (Exception erro) {
             throw erro;
         }
     }
-
+    
     @Override
     public ArrayList<Cliente> recuperar() throws Exception {
         try {
@@ -80,23 +81,23 @@ public class ClientePersistencia implements IcrudCliente {
                     listaCliente.add(objeto);
                 }
                 br.close();
-
+                
             }
-
+            
             return listaCliente;
-
+            
         } catch (Exception erro) {
             throw erro;
         }
     }
-
+    
     @Override
     public void excluir(String cpf) throws Exception {
         try {
             ArrayList<Cliente> listaArquivo = recuperar();
             FileWriter fw = new FileWriter(arquivo);
             BufferedWriter bw = new BufferedWriter(fw);
-
+            
             if (listaArquivo != null) {
                 for (int i = 0; i < listaArquivo.size(); i++) {
                     Cliente cliente = listaArquivo.get(i);
@@ -105,14 +106,14 @@ public class ClientePersistencia implements IcrudCliente {
                     }
                 }
             }
-
+            
             bw.close();
-
+            
         } catch (Exception e) {
             throw (e);
         }
     }
-
+    
     @Override
     public Cliente recuperaClientePorCPF(String cpf) throws Exception {
         try {
@@ -129,7 +130,7 @@ public class ClientePersistencia implements IcrudCliente {
                         Cliente cliente = new Cliente(linha);
                         return cliente;
                     }
-
+                    
                 }
                 br.close();
             }
@@ -138,29 +139,35 @@ public class ClientePersistencia implements IcrudCliente {
             throw erro;
         }
     }
-
+    
     @Override
     public void alterar(String nome, String cpf, String dataDeNascimento, String telefone, String cidade, String estado, String endereco, String cep) throws Exception {
-     try {
-            ArrayList<Cliente>listaClientes = recuperar();
-            FileWriter fw = new FileWriter(arquivo);
-            BufferedWriter bw = new BufferedWriter(fw);
+        try {
+            ArrayList<Cliente> listaArquivo = recuperar();
+            ArrayList<Cliente> listaNovaArquivo = new ArrayList<>();
             
-             for (int i = 0; i < listaClientes.size(); i++) {
-                 Cliente cliente = listaClientes.get(i);
-                 if(cliente.getCpf().equals(cpf) ){
-                     Cliente clienteAlterado = new Cliente(nome,cpf, dataDeNascimento, telefone, cidade, estado,endereco,cep);
-                     bw.write(clienteAlterado.toString() + "\n");
-                 }else if(!cliente.getCpf().equals(cpf) ){
-                     bw.write(cliente.toString() + "\n");
-                 }
-             }
+            for (int i = 0; i < listaArquivo.size(); i++) {
+                Cliente cliente = listaArquivo.get(i);
+                if(cliente.getCpf().equals(cpf)){
+                 listaNovaArquivo.add(i, new Cliente(nome,cpf,dataDeNascimento,telefone,cidade,estado,endereco,cep));
+                }else{
+                 listaNovaArquivo.add(cliente);
+                }
+            }
+                FileWriter fw = new FileWriter(arquivo);
+                BufferedWriter bw = new BufferedWriter(fw);
+            
+            for (int i = 0; i < listaNovaArquivo.size(); i++) {
+                Cliente cliente = listaNovaArquivo.get(i);
+                bw.write(cliente.toString() + "\n");
+            }
             
             bw.close();
-
+                
+            
         } catch (Exception erro) {
             throw erro;
         }
-
+        
     }
 }

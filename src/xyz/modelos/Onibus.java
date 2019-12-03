@@ -5,6 +5,8 @@
  */
 package xyz.modelos;
 
+import java.util.Calendar;
+
 /**
  *
  * @author Igor
@@ -37,13 +39,20 @@ public class Onibus {
             throw new Exception("O campo da placa não pode estar vazio!");
         }
         
-        if(numeroDePoltronas > 50){
-            throw new Exception("O o número de poltronas não pode ser maior que 50");
+        
+        if(numeroDePoltronas > 50 || numeroDePoltronas <=0){
+            throw new Exception("O o número de poltronas não pode ser maior que 50 ou menor do igual a 0!");
         }
 
-        if (numeroDePoltronas < 0 || anoDeFabricacao < 0) {
-            throw new Exception("O campo não pode ser menor do que 0");
+        if (anoDeFabricacao <=0) {
+            throw new Exception("O campo não pode ser menor ou igual 0");
         }
+        
+        if(anoDeFabricacao < 1998 || anoDeFabricacao > Calendar.getInstance().get(Calendar.YEAR)){
+            throw new Exception("O ano de fabricação não pode ser menor do que 1998 ou maior do que o ano atual!");
+        }
+        
+        
         
         this.id = id;
         this.placa = placa;
@@ -120,8 +129,8 @@ public class Onibus {
      * @param numeroDePoltronas the numeroDePoltronas to set
      */
     public void setNumeroDePoltronas(int numeroDePoltronas) throws Exception {
-        if (numeroDePoltronas < 0) {
-            throw new Exception("O numero de poltronas não pode ser menor do que 0");
+        if (numeroDePoltronas <= 0 || numeroDePoltronas > 50) {
+            throw new Exception("O numero de poltronas não pode ser menor ou igual a 0 ou maior que 50!");
         } else {
             this.numeroDePoltronas = numeroDePoltronas;
         }
@@ -139,8 +148,8 @@ public class Onibus {
      * @param anoDeFabricacao the anoDeFabricacao to set
      */
     public void setAnoDeFabricacao(int anoDeFabricacao) throws Exception {
-        if(anoDeFabricacao < 0){
-              throw new Exception("O ano não pode ser menor do que 0");
+        if(anoDeFabricacao < 1998 || anoDeFabricacao > Calendar.getInstance().get(Calendar.YEAR)){
+              throw new Exception("O ano não pode ser menor do que 1998 ou maior do que o ano atual!");
         }else{
             this.anoDeFabricacao = anoDeFabricacao;
         }

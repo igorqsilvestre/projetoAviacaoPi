@@ -53,7 +53,7 @@
     </Component>
   </NonVisualComponents>
   <Properties>
-    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="title" type="java.lang.String" value="CADASTRO"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
@@ -111,10 +111,11 @@
                                               <Component id="idModelo" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <Group type="102" attributes="0">
-                                              <Group type="103" groupAlignment="0" attributes="0">
+                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                   <Component id="jButtonBuscar" alignment="0" min="-2" pref="84" max="-2" attributes="0"/>
-                                                  <Component id="jButtonCalcularPassagem" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="jButtonCalcularPassagem" alignment="0" max="32767" attributes="0"/>
                                                   <Component id="jButtonCadastrarCliente" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="jButtonCadastrarRotas" alignment="0" max="32767" attributes="0"/>
                                               </Group>
                                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                           </Group>
@@ -132,6 +133,8 @@
                               <Component id="jButtonExluir" min="-2" pref="87" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jButtonAlterar" min="-2" pref="92" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="410" max="-2" attributes="0"/>
+                              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -157,7 +160,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="144" max="32767" attributes="0"/>
+              <EmptySpace pref="143" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="idModelo" min="-2" max="-2" attributes="0"/>
@@ -169,10 +172,11 @@
                           <Component id="jButtonBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jComboBoxRotas" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButtonCadastrarRotas" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -203,13 +207,14 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabelIDMarca" min="-2" pref="16" max="-2" attributes="0"/>
-                      <EmptySpace pref="296" max="32767" attributes="0"/>
+                      <EmptySpace pref="295" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jButtonIncluir" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonAlterar" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButtonExluir" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                       <Component id="jScrollPane1" min="-2" pref="244" max="-2" attributes="0"/>
@@ -485,6 +490,19 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonCadastrarRotas">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="CADASTRAR ROTAS"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCadastrarRotasActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButton1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="IR PARA O MENU"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

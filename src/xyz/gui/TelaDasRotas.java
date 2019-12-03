@@ -184,6 +184,8 @@ public class TelaDasRotas extends javax.swing.JFrame {
         jFormatteDataIda = new javax.swing.JFormattedTextField();
         jFormattedDataChegada = new javax.swing.JFormattedTextField();
         calcularHorarioChegada = new javax.swing.JButton();
+        jButtonCadastrarOnibus = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -200,7 +202,7 @@ public class TelaDasRotas extends javax.swing.JFrame {
 
         jLabel5.setText("jLabel5");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CADASTRO");
         setResizable(false);
 
@@ -291,6 +293,15 @@ public class TelaDasRotas extends javax.swing.JFrame {
             }
         });
 
+        jButtonCadastrarOnibus.setText("CADASTRAR ÔNIBUS");
+        jButtonCadastrarOnibus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCadastrarOnibusActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("IR PARA O MENU");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -308,12 +319,6 @@ public class TelaDasRotas extends javax.swing.JFrame {
                                 .addComponent(idModelo))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jButtonIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jButtonExluir, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jButtonAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jLabel8)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -344,7 +349,16 @@ public class TelaDasRotas extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(calcularHorarioChegada)
-                                            .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addComponent(jButtonBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jButtonCadastrarOnibus)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jButtonIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButtonExluir, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jButtonAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(455, 455, 455)
+                                        .addComponent(jButton2)))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(260, 260, 260))
             .addComponent(jScrollPane1)
@@ -358,7 +372,7 @@ public class TelaDasRotas extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -392,10 +406,11 @@ public class TelaDasRotas extends javax.swing.JFrame {
                             .addComponent(ComboBoxMinutosChegada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(calcularHorarioChegada)
                             .addComponent(jLabel10))
-                        .addGap(25, 25, 25)
+                        .addGap(24, 24, 24)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jComboBoxOnibus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7))
+                            .addComponent(jLabel7)
+                            .addComponent(jButtonCadastrarOnibus))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(idModelo)
@@ -405,7 +420,8 @@ public class TelaDasRotas extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonIncluir)
                     .addComponent(jButtonAlterar)
-                    .addComponent(jButtonExluir))
+                    .addComponent(jButtonExluir)
+                    .addComponent(jButton2))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -636,6 +652,14 @@ public class TelaDasRotas extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_calcularHorarioChegadaActionPerformed
 
+    private void jButtonCadastrarOnibusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarOnibusActionPerformed
+        try {
+            new TelaDoOnibus().setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(TelaDasRotas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonCadastrarOnibusActionPerformed
+
     private int recuperaIDOnibusPorDadoSelecionadoJcomboBox(String dados) throws Exception {
         try {
             String dadoOnibus[] = dados.split(";");
@@ -713,8 +737,10 @@ public class TelaDasRotas extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> ComboBoxMinutosIda;
     private javax.swing.JButton calcularHorarioChegada;
     private javax.swing.JLabel idModelo;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButtonAlterar;
     private javax.swing.JButton jButtonBuscar;
+    private javax.swing.JButton jButtonCadastrarOnibus;
     private javax.swing.JButton jButtonExluir;
     private javax.swing.JButton jButtonIncluir;
     private javax.swing.JCheckBox jCheckBox1;

@@ -177,6 +177,8 @@ public class TelaDoOnibus extends javax.swing.JFrame {
         jComboBoxSituacao = new javax.swing.JComboBox();
         jLabel8 = new javax.swing.JLabel();
         idModelo = new javax.swing.JLabel();
+        jButtonCadastrarModelo = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -193,7 +195,7 @@ public class TelaDoOnibus extends javax.swing.JFrame {
 
         jLabel5.setText("jLabel5");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CADASTRO");
         setResizable(false);
 
@@ -244,6 +246,15 @@ public class TelaDoOnibus extends javax.swing.JFrame {
 
         jLabel8.setText("MODELO");
 
+        jButtonCadastrarModelo.setText("CADASTRAR MODELO");
+        jButtonCadastrarModelo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCadastrarModeloActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("IR PARA O MENU");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -272,6 +283,8 @@ public class TelaDoOnibus extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jComboBoxModelos, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jButtonCadastrarModelo)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(idModelo))
                                     .addGroup(layout.createSequentialGroup()
@@ -292,6 +305,8 @@ public class TelaDoOnibus extends javax.swing.JFrame {
                                 .addComponent(jButtonIncluir, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jButtonAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(521, 521, 521)
+                                .addComponent(jButton1)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(260, 260, 260))
         );
@@ -300,7 +315,7 @@ public class TelaDoOnibus extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 157, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextFieldIdOnibus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -325,11 +340,13 @@ public class TelaDoOnibus extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxModelos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(idModelo))
-                .addGap(43, 43, 43)
+                    .addComponent(idModelo)
+                    .addComponent(jButtonCadastrarModelo))
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonIncluir)
-                    .addComponent(jButtonAlterar))
+                    .addComponent(jButtonAlterar)
+                    .addComponent(jButton1))
                 .addGap(8, 8, 8)
                 .addComponent(jLabelIDMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -373,7 +390,15 @@ public class TelaDoOnibus extends javax.swing.JFrame {
         try {
             int idOnibus = Integer.parseInt(jTextFieldIdOnibus.getText());
             String placa = jTextFieldPlacaOnibus.getText();
+            String numerosPoltronas = jTextFieldNumeroDePoltronas.getText();
+            if(numerosPoltronas.equals("")){
+                throw new Exception("O número de poltronas não pode estar vazio!");
+            }
             int numeroPoltronas = Integer.parseInt(jTextFieldNumeroDePoltronas.getText());
+            String anoFabricacao = jTextFieldAnoDeFabricacao.getText();
+            if(anoFabricacao.equals("")){
+                throw new Exception("O ano de fabricação não pode estar vazio!");
+            }
             int ano = Integer.parseInt(jTextFieldAnoDeFabricacao.getText());
 
             Situacao situacaoOnibus = (Situacao) jComboBoxSituacao.getSelectedItem();
@@ -426,6 +451,14 @@ public class TelaDoOnibus extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_jButtonBuscarActionPerformed
+
+    private void jButtonCadastrarModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarModeloActionPerformed
+        try {
+            new TelaDoModelo().setVisible(true);
+        } catch (Exception ex) {
+            Logger.getLogger(TelaDoOnibus.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonCadastrarModeloActionPerformed
 
     private int recuperaIDModeloPorDadoSelecionadoJcomboBox(String dados) throws Exception {
         try {
@@ -493,8 +526,10 @@ public class TelaDoOnibus extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel idModelo;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButtonAlterar;
     private javax.swing.JButton jButtonBuscar;
+    private javax.swing.JButton jButtonCadastrarModelo;
     private javax.swing.JButton jButtonIncluir;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;

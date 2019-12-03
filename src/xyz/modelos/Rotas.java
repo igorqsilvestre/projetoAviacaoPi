@@ -5,6 +5,8 @@
  */
 package xyz.modelos;
 
+import xyz.utilidades.ValidaData;
+
 /**
  *
  * @author Igor
@@ -37,15 +39,22 @@ public class Rotas {
             throw new Exception("As cidades de origem e destino não podem ser iguais!");
         }
 
-        if (dataIda.equals("  /  /    ")|| dataIda.equals("")|| dataIda.isEmpty()) {
+        if (dataIda.equals("  /  /    ") || dataIda.equals("") || dataIda.isEmpty()) {
             throw new Exception("A data não pode estar vazia!");
         }
+
+        if (!ValidaData.validarDataValida(dataIda)) {
+            throw new Exception("A data não e válida!");
+        }
         
-        if(dataChegada.equals("  /  /    ") || horarioChegada.equals("") || horarioChegada.equals("null:null")){
+        if(!ValidaData.validarDataLimite(dataIda)){
+            throw new Exception("A data de ida não pode ser menor que a data atual nem maior que o ano de 2040!");
+        }
+
+        if (dataChegada.equals("  /  /    ") || horarioChegada.equals("") || horarioChegada.equals("null:null")) {
             throw new Exception("Clique no botão para calcular o horário de chegada!");
         }
 
-        
         this.id = id;
         this.cidadeOrigem = cidadeOrigem;
         this.cidadeDestino = cidadeDestino;
@@ -104,14 +113,21 @@ public class Rotas {
      * @throws java.lang.Exception
      */
     public void setDataIda(String dataIda) throws Exception {
-        if (dataIda.equals("  /  /    ")) {
+
+        if (dataIda.equals("  /  /    ")|| dataIda.equals("") || dataIda.isEmpty()) {
             throw new Exception("A data não pode estar vazia!");
 
-        }else{
-            this.dataIda = dataIda;
+        }
+        if (!ValidaData.validarDataValida(dataIda)) {
+            throw new Exception("A data não e válida!");
+        }
+        
+        if(!ValidaData.validarDataLimite(dataIda)){
+            throw new Exception("A data de ida não pode ser menor que a data atual nem maior que o ano de 2040!");
         }
 
-        
+        this.dataIda = dataIda;
+
     }
 
     /**
@@ -126,10 +142,10 @@ public class Rotas {
      * @throws java.lang.Exception
      */
     public void setDataChegada(String dataChegada) throws Exception {
-        if(dataChegada.equals("  /  /    ")){
+        if (dataChegada.equals("  /  /    ")|| horarioChegada.equals("") || horarioChegada.equals("null:null")) {
             throw new Exception("A data não pode estar vazia!");
-        }else{
-             this.dataChegada = dataChegada;
+        } else {
+            this.dataChegada = dataChegada;
         }
     }
 

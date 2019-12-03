@@ -5,6 +5,9 @@
  */
 package xyz.modelos;
 
+import java.util.Calendar;
+import xyz.utilidades.ValidaData;
+
 /**
  *
  * @author Igor
@@ -80,7 +83,7 @@ public class Cliente {
      */
     public void setNome(String nome) throws Exception {
         if (nome.equals("") || nome.isEmpty()) {
-            throw new Exception("Nome não pode estar vazio");
+            throw new Exception("Nome não pode estar vazio!");
         } else {
             this.nome = nome;
         }
@@ -119,11 +122,25 @@ public class Cliente {
      * @throws java.lang.Exception
      */
     public void setDataDeNascimento(String dataDeNascimento) throws Exception {
-        if (dataDeNascimento.equals("  /  /    ")|| dataDeNascimento.equals("")|| dataDeNascimento.isEmpty()) {
-            throw new Exception("A data de nascimento não pode estar vazia");
-        } else {
-            this.dataDeNascimento = dataDeNascimento;
+        if (dataDeNascimento.equals("  /  /    ")|| dataDeNascimento.equals("")|| dataDeNascimento.isEmpty()||dataDeNascimento.startsWith("   ")) {
+            throw new Exception("A data de nascimento não pode estar vazia!");
+        } 
+        
+        if(!ValidaData.validarDataValida(dataDeNascimento)){
+             throw new Exception("A data não e válida!");
         }
+        
+        int anoAtual =  Calendar.getInstance().get(Calendar.YEAR);
+        String dadosData[] = dataDeNascimento.split("/");
+        int anoData = Integer.parseInt(dadosData[2]);
+        int idade = anoAtual - anoData;
+ 
+        if(idade < 18){
+            throw new Exception("Não e permitido cadastro de um cliente com idade inferior a 18 anos!");
+        }
+      
+            this.dataDeNascimento = dataDeNascimento;
+        
 
     }
 
@@ -160,7 +177,7 @@ public class Cliente {
      */
     public void setCidade(String cidade) throws Exception {
         if (cidade.equals("") || cidade.isEmpty()) {
-            throw new Exception("A cidade não pode estar vazia");
+            throw new Exception("A cidade não pode estar vazia!");
         } else {
             this.cidade = cidade;
         }
@@ -180,7 +197,7 @@ public class Cliente {
      */
     public void setEstado(String estado) throws Exception {
         if (estado.equals("") && estado.isEmpty()) {
-            throw new Exception("O estado não pode estar vazio");
+            throw new Exception("O estado não pode estar vazio!");
         } else {
             this.estado = estado;
         }
@@ -200,7 +217,7 @@ public class Cliente {
      */
     public void setEndereco(String endereco) throws Exception {
         if (endereco.equals("") || endereco.isEmpty()) {
-            throw new Exception("O endereço não pode estar vazio");
+            throw new Exception("O endereço não pode estar vazio!");
         } else {
             this.endereco = endereco;
         }

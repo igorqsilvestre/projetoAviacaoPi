@@ -141,26 +141,29 @@ public class OnibusPersistencia implements IcrudOnibus {
     public void alterar(int idOnibus, String placa, int numeroPoltronas, int ano, Situacao situacaoOnibus, int idModelo) throws Exception {
         try {
             ArrayList<Onibus> listaArquivo = recuperar();
-            FileWriter fw = new FileWriter(arquivo);
-            BufferedWriter bw = new BufferedWriter(fw);
-
-            Onibus onibuss = null;
+            ArrayList<Onibus> listaNovaArquivo = new ArrayList<>();
+            
             for (int i = 0; i < listaArquivo.size(); i++) {
                 Onibus onibus = listaArquivo.get(i);
-
-                if (onibus.getId() != idOnibus) {
-                    bw.write(onibus.toString() + "\n");
-                }
-                if (onibus.getId() == idOnibus) {
-                    onibuss = new Onibus(idOnibus, placa, numeroPoltronas, ano, situacaoOnibus, idModelo);
-                    bw.write(onibuss + "\n");
+                if(onibus.getId() == idOnibus ){
+                 listaNovaArquivo.add(i, new Onibus(idOnibus,placa,numeroPoltronas,ano,situacaoOnibus,idModelo));
+                }else{
+                 listaNovaArquivo.add(onibus);
                 }
             }
-
+                FileWriter fw = new FileWriter(arquivo);
+                BufferedWriter bw = new BufferedWriter(fw);
+            
+            for (int i = 0; i < listaNovaArquivo.size(); i++) {
+                Onibus onibuss = listaNovaArquivo.get(i);
+                bw.write(onibuss.toString() + "\n");
+            }
+            
             bw.close();
-
-        } catch (Exception e) {
-            throw (e);
+                
+            
+        } catch (Exception erro) {
+            throw erro;
         }
     }
 

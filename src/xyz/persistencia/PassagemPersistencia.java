@@ -12,9 +12,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import xyz.interfaces.IcrudPassagem;
-import xyz.modelos.Marca;
-import xyz.modelos.Onibus;
 import xyz.modelos.Passagem;
+import xyz.modelos.Rotas;
 
 /**
  *
@@ -113,23 +112,28 @@ public class PassagemPersistencia implements IcrudPassagem {
 
     @Override
     public void alterar(int idPassagem, String valorPassagem, String formaDePagamento, int assento, int idRotas, String cpfCliente) throws Exception {
-         try {
-            ArrayList<Passagem>listaPassagens = recuperar();
-            FileWriter fw = new FileWriter(arquivo);
-            BufferedWriter bw = new BufferedWriter(fw);
+        try {
+            ArrayList<Passagem> listaArquivo = recuperar();
+            ArrayList<Passagem> listaNovaArquivo = new ArrayList<>();
             
-             for (int i = 0; i < listaPassagens.size(); i++) {
-                 Passagem passagem = listaPassagens.get(i);
-                 if(passagem.getId() == idPassagem){
-                     Passagem passagemAlterada = new Passagem(idPassagem, idRotas, valorPassagem, formaDePagamento, cpfCliente, assento);
-                     bw.write(passagemAlterada.toString() + "\n");
-                 }else if(passagem.getId()  != idPassagem){
-                     bw.write(passagem.toString() + "\n");
-                 }
-             }
+            for (int i = 0; i < listaArquivo.size(); i++) {
+                Passagem passagem = listaArquivo.get(i);
+                if(passagem.getId() == idPassagem ){
+                 listaNovaArquivo.add(i, new Passagem(idPassagem,idRotas,valorPassagem,formaDePagamento,cpfCliente,assento));
+                }else{
+                 listaNovaArquivo.add(passagem);
+                }
+            }
+                FileWriter fw = new FileWriter(arquivo);
+                BufferedWriter bw = new BufferedWriter(fw);
             
-            bw.close();
-
+            for (int i = 0; i < listaNovaArquivo.size(); i++) {
+                Passagem passagemm = listaNovaArquivo.get(i);
+                bw.write(passagemm.toString() + "\n");
+            }
+            
+            bw.close();      
+            
         } catch (Exception erro) {
             throw erro;
         }
